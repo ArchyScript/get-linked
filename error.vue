@@ -12,7 +12,7 @@
         never see it again.
       </p>
 
-      <nuxt-link to="/" class="text-green-700"> Home </nuxt-link>
+      <nuxt-link to="/dashboard" class="text-green-700"> Dashboard </nuxt-link>
     </div>
   </section>
 </template>
