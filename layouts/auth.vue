@@ -9,7 +9,7 @@
         />
       </div>
 
-      <div class="mt-8 rounded font-Poppins">
+      <div class="mt-8 font-Poppins">
         <slot />
       </div>
     </div>
