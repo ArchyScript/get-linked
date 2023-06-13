@@ -1,10 +1,5 @@
 <template>
-  <button
-    :type="type"
-    :class="{ hasBorder: hasBorder, isGray: isGray }"
-    :disabled="disabled"
-    @click="clickBtn"
-  >
+  <button :type="type" :class="{ hasBorder: hasBorder, isGray: isGray }" :disabled="disabled" @click="clickBtn">
     <IconSpinner type="dotted" v-if="loading" class="animate-spin" />
 
     <span v-else>
@@ -59,7 +54,7 @@ const clickBtn = () => {
 
 <style lang="scss" scoped>
 button {
-  @apply flex items-center justify-center text-center  max-h-[3.125rem] w-full bg-secondary-500 cursor-pointer text-white px-3 py-4 rounded leading-6 text-sm font-medium font-Poppins;
+  @apply flex items-center justify-center text-center max-h-[3.125rem] w-full bg-secondary-500 cursor-pointer text-white px-3 py-4 rounded leading-6 text-sm font-medium font-Poppins;
 
   &.hasBorder {
     @apply ring-1 bg-transparent text-secondary-500 ring-secondary-500;

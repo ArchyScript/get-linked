@@ -1,3 +1,3 @@
 <template>
-  <div class="text-success-600">test</div>
+  <div class="text-green-600">test</div>
 </template>
