@@ -15,7 +15,7 @@
           src="~/assets/images/logo-full.svg"
           class="m-auto h-[3.875rem]"
           alt="logo"
-        />
+        /> 
       </div>
 
       <div class="mt-8 font-Poppins">
@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import { useLayoutStore } from '~/store/layout'
+import { Brandname } from '../.nuxt/components';
 const authCardSize = computed(() => useLayoutStore().authCardSize) 
 </script>
 

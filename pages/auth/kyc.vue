@@ -318,8 +318,7 @@
 
 <script setup lang="ts"> 
 import UploadIcon from "~/components/icon/upload.vue";
-import { useLayoutStore } from '~/store/layout' 
-import { IconAdd } from '../../.nuxt/components';
+import { useLayoutStore } from '~/store/layout'  
 definePageMeta({ layout: "auth" }); 
  
 const { updateAuthCardSize } = useLayoutStore()
