@@ -10,16 +10,16 @@
     <div class=" ml-[17.5rem] flex flex-col !no-scrollbar min-h-screen"> 
       <PartialsTopbar/> 
 
-      <div class="container flex-1 border h-full mx-auto w-full py-20 no-scrollbar">
+      <div class="container flex-1 h-full mx-auto w-full p-8 !no-scrollbar">
         <slot/>
       </div>
+
+      <PartialsAppFooter/>
     </div>
   </div> 
 </template>   
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
  
  
 

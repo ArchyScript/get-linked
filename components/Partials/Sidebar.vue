@@ -17,8 +17,7 @@
           <span class=" block text-secondary-500 text-[13px] " >
             Financier
           </span>
-        </div>
-        
+        </div> 
       </div>
     </div>
 
@@ -82,7 +81,7 @@ const mainMenu = ref([
     icon: "messages"
   },
   {
-    title: "activity logs",
+    title: "Activity logs",
     route: "/activity-logs",
     icon: "activity-logs"
   },
