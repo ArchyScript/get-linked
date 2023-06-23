@@ -2,7 +2,7 @@
   <span>
     <!-- dashboard -->
     <svg
-      v-if="type === 'dashboard'"
+      v-if="title === 'dashboards'"
       :width="width"
       :height="height"
       viewBox="0 0 18 18"
@@ -18,7 +18,7 @@
 
     <!-- my-deals -->
     <svg
-      v-if="type === 'my-deals'"
+      v-if="title === 'my-deals'"
       :width="width"
       :height="height"
       viewBox="0 0 18 18"
@@ -34,7 +34,7 @@
 
     <!-- marketplace -->
     <svg
-      v-if="type === 'marketplace'"
+      v-if="title === 'marketplace'"
       :width="width"
       :height="height"
       class="fill-current"
@@ -62,7 +62,7 @@
 
     <!-- messages -->
     <svg
-      v-if="type === 'messages'"
+      v-if="title === 'messages'"
       :width="width"
       :height="height"
       class="fill-current"
@@ -83,7 +83,7 @@
 
     <!-- activity-logs -->
     <svg
-      v-if="type === 'activity-logs'"
+      v-if="title === 'activity-logs'"
       :width="width"
       :height="height"
       class="fill-current"
@@ -99,7 +99,7 @@
 
     <!-- profile -->
     <svg
-      v-if="type === 'profile'"
+      v-if="title === 'profile'"
       :width="width"
       :height="height"
       class="fill-current"

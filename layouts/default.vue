@@ -1,21 +1,29 @@
-<template>
-  <div class="bg-[#E3E3D9]">
-    <div class="container mx-auto min-h-screen py-10 px-4">
-      <slot />
+<template> 
+  <div class="min-h-screen flex flex-col flex-auto flex-shrink-0  no-scrollbar antialiased bg-[#FAFAFA]">
+    
+    <!-- Sidebar -->
+    <div class="fixed flex flex-col left-0 w-[17.5rem] p-4 bg-grey-700 h-full transition-all duration-300 border-none z-10">
+      <PartialsSidebar/>
+    </div> 
+  
+    <!--  -->
+    <div class=" ml-[17.5rem] flex flex-col !no-scrollbar min-h-screen"> 
+      <PartialsTopbar/> 
+
+      <div class="container flex-1 h-full mx-auto w-full p-8 !no-scrollbar">
+        <slot/>
+      </div>
+
+      <PartialsAppFooter/>
     </div>
-  </div>
-</template>
+  </div> 
+</template>   
 
-<script setup lang="ts">
- </script>
+<script setup lang="ts"></script>
+ 
+ 
 
-<style>
-* {
-  font-family: Poppins, Arial, Helvetica, sans-serif;
-}
-.text-shadow {
-  text-shadow: 2.5px 2.5px 0px #4503a4;
-}
+<style> 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -25,10 +33,5 @@
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-}
-
-/*  */
-.box-shadow {
-  box-shadow: 0px 10px 34px rgba(0, 0, 0, 0.15);
-}
+} 
 </style>

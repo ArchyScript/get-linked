@@ -1,3 +1,3 @@
 <template>
-  <Marketplace/>
+  <MyDeals/>
 </template>

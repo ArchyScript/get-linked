@@ -1,12 +1,21 @@
 <template>
   <div class="bg-[#FAFAFA] min-h-screen overflow-x-hidden w-screen">
-    <div class="container w-[36.5rem] block mx-auto py-32">
+    <div
+      class="container block mx-auto py-32"
+      :class="
+        authCardSize == 'sm'
+          ? 'w-[36.5rem] '
+          : authCardSize == 'md'
+          ? 'w-[49.375rem]'
+          : 'w-[36.5rem]'
+      "
+    >
       <div class="">
         <img
           src="~/assets/images/logo-full.svg"
           class="m-auto h-[3.875rem]"
           alt="logo"
-        />
+        /> 
       </div>
 
       <div class="mt-8 font-Poppins">
@@ -18,7 +27,11 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useLayoutStore } from '~/store/layout'
+import { Brandname } from '../.nuxt/components';
+const authCardSize = computed(() => useLayoutStore().authCardSize) 
+</script>
 
 <style>
 .box-shadow {

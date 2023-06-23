@@ -1,7 +1,8 @@
 <template>
   <div
-    class="fixed bottom-0 left-0 w-full text-secondary-50 py-6 text-sm bg-grey-800 text-center"
+    class="sticky bottom-0 w-full text-grey-500 py-6 text-sm bg-[#FCFEFF] text-center"
   >
+  <ImageLoader imgUrl="~assets/images/logo.art.svg" />
     © 2021 VesselTrust. All Rights Reserved.
   </div>
 </template>

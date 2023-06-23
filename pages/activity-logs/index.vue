@@ -1,3 +1,3 @@
 <template>
-  <Marketplace/>
+  <ActivityLogs/>
 </template>

@@ -6,13 +6,13 @@
         Oops... page not found.
       </h1>
 
-      <p class="m-auto pt-2 w-full text-[#646a86] font-medium opacity-70">
+      <p class="m-auto pt-2 w-full text-[#646a86] mb-8 font-medium opacity-70">
         The page you’re looking for might have been removed, temporarily
         unavailable or never existed. We’re sad you had to see this and hope you
         never see it again.
-      </p>
+      </p> 
 
-      <nuxt-link to="/dashboard" class="text-green-700"> Dashboard </nuxt-link>
+      <nuxt-link to="/dashboards" class="rounded-lg px-8 py-3 border"> Dashboard </nuxt-link>
     </div>
   </section>
 </template>
