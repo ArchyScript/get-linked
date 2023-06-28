@@ -1,16 +1,23 @@
-import { IconUpload } from '../../.nuxt/components';
 <template>
-  <button :type="type" :class="{ hasBorder: hasBorder, isGray: isGray  }" :disabled="disabled" @click="clickBtn">
+  <button 
+    :type="type"
+    :class="`${hasBorder && 'hasBorder'} ${isGray && 'isGray'} ${customClass}`" 
+    :disabled="disabled"
+    @click="clickBtn"
+  >
+    <!-- :class="{ hasBorder: hasBorder, isGray: isGray }"  -->
     <IconSpinner type="dotted" v-if="loading" class="animate-spin" />
 
     <span v-else class=" flex justify-center items-center space-x-2">
       <span v-if="hasIcon">
         <IconCamera v-if="iconName == 'camera'"/>
-         </span>
+        <IconScan v-if="iconName == 'scan'"/>
+        <IconEmail v-if="iconName == 'email'"/>
+      </span>
 
-         <span> 
-            {{ text }}
-         </span> 
+      <span :class="`text-${textSize} `"> 
+        {{ text }}
+      </span> 
     </span>
   </button>
 </template>
@@ -51,15 +58,15 @@ const props = defineProps({
   iconName: {
    type: String,
    default: ""
-  },
-  iconTitle: {
-   type: String,
-   default: ""
-  },
-  iconColor: {
+  },  
+  textSize: {
     type: String,
-   default: "" 
-  }
+    default: ""
+  },
+  customClass: {
+    type: String,
+    default: ""
+  },  
 });
 
 // 

@@ -59,51 +59,12 @@
                 <TypoHeaderText size="sm" customClass="cursor-pointer !text-grey-200"> Name </TypoHeaderText>
 
                 <TypoNormalText customClass="cursor-pointer !text-grey-200"> Price </TypoNormalText> 
-              </div> 
+              </div>  
 
-              <!-- list -->
+              <!-- trade list -->
               <div>
                 <div v-if="recentTrades.length" class="flex-col max-h-[25rem] overflow-scroll no-scrollbar">
-                  <div class="py-1 border-b-[0.2px] border-grey-50"  v-for="trade in recentTrades" :key="trade.id"> 
-                    <div class=" flex space-x-4 justify-between items-center p-2  hover:bg-input-bg cursor-pointer" > 
-                      <div class="flex-1 flex  items-center  space-x-2">
-                        <div class="border h-12 w-12 rounded">
-                          <img src="~/public/images/img-1.png" class="w-full h-full" :alt="trade.title" />
-                          <ImageLoader photoUrl="/public/images/img-1.png" />
-                        </div>
-
-                        <div class="flex-1 truncate space-y-1.5">
-                          <TypoHeaderText size="base" customClass="!text-grey-500 truncate "> {{trade.title}} </TypoHeaderText>
-                          <TypoNormalText size="xs" customClass="!text-success-500 bg-success-50 px-1.5 flex rounded-xl !w-fit py-0.5"> {{trade.isVerified ? 'verified' : 'verified'}} </TypoNormalText> 
-                        </div>
-                      </div>
-  
-                      <div class="flex space-x-4">
-                        <div class="flex-1 align-right flex-col flex truncate space-y-1.5">
-                          <TypoHeaderText size="base" customClass="!text-grey-500 truncate "> {{`$${trade.amount}`}} </TypoHeaderText>
-                          
-                          <p class="flex-1 flex justify-end">
-                          <TypoNormalText
-                           size="xs"
-                            customClass="!w-fit px-1.5 flex rounded-xl  py-0.5"
-                            :class="`
-                              ${trade.status == 'funded' && '!text-success-500'}
-                              ${trade.status == 'inspecting' && '!text-warning-500'}
-                              ${trade.status == 'cancelled' && '!text-error-500'}
-                              ${trade.status == 'new request' && '!text-secondary-500'} 
-                            `"
-                          > 
-                            {{trade.status}}
-                          </TypoNormalText> 
-                          </p>
-                        </div>
-
-                        <span v-if="trade.status == 'new request'" class="flex items-center justify-center">
-                          <IconEmail/>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                    <CardTrade  v-for="trade in recentTrades" :key="trade.id" :trade="trade" /> 
                 </div>
 
                 <div v-else class="flex items-center justify-center">
