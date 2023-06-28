@@ -85,9 +85,8 @@ module.exports = {
           '800': '#8C3333',
           '900': '#6B2727',
         },
-        input: {
-          bg: '#F5F6F8',
-        },
+        input: { bg: '#F5F6F8' },
+        ui: { bg: '#FAFAFA' },
       },
       fontFamily: {
         Poppins: ['Poppins', 'sans-serif'],

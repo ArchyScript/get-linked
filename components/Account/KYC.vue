@@ -17,7 +17,9 @@
 
     <!-- card -->
     <section>
-        card
+      <div v-if="activeTabId == 'profile'"> <AccountProfile/> </div> 
+      <div v-if="activeTabId == 'security'"> <AccountSecurity/> </div> 
+      <div v-if="activeTabId == 'kyc'"> <AccountKYC/> </div> 
     </section>
   </div>
 </template>

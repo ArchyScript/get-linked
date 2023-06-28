@@ -102,11 +102,10 @@
                   <TypoHeaderText size="lg" customClass="!text-grey-500 !font-normal !leading-[160%]"> 
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae fuga vel hic perferendis doloribus, ratione eius, nesciunt provident, quia modi eligendi sed quaerat animi aperiam magnam dignissimos mollitia nihil officia nostrum labore error ea. Minus ad, voluptatum explicabo sapiente illum laborum magni voluptatem eveniet quasi saepe labore culpa asperiores odio!  
                   </TypoHeaderText> 
-                </div>
-
+                </div> 
                 
                 <!--  -->
-                <div class="col-span-2 flex flex items-center justify-between  border border-dashed  rounded">
+                <div class="col-span-2 flex flex items-center justify-between border border-dashed rounded">
                   <div class="col-span-2 flex items-center space-x-2 p-2 cursor-pointer text-secondary-500 rounded ">
                     <IconEyes title="open"/> 
                     <TypoNormalText size="xs" customClass="!text-secondary-500 !font-normal !leading-[160%]"> Laycan Agreement </TypoNormalText> 
@@ -127,7 +126,7 @@
           </CardContainer>
       </div>
   
-  <!--  -->
+      <!--  -->
       <div class="col-span-2 space-y-5">
         <CardContainer size="md" class="flex-col space-y-4">
           <TypoHeaderText size="lg" customClass="leading-[160%] "> Sellers details </TypoHeaderText>
