@@ -6,11 +6,11 @@ import { IconUpload } from '../../.nuxt/components';
     <span v-else class=" flex justify-center items-center space-x-2">
       <span v-if="hasIcon">
         <IconCamera v-if="iconName == 'camera'"/>
-         </span>
+      </span>
 
-         <span> 
-            {{ text }}
-         </span> 
+      <span :class="`text-${textSize} `"> 
+        {{ text }}
+      </span> 
     </span>
   </button>
 </template>
@@ -59,6 +59,10 @@ const props = defineProps({
   iconColor: {
     type: String,
    default: "" 
+  },
+  textSize: {
+    type: String,
+    default: ""
   }
 });
 

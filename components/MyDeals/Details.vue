@@ -1,23 +1,7 @@
 <template>
-  <div class="space-y-6">
-    <!-- header -->
-    <section class="flex justify-between items-center">
-      <h4 class="flex-1 text-[1.125rem] font-semibold font-Poppins text-grey-500">
-       Hi, <span  class="text-secondary-600 "> Bank of Vessel </span> 👋🏻
-      </h4>
-
-      <span>
-        <Button text="Fund new offer" class="!font-medium !py-3.5 !px-6 !text-sm" />
-      </span>
-    </section>
-
-    <!-- card -->
-    <section class="grid w-full  grid-cols-4 gap-5 ">
-        <div v-for="card in cards" :key="card.title">
-          <CardLeaderboard :data="card" />
-        </div>
-    </section> 
-
+  <div class="space-y-6"> 
+    <!--  -->
+   <GoBack/> 
      
     <!-- chart and trades section -->
     <section class="grid w-full  grid-cols-5 gap-4 ">  
@@ -28,20 +12,7 @@
               <TypoHeaderText> Revenue </TypoHeaderText>
 
               <TypoNormalText customClass="cursor-pointer border px-4 py-1.5 rounded"> 2021 </TypoNormalText> 
-            </div>
-
-            <!-- chart --> 
-            <div class="flex items-center justify-center">
-              <GenericNoData/>
-            </div>  
-
-            <div class="flex justify-between items-center">
-              <TypoNormalText customClass="cursor-pointer flex-1"> Here is the CSV file you can download </TypoNormalText>
-
-              <span> 
-                <Button text="Fund new offer" class="!font-normal !py-1.5 !px-4 !bg-secondary-300 !text-xs" />
-              </span>
-            </div>
+            </div> 
           </CardContainer>
       </div>
  

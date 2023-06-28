@@ -5,7 +5,7 @@
     ${size == 'md' && 'text-md'}
     ${size == 'base' && 'font-medium text-grey-600 text-base leading-5'}
     ${size == 'lg' && 'text-lg'}
-    ${size == 'xl' && 'text-xl '}
+    ${size == 'xl' && 'text-xl font-medium'}
     ${size == '2xl' && 'text-2xl '}
     ${size == '3xl' && 'fontext-3xl '}
     ${customClass}`"
