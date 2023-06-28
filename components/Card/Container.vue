@@ -1,8 +1,9 @@
 <template>
   <div 
     :class="`bg-white  w-full 
+      ${size == 'xs' && 'rounded p-2'}  
       ${size == 'sm' && 'rounded p-4'}  
-      ${size == 'md' && 'rounded-md p-6'}  
+      ${size == 'md' && 'rounded p-6'}  
       ${size == 'xl' && 'rounded-xl p-6'} 
       ${hasBoxShadow && 'box-shadow'}
       ${isRouted && 'cursor-pointer'}
@@ -10,7 +11,7 @@
     `"
       @click="gotoRoute"
     >
-        <slot/>
+      <slot/>
     </div>
 </template>
 
