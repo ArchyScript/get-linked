@@ -6,15 +6,15 @@
 
     <div class="flex-1 flex-col space-y-2 truncate border-b-[0.8px] border-ui-bg py-3.5 space-y-[5px]">
       <div class="space-x-5 flex items-center truncate">
-        <TypoHeaderText size="base" customClass="flex-1 !text-grey-500 truncate  "> {{message.username}}  </TypoHeaderText>
+        <TypoHeaderText size="base" customClass="flex-1 !text-grey-500 truncate  "> {{chat.username}}  </TypoHeaderText>
 
-        <TypoNormalText   customClass="!text-grey-300 capitalize !text-[10px] ">  {{message.date}} </TypoNormalText>
+        <TypoNormalText   customClass="!text-grey-300 capitalize !text-[10px] ">  {{chat.date}} </TypoNormalText>
       </div>
  
       <div class="space-x-2 flex items-center truncate">
-        <TypoNormalText size="sm" customClass="flex-1 !text-grey-400 truncate leading-[160%] ">  {{message.message}} </TypoNormalText>
+        <TypoNormalText size="sm" customClass="flex-1 !text-grey-400 truncate leading-[160%] ">  {{chat.message}} </TypoNormalText>
 
-        <TypoNormalText v-if="message.unreadMessages >= 1" customClass="!bg-primary-500 !text-primary-50 !h-5 !w-5 capitalize !text-[10px]  rounded-full flex justify-center items-center">  {{message.unreadMessages}} </TypoNormalText> 
+        <TypoNormalText v-if="chat.unreadMessages >= 1" customClass="!bg-primary-500 !text-primary-50 !h-5 !w-5 capitalize !text-[10px]  rounded-full flex justify-center items-center">  {{chat.unreadMessages}} </TypoNormalText> 
       </div>
     </div>
   </div> 
@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 const props = defineProps({ 
-  message: {
+  chat: {
     type: Object,
     default: {
       photo_url: '',
