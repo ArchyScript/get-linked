@@ -127,7 +127,7 @@
             <input id="email" v-model="authourizedRep.email" class="input-field !px-12 " type="email"
               placeholder="example@gmail.com" />
 
-            <span class="icon icon-right" @click="showPassword = !showPassword">
+            <span class="icon icon-right">
               <IconCheckbox type="square" />
             </span>
           </div>
@@ -325,6 +325,7 @@ const { updateAuthCardSize } = useLayoutStore()
 const showPassword: Ref<boolean> = ref(false);
 const activeStep: Ref<number> = ref(0);
 const loading: Ref<boolean> = ref(false);
+
 const authourizedRep = ref({
   firstname: "",
   lastname: "",
@@ -336,6 +337,7 @@ const authourizedRep = ref({
   is_attorney: null,
   passport_file: null
 });
+
 const financialInstitution =  ref({
   name: "",
   reg_no: '',

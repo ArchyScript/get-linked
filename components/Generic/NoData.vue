@@ -1,10 +1,10 @@
 <template>
-  <div class="flex-col space-y-1 p-20">   
-      <IconNoData/>
+  <div class="flex-col flex items-center space-y-1 p-20">   
+      <IconNoData :type="type" :height="iconHeight" :width="iconWidth" /> 
 
-      <TypoHeaderText size="sm" customClass="cursor-pointer !text-center text-grey-100"> {{title}} </TypoHeaderText>
+      <TypoHeaderText size="sm" :customClass="`cursor-pointer !text-center text-grey-100 ${customClass}`"> {{title}} </TypoHeaderText>
       
-      <TypoHeaderText v-if="hasDetailsText" size="sm" customClass="cursor-pointer !text-center text-grey-100"> {{detailText}} </TypoHeaderText> 
+      <TypoHeaderText v-if="hasDetailsText" size="sm" :customClass="`cursor-pointer !text-center text-grey-100 ${customClass}`"> {{detailText}} </TypoHeaderText> 
   </div>
 </template>
   
@@ -22,6 +22,19 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  type: {
+    type: String,
+    default: "generic"
+  },
+  iconHeight: {
+    type: Number,
+  },
+  iconWidth: {
+    type: Number,
+  },
+  customClass: {
+    type: String
+  }
 },) 
 </script>
 
