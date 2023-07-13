@@ -5,6 +5,7 @@
       ${size == 'xs' && 'rounded p-2'}  
       ${size == 'sm' && 'rounded p-4'}  
       ${size == 'md' && 'rounded p-6'}   
+      ${size == 'lg' && 'rounded-md p-8'}   
       ${hasBoxShadow && 'box-shadow'}
       ${isRouted && 'cursor-pointer'}
       ${customClass}
