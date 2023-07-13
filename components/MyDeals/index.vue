@@ -50,8 +50,8 @@
     </section> 
      
     <!-- deals -->
-    <section class="grid w-full grid-cols-2 gap-8 ">   
-      <CardDeal  v-for="deal in myDeals" :key="deal.id" :deal="deal" />  
+    <section class="grid w-full grid-cols-2 gap-y-8 gap-x-5">   
+      <CardDeal  v-for="deal in myDeals" :key="deal.id" :data="deal" />  
     </section> 
   </div>
 </template>

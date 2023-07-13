@@ -16,9 +16,10 @@
     </section>
 
     <!-- card -->
-    <section> 
+    <section>
       <div v-if="activeTabId == 'profile'"> <AccountProfile/> </div> 
-      <div v-if="activeTabId == 'security'"> <AccountSecurity/> </div>  
+      <div v-if="activeTabId == 'security'"> <AccountSecurity/> </div> 
+      <!-- <div v-if="activeTabId == 'kyc'"> <AccountKYC/> </div>  -->
     </section>
   </div>
 </template>
@@ -29,7 +30,7 @@ const activeTabId = ref("profile")
 const tabs = ref([
   {title: "Profile", id: "profile"},
   {title: "Security",  id: "security"},
-  // {title: "KYC Verification",  id: "kyc"},
+  {title: "KYC Verification",  id: "kyc"},
 ])
 
 const toggleActiveTab = (tabId: string) => {

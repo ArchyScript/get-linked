@@ -10,6 +10,7 @@
 
     <span v-else class=" flex justify-center items-center space-x-2">
       <span v-if="hasIcon">
+        <IconTrash v-if="iconName == 'trash'"/>
         <IconCamera v-if="iconName == 'camera'"/>
         <IconScan v-if="iconName == 'scan'"/>
         <IconEmail v-if="iconName == 'email'"/>
