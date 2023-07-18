@@ -7,7 +7,15 @@
       v-if="showProjectDetailsModal"
       @close="showProjectDetailsModal = false"
     > 
-      <ModalsTest/>
+      <ModalsProcessing/>
+
+      <!-- <ModalsResponses
+        message="Your identity verification failed vYour identity verification failedYour identity verification failedYour identity verification failed"
+        type="error"
+        :hasTitle="false"
+        titleText="Test me"
+        @close="showProjectDetailsModal = false"
+      /> -->
     </Modal>
 
     
