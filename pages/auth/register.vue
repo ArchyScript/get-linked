@@ -73,6 +73,7 @@
                 type=" text"
                 class="input-field px-4"
                 placeholder="Payback Period"
+                v-model="payload.payback_period"
               />
             </div>
           </div>
@@ -92,6 +93,7 @@
                 class="input-field px-4"
                 type=" text"
                 placeholder="Interest rate"
+                v-model="payload.interest_rate"
               />
             </div>
           </div>
@@ -152,7 +154,7 @@ const register = async () => {
 
 </script>
 
-<style scoped>
+<style>
 .input-field {
   @apply bg-transparent focus:bg-transparent focus:ring-secondary-400 focus:ring-1 w-full flex-1 rounded leading-5 block text-sm py-3.5 outline-0 border-0;
 }
@@ -164,5 +166,6 @@ const register = async () => {
 }
 .icon.icon-right {
   @apply rounded-tr rounded-br right-0 cursor-pointer;
-}
+} 
 </style>
+ 
