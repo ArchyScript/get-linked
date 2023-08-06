@@ -152,10 +152,10 @@
 </template>
 
 <script setup lang="ts">
-const showProjectDetailsModal = ref(false);
-const toggleValue =  ref(false)
+const showProjectDetailsModal: Ref<boolean>  = ref(false);
+const toggleValue: Ref<boolean>  =  ref(false)
 const isReadyToChat: Ref<boolean> = ref(true); 
-const activeTabId = ref("all")
+const activeTabId: Ref<string>  = ref("all")
 
 const tabs = ref([
   {title: "All conversations", id: "all"},

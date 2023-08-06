@@ -20,6 +20,7 @@
         </h4>
       </div>
 
+
       <!-- Step 1 -->
       <form class="mt-8" v-if="activeStep == 0">
         <div class="mb-4 flex items-center space-x-4">
@@ -208,6 +209,18 @@
                 type="file"
                 :prefix-icon="UploadIcon"
               /> 
+
+              <!-- 
+                
+        class="upload-demo" 
+         action="#"
+        :class="!csvFile && 'mt-4'"
+        :on-change="handleChange"
+        :mulitple="false"   
+        :data="csvFile" 
+        :on-progress="onProgress"
+        :before-upload="beforeAvatarUpload"
+               -->
             </div>
           
             <div v-if="authourizedRep.passport_file" class="flex-1 text-success-500">attached successfully</div>
@@ -442,6 +455,39 @@ const nextStep = () => {
   activeStep.value = activeStep.value + 1
   console.log(activeStep.value)
 }
+
+    // beforeAvatarUpload (rawFile) { 
+    //   if (rawFile.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || rawFile.type === 'application/vnd.ms-excel') {
+    //     this.$toast.error('Document must be and Excel file!') 
+    //     this.clearCSV()
+    //     return false
+    //   } 
+    //   // to check maximum size alowed
+    //   // else if (rawFile.size / 1024 / 1024 > 50) {
+    //   //   this.$toast.error('Avatar picture size can not exceed 50MB!')
+    //   //   return false
+    //   // }
+    //   return true
+    // },
+    // formatBytes(bytes) {
+    //   if (bytes === 0) return '0 Bytes';
+    //   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    //   const sizeIndex = Math.floor(Math.log(bytes) / Math.log(1024));
+
+    //   return parseFloat((bytes / Math.pow(1024, sizeIndex)).toFixed(1)) + ' ' + sizes[sizeIndex]; 
+    // },
+    // onProgress (event) { 
+    //   const { loaded, total, percent } = event
+    //   this.selectedFile.loaded = loaded
+    //   this.selectedFile.total = total
+    //   this.selectedFile.percent = percent
+       
+    //   // calculate speed
+    //   // const elapsedTime = (Date.now() - event.timeStamp) / 1000; 
+    //   // const speed = loaded / elapsedTime / (1024 * 1024); 
+
+    //   // this.selectedFile.speed = speed 
+    // }, 
 
 // 
 const login = async () => {
