@@ -1,17 +1,17 @@
 <template>
   <div class="bg-white rounded box-shadow p-8">
     <div class="text-sm p-1">
-      <div class="flex-col space-y-6">
+      <div class="flex-col space-y-8">
         <p class="text-center text-grey-400 leading-6">
           Hi, Badmusfrank@sample.com! Take some minutes to setup your account,
           kindly complete KYC information below to enable you Fund offers on our
           marketplace.
         </p>
 
-        <div class=" w-2/3 mx-auto">
-          <el-steps :active="activeStep" finish-status="success" class="w-full">
-            <el-step />
-            <el-step />
+        <div class=" w-2/3 mx-auto"> 
+          <el-steps  :active="activeStep" finish-status="pending" class="w-full">
+            <el-step /> 
+            <el-step />    
           </el-steps>
         </div> 
 
@@ -19,6 +19,7 @@
           {{ activeStep == 0 ? `Authorized representative / signatories details` : `Financial Institute details`}}
         </h4>
       </div>
+
 
       <!-- Step 1 -->
       <form class="mt-8" v-if="activeStep == 0">
@@ -33,8 +34,16 @@
                 <IconUser />
               </span>
 
-              <input id="firstname" type="text" class="input-field !pl-12 pr-4" placeholder="enter first name" />
-            </div>
+              <input 
+                id="firstname"
+                type="text" 
+                class="input-field !pl-12 pr-4" 
+                placeholder="enter first name" 
+                v-model="authourizedRep.firstname"
+                @change="v$.firstname.$touch"
+                :class="v$.firstname.$invalid && 'error'"
+               /> 
+            </div> 
           </div>
 
           <div class="flex-1">
@@ -47,8 +56,16 @@
                 <IconUser />
               </span>
 
-              <input id="lastname" type="text" class="input-field !pl-12 pr-4" placeholder="enter last name" />
-            </div>
+               <input 
+                id="lastname"
+                type="text" 
+                class="input-field !pl-12 pr-4" 
+                placeholder="enter first name" 
+                v-model="authourizedRep.lastname"
+                @change="v$.lastname.$touch"
+                :class="v$.lastname.$invalid && 'error'"
+               /> 
+            </div> 
           </div>
         </div>
 
@@ -62,8 +79,15 @@
               <IconLocation />
             </span>
 
-            <input id="address" v-model="authourizedRep.address" class="input-field !pl-12 pr-4" type="text"
-              placeholder="enter your permanent address" />
+            <input 
+              type="text"
+              id="address" 
+              class="input-field !pl-12 pr-4" 
+              placeholder="enter your permanent address" 
+              v-model="authourizedRep.address" 
+              @change="v$.address.$touch"
+              :class="v$.address.$invalid && 'error'"
+            />
           </div>
         </div>
 
@@ -77,6 +101,7 @@
               <span class="icon icon-left text-grey-300">
                 <IconLocation />
               </span>
+
               <el-select v-model="authourizedRep.nationality" class="p-1 !bg-transparent !focus:text-black  !w-full"
                 placeholder="Select" size="large">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
@@ -120,19 +145,29 @@
           </label>
 
           <div class="relative bg-input-bg rounded">
-            <span class="icon icon-left">
+            <span class="icon icon-left text-grey-200" >
               <IconEmail />
             </span>
 
-            <input id="email" v-model="authourizedRep.email" class="input-field !px-12 " type="email"
-              placeholder="example@gmail.com" />
+            <input 
+              id="email"
+              class="input-field !px-12"
+              type="email"
+              placeholder="example@gmail.com"  
+              v-model="authourizedRep.email"
+              @change="v$.email.$touch"
+              :class="{
+                'error': v$.email.$error || v$.email.$invalid,
+                'success': !v$.email.$invalid,
+              }" 
+            />
 
-            <span class="icon icon-right">
+            <span class="icon icon-right" v-if="!v$.email.$invalid" :class="!v$.email.$invalid && 'text-success-500'" >
               <IconCheckbox type="square" />
             </span>
           </div>
         </div>
-
+ 
         <div class="mb-4">
           <label for="email" class="block mb-2 leading-6 text-grey-500">
             Does the authorized representative hold a power of attorney?
@@ -174,6 +209,18 @@
                 type="file"
                 :prefix-icon="UploadIcon"
               /> 
+
+              <!-- 
+                
+        class="upload-demo" 
+         action="#"
+        :class="!csvFile && 'mt-4'"
+        :on-change="handleChange"
+        :mulitple="false"   
+        :data="csvFile" 
+        :on-progress="onProgress"
+        :before-upload="beforeAvatarUpload"
+               -->
             </div>
           
             <div v-if="authourizedRep.passport_file" class="flex-1 text-success-500">attached successfully</div>
@@ -308,23 +355,27 @@
         class="flex justify-end items-center space-x-4 mt-8" 
         :class="activeStep == 1 && 'justify-between'"
       >
-        <Button text="back"  v-if="activeStep == 1" class="!w-auto !px-8 !bg-transparent border-2 border-secondary-500 !text-secondary-500 !text-white"  @click="activeStep = 0" /> 
+        <Button text="back"  v-if="activeStep == 1" class="!w-auto !px-8 !bg-transparent border-2 border-secondary-500 !text-secondary-500"  @click="activeStep--" /> 
 
-        <Button text="Continue"  class="!w-auto !px-8 flex-end !text-white" @click="activeStep = 1"/> 
+        <Button text="Continue"  class="!w-auto !px-8 flex-end !text-white" @click="nextStep"/> 
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"> 
+<script setup lang="ts">  
+import { required, email, minLength, maxLength, helpers } from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
 import UploadIcon from "~/components/icon/upload.vue";
 import { useLayoutStore } from '~/store/layout'  
-definePageMeta({ layout: "auth" }); 
- 
 const { updateAuthCardSize } = useLayoutStore()
+
+definePageMeta({ layout: "auth" });  
+
+
 const showPassword: Ref<boolean> = ref(false);
 const activeStep: Ref<number> = ref(0);
-const loading: Ref<boolean> = ref(false);
+const loading: Ref<boolean> = ref(false); 
 
 const authourizedRep = ref({
   firstname: "",
@@ -350,6 +401,7 @@ const financialInstitution =  ref({
 })
 
 const nationality = ref('')
+
 const options = ref([
   {
     value: 'Option1',
@@ -365,15 +417,77 @@ const options = ref([
   },
 ])
 
+
+// 
+const rules = computed(() => { 
+  return {
+    firstname: { required },
+    lastname: { required },
+    address: { required, minLength: minLength(6), maxLength: maxLength(144) },
+    email: { required, email },
+    nationality: { required },
+    phone_number: { required },
+    is_PEP: { required },
+    is_attorney: { required },
+    // passport_file: { required },
+  };
+});
+ 
+const v$ = useVuelidate(rules, authourizedRep.value);
+
 const areFieldsValidated = computed(() => {
   if (!authourizedRep.value.email) return false
   return true
 })
 
 const nextStep = () => {
+  v$.value.$touch() 
+  if (v$.value.$error) return console.log("errors", v$.value.$errors)
   // if (activeStep.value > 1) return
-  if (activeStep.value++ > 0) activeStep.value = 0
+  // if (activeStep.value++ > 0) activeStep.value = 0
+  if (!v$.value.email && !v$.value.lastname.$invalid && !v$.value.firstname.$invalid && !v$.value.address.$invalid ) {
+    // Form is valid, submit data or perform desired action
+    console.log('Form is valid.');
+  } else {
+    // Form is invalid, handle error or display validation messages
+    console.log('Form is invalid.');
+  }
+  activeStep.value = activeStep.value + 1
+  console.log(activeStep.value)
 }
+
+    // beforeAvatarUpload (rawFile) { 
+    //   if (rawFile.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || rawFile.type === 'application/vnd.ms-excel') {
+    //     this.$toast.error('Document must be and Excel file!') 
+    //     this.clearCSV()
+    //     return false
+    //   } 
+    //   // to check maximum size alowed
+    //   // else if (rawFile.size / 1024 / 1024 > 50) {
+    //   //   this.$toast.error('Avatar picture size can not exceed 50MB!')
+    //   //   return false
+    //   // }
+    //   return true
+    // },
+    // formatBytes(bytes) {
+    //   if (bytes === 0) return '0 Bytes';
+    //   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    //   const sizeIndex = Math.floor(Math.log(bytes) / Math.log(1024));
+
+    //   return parseFloat((bytes / Math.pow(1024, sizeIndex)).toFixed(1)) + ' ' + sizes[sizeIndex]; 
+    // },
+    // onProgress (event) { 
+    //   const { loaded, total, percent } = event
+    //   this.selectedFile.loaded = loaded
+    //   this.selectedFile.total = total
+    //   this.selectedFile.percent = percent
+       
+    //   // calculate speed
+    //   // const elapsedTime = (Date.now() - event.timeStamp) / 1000; 
+    //   // const speed = loaded / elapsedTime / (1024 * 1024); 
+
+    //   // this.selectedFile.speed = speed 
+    // }, 
 
 // 
 const login = async () => {
@@ -384,9 +498,7 @@ const login = async () => {
     console.log(authourizedRep.value)
   }, 1500);
 };
-
-//  focus:bg-transparent focus:ring-secondary-400 focus:ring-1  
-
+ 
 onBeforeMount(() => updateAuthCardSize('md'))
 </script>
 
@@ -394,6 +506,13 @@ onBeforeMount(() => updateAuthCardSize('md'))
 .input-field {
   @apply w-full flex-1 bg-transparent rounded leading-5 block text-sm py-3.5 outline-0 border-0;
 }
+.input-field.error {
+  @apply  border border-error-500;
+}
+.input-field.success {
+  @apply  border border-success-500 bg-success-50;
+}
+
 
 .icon {
   @apply absolute top-0 h-full rounded-tl rounded-bl bg-transparent flex justify-center items-center px-[1.125rem];

@@ -23,8 +23,8 @@ const props = defineProps({
     default: "",
   },
   type: {
-    type: String,
-    default: "generic"
+    type: String, 
+    default: "generic" 
   },
   iconHeight: {
     type: Number,

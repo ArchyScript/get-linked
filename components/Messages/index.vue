@@ -7,7 +7,15 @@
       v-if="showProjectDetailsModal"
       @close="showProjectDetailsModal = false"
     > 
-      <ModalsTest/>
+      <ModalsProcessing/>
+
+      <!-- <ModalsResponses
+        message="Your identity verification failed vYour identity verification failedYour identity verification failedYour identity verification failed"
+        type="error"
+        :hasTitle="false"
+        titleText="Test me"
+        @close="showProjectDetailsModal = false"
+      /> -->
     </Modal>
 
     
@@ -144,10 +152,10 @@
 </template>
 
 <script setup lang="ts">
-const showProjectDetailsModal = ref(false);
-const toggleValue =  ref(false)
+const showProjectDetailsModal: Ref<boolean>  = ref(false);
+const toggleValue: Ref<boolean>  =  ref(false)
 const isReadyToChat: Ref<boolean> = ref(true); 
-const activeTabId = ref("all")
+const activeTabId: Ref<string>  = ref("all")
 
 const tabs = ref([
   {title: "All conversations", id: "all"},

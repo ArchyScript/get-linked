@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-between bg-white sticky top-0 h-16 px-8">
+  <div class="flex items-center justify-between bg-white sticky top-0 h-16 px-8 z-50">
     <h4 class=" text-[1.125rem] text-grey-500">
       Dashboard Reviews
     </h4>
