@@ -10,7 +10,7 @@
         Fill up the form to Login to your Account.
       </p>
 
-      <form class="mt-8">
+      <form class="mt-8" @submit.prevent="loginFinacier">
         <div class="mb-4">
           <label for="email" class="block mb-2 leading-6 text-grey-500">
             Email Address
@@ -24,6 +24,8 @@
             <input
               id="email"
               v-model="payload.email"
+              @blur="v$.email.$touch()"
+              :class="v$.email.$invalid && 'error'"
               class="input-field !pl-12 pr-4"
               type="email"
               placeholder="example@gmail.com"
@@ -44,6 +46,8 @@
             <input
               id="password"
               v-model="payload.password"
+              @blur="v$.password.$touch()"
+              :class="v$.password.$invalid && 'error'"
               :type="showPassword ? 'text' : 'password'"
               class="input-field !px-12"
               placeholder="password"
@@ -67,10 +71,9 @@
 
         <div class="block w-full mt-6">
           <Button
-            text="Log in"
-            :disabled="!areFieldsValidated"
-            :loading="loading"
-            @click="login"
+            type="submit"
+            text="Log in" 
+            :loading="loading" 
           />
         </div>
 
@@ -91,27 +94,50 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"> 
+import { useAuthStore } from '~/store/authentication'  
+import { required, email, minLength, maxLength, minValue, maxValue, helpers } from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
+
 definePageMeta({ layout: "auth" });
+
+const { login } =  useAuthApi() 
+const { setAuthUser, setAuthToken, logout } = useAuthStore()
+const router = useRouter()
+ 
 const showPassword: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
-const payload = ref({ email: "", password: "" });
-
-
-const areFieldsValidated = computed(() => {
-  if (!payload.value.email || !payload.value.password) return false
-  return true
-})
+const payload = ref({ email: "", password: "" });  
 
 // 
-const login = async () => {
-  loading.value = true
+const rules = computed(() => { 
+  return {
+    email: { required, email }, 
+    password: { required }, 
+  };
+});
 
-  setTimeout(() => {
-    loading.value = false
-    console.log(payload.value)
-  }, 1500);
-};
+// 
+const v$ = useVuelidate(rules, payload.value);
+ 
+const loginFinacier = async () => { 
+  v$.value.$touch() 
+  loading.value = true 
+ 
+  const response = await  login(payload.value)
+  const { data, error } = response 
+  loading.value = false
+  if (error) return console.log("error:::", error);
+
+  console.log("data:::", data)
+  
+  const { profile, authToken } = data
+  
+  setAuthToken(authToken) 
+  setAuthUser(profile) 
+
+ router.push('/dashboards') 
+}; 
 
 </script>
 

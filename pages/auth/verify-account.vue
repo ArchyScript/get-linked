@@ -11,7 +11,7 @@
         </h3>
 
         <p class="text-center text-grey-400 leading-6">
-          An email has been sent to Badmusfrank@sample.com, Click the link in
+          An email has been sent to {{unVerifiedUserEmail}}, Click the link in
           the email to reset your password.
         </p>
       </div>
@@ -22,15 +22,14 @@
           <Button
             text="Resend email"
             :loading="loading"
-            @click="handleForgotPassword"
+            @click="resendUserVerification"
             :hasBorder="true"
           />
 
           <!--  -->
           <Button
-            text="Done"
-            :loading="loading"
-            @click="handleForgotPassword"
+            text="Done" 
+            @click="handleVerified"
           />
         </div>
       </form>
@@ -39,17 +38,32 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '~/store/authentication'  
 definePageMeta({ layout: "auth" });
+
 const loading: Ref<boolean> = ref(false);
 
-// 
-const handleForgotPassword = async () => {
-  loading.value = true
+const { resendtVerification } =  useAuthApi() 
+const {  unVerifiedUserEmail } = useAuthStore()
+const router = useRouter()
 
-  setTimeout(() => {
-    loading.value = false
-  }, 1500);
+
+// 
+const handleVerified = async () => { 
+  router.push("/auth/login")
 };
+
+const resendUserVerification = async () =>  { 
+  loading.value = true
+  const payload = { email: unVerifiedUserEmail }
+
+  const response = await  resendtVerification(payload)
+  const { data, error } = response 
+  loading.value = false
+  if (error) return console.log("error:::", error);
+
+  console.log("data:::", data) 
+}
 
 </script>
 

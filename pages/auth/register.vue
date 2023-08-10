@@ -9,24 +9,26 @@
       <p class="text-center text-grey-400 leading-6">
         Fill up the form to register
       </p>
-
-      <form class="mt-8">
+ 
+      <form class="mt-8" @submit.prevent="registerFinacier">
         <div class="mb-4">
           <label for="email" class="block mb-2 leading-6 text-grey-500">
             Email Address
           </label>
 
           <div class="relative bg-input-bg rounded">
-            <span class="icon icon-left">
+            <span class="icon icon-left  text-grey-40 ">
               <IconEmail />
             </span>
 
             <input
               id="email"
-              v-model="payload.email"
               class="input-field !pl-12 pr-4"
               type="email"
               placeholder="example@gmail.com"
+              v-model="payload.email"
+              @blur="v$.email.$touch()"
+              :class="v$.email.$invalid && 'error'"
             />
           </div>
         </div>
@@ -44,6 +46,8 @@
             <input
               id="password"
               v-model="payload.password"
+              @blur="v$.password.$touch()"
+              :class="v$.password.$invalid && 'error'"
               :type="showPassword ? 'text' : 'password'"
               class="input-field !px-12"
               placeholder="password"
@@ -69,11 +73,13 @@
 
             <div class="relative bg-input-bg w-full rounded">
               <input
-                id="payback_period"
-                type=" text"
+                id="payback_days"
+                type="text"
                 class="input-field px-4"
                 placeholder="Payback Period"
-                v-model="payload.payback_period"
+                v-model="payload.payback_days"
+                @blur="v$.payback_days.$touch()"
+                :class="v$.payback_days.$invalid && 'error'"
               />
             </div>
           </div>
@@ -94,6 +100,8 @@
                 type=" text"
                 placeholder="Interest rate"
                 v-model="payload.interest_rate"
+                @blur="v$.interest_rate.$touch()"
+                :class="v$.interest_rate.$invalid && 'error'"
               />
             </div>
           </div>
@@ -101,10 +109,9 @@
 
         <div class="block w-full mt-6">
           <Button
-            text="Create account"
-            :disabled="!areFieldsValidated"
-            :loading="loading"
-            @click="register"
+            type="submit"
+            text="Create account" 
+            :loading="loading" 
           />
         </div>
 
@@ -126,30 +133,56 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '~/store/authentication'  
+import { required, email, minLength, maxLength, minValue, maxValue, helpers } from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
+
 definePageMeta({ layout: "auth" });
+
+const { register } =  useAuthApi() 
+const { setUnVerifiedUserEmail } = useAuthStore()
+const router = useRouter() 
+
 const showPassword: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
 const payload = ref({
   email: "",
   password: "",
-  payback_period: "",
+  payback_days: "",
   interest_rate: ""
 });
 
-
-const areFieldsValidated = computed(() => {
-  if (!payload.value.email || !payload.value.password) return false
-  return true
-})
+// 
+const rules = computed(() => { 
+  return {
+    email: { required, email }, 
+    password: { required, maxLength: maxLength(128), minLength: minLength(4), },
+    payback_days: { required },
+    interest_rate: { required }, 
+  };
+});
 
 // 
-const register = async () => {
+const v$ = useVuelidate(rules, payload.value);
+
+// 
+const registerFinacier = async () => { 
+  v$.value.$touch() 
   loading.value = true
 
-  setTimeout(() => {
-    loading.value = false
-    console.log(payload.value)
-  }, 1500);
+  console.log(payload.value)
+ 
+  const response = await  register(payload.value)
+  const { data, error } = response 
+  loading.value = false
+  
+  if (error) return console.log("error:::", error);
+  
+  // 
+ setUnVerifiedUserEmail(payload.value.email)
+ console.log("data:::", data)
+
+ router.push('/auth/verify-account')  
 };
 
 </script>
@@ -157,6 +190,9 @@ const register = async () => {
 <style>
 .input-field {
   @apply bg-transparent focus:bg-transparent focus:ring-secondary-400 focus:ring-1 w-full flex-1 rounded leading-5 block text-sm py-3.5 outline-0 border-0;
+}
+.input-field.error {
+  @apply  border border-error-500;
 }
 .icon {
   @apply absolute top-0 h-full rounded-tl rounded-bl bg-transparent flex justify-center items-center px-[1.125rem];

@@ -48,7 +48,8 @@
 
             <div class="relative bg-input-bg rounded"> 
               <input
-                id="password"
+                id="new_password"
+                v-paste-restrict  
                 v-model="resetPassword.new_password"
                 :type="showPassword ? 'text' : 'password'"
                 class="input-field !pr-12 !pl-4"
@@ -69,7 +70,8 @@
 
             <div class="relative bg-input-bg rounded"> 
               <input
-                id="password"
+                id="confirm_password"
+                v-paste-restrict  
                 v-model="resetPassword.confirm_password"
                 :type="showPassword ? 'text' : 'password'"
                 class="input-field !pr-12 !pl-4"
@@ -145,6 +147,8 @@
 </template>
 
 <script setup lang="ts">
+import { pasteHandler, dropHandler } from "~/utils"
+
 const toggleValue =  ref(false)
 const showPassword: Ref<boolean> = ref(false);
 const resetPassword = ref({
@@ -183,5 +187,19 @@ const twoFAs = ref([
 const toggleActiveTab = (tabId: string) => {
   activeTabId.value = tabId 
 }
+ 
+
+onMounted(() => {
+  const confirmPasswordfield = document.getElementById('confirm_password');
+  const newPasswordfield = document.getElementById('new_password');
+  if (confirmPasswordfield) {
+    confirmPasswordfield.addEventListener('paste', pasteHandler);
+    confirmPasswordfield.addEventListener('drop', dropHandler);
+  }
+  if (newPasswordfield) {
+    newPasswordfield.addEventListener('paste', pasteHandler);
+    newPasswordfield.addEventListener('drop', dropHandler);
+  }
+});
 </script>
  

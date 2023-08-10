@@ -4,17 +4,10 @@ export default defineNuxtConfig({
   css: ['~/assets/styles/tailwind.css', '~/assets/styles/main.css'],
 
   modules: ['@pinia/nuxt', '@element-plus/nuxt'],
-  // components: true,
-  // components: [
-  //   {
-  //     path: '~/components', // will get any components nested in let's say /components/test too
-  //     pathPrefix: false,
-  //   },
-  // ],
+
   runtimeConfig: {
     public: {
       API_BASE_URL: process.env.API_BASE_URL,
-      // API_BASE_URL: 'test',
     },
   },
   pinia: {

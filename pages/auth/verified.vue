@@ -6,6 +6,7 @@
       >
         Verification Successful
       </h3>
+      
       <p class="text-center pt-6 px-2 text-grey-400 leading-6">
         Thank you for verifying your email address. You now will be redirected
         to the KYC page for you to complete your registration

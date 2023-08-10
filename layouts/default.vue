@@ -14,7 +14,7 @@
         <slot/>
       </div>
 
-      <PartialsAppFooter/>
+    <PartialsAppFooter layout="default"/>
     </div>
   </div> 
 </template>   

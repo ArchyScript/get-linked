@@ -1,7 +1,7 @@
 <template>
   <button 
     :type="type"
-    :class="`${hasBorder && 'hasBorder'} ${isGray && 'isGray'} ${customClass}`" 
+    :class="`${hasBorder && 'hasBorder'} ${isGray && 'isGray'} ${loading && 'loading'} ${disabled && 'disabled'} ${customClass}`" 
     :disabled="disabled"
     @click="clickBtn"
   >
@@ -76,7 +76,7 @@ const router = useRouter()
 // emits
 const emit = defineEmits(["click"]);
 const clickBtn = () => {
-  if (props.disabled) return
+  if (props.disabled || props.loading) return
   if (props.routeLink) return router.push(props.routeLink)
 
   emit("click");
@@ -91,8 +91,12 @@ button {
     @apply ring-1 bg-transparent text-secondary-500 ring-secondary-500;
   }
 
-  &:disabled {
+  &.disabled {
     @apply bg-grey-50 text-grey-200 cursor-not-allowed;
+  }
+
+  &.loading {
+    @apply cursor-not-allowed;
   }
 
   /*
