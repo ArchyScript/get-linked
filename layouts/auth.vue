@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <PartialsAppFooter />
+    <PartialsAppFooter layout="auth"/>
   </div>
 </template>
 

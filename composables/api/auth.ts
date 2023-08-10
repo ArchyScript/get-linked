@@ -17,7 +17,8 @@ export const useAuthApi = () => {
   }
 
   // register
-  const register = async (payload: RegisterPayloadType) => {
+  // const register = async (payload: RegisterPayloadType) => {
+  const register = async (payload: any) => {
     try {
       const response = await axiosInstance
         .post(`register`, payload)
@@ -32,7 +33,7 @@ export const useAuthApi = () => {
   const resendtVerification = async (payload: any) => {
     try {
       const response = await axiosInstance
-        .post(`resend_verification_mail`, payload)
+        .post(`resend-verification-mail`, payload)
         .then(async (response: AxiosResponse) => response)
       return HandleAxiosResponse(response)
     } catch (error: any) {
@@ -101,10 +102,10 @@ export const useAuthApi = () => {
   }
 
   // verifyUser
-  const verifyUser = async (payload: any) => {
+  const verifyUser = async (token: string | string[]) => {
     try {
       const response = await axiosInstance
-        .post(`verify-user`, payload)
+        .get(`verify/${token}`)
         .then(async (response: AxiosResponse) => response)
       return HandleAxiosResponse(response)
     } catch (error: any) {

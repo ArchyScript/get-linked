@@ -10,7 +10,9 @@ const setResponseReturn = (data: any, status: any, error: any) => {
 
 export const HandleAxiosError = (error: AxiosError) => {
   const error_data = error.response?.data
-  const status = error.response?.status
+  const status = error.response?.status || null
+
+  console.log('error:::::', error)
 
   if (error_data) {
     const errorIsArray = Array.isArray(error_data)
@@ -28,14 +30,14 @@ export const HandleAxiosError = (error: AxiosError) => {
   //     return setResponseReturn(null, status, error_message)
   //   }
 
-  return setResponseReturn(null, status, 'Sorry, an error occurred') // return error.message || 'Sorry, an error occurred'
+  return setResponseReturn(null, status, error_data) // return error.message || 'Sorry, an error occurred'
 }
 
 export const HandleAxiosResponse = async (response: AxiosResponse) => {
   const { data, status } = response
   console.log('response::::', response)
 
-  return setResponseReturn(data, status, null)
+  return setResponseReturn(data.data, status, null)
 }
 
 export const HandleTokenResponse = async (token: any) => {

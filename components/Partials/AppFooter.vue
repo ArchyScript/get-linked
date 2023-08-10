@@ -1,8 +1,20 @@
 <template>
   <div
-    class="fixed bottom-0 w-full text-grey-500 py-6 text-sm bg-[#FCFEFF] text-center"
+    class="fixed bottom-0 w-full py-6 text-sm text-center"
+    :class="layout == 'default' ? 'text-grey-500 bg-[#FCFEFF]' : 'bg-grey-800 text-secondary-50'"
   >
-  <ImageLoader imgUrl="~assets/images/logo.art.svg" />
-    © 2021 VesselTrust. All Rights Reserved.
+  <!-- <ImageLoader imgUrl="URL_PATH" /> -->
+  <!-- <p class="flex justify-center items-center">  -->
+    © 2021 VesselTrust. All Rights Reserved. 
+  <!-- </p> -->
   </div>
 </template>
+
+<script setup lang="ts">
+const props = defineProps({
+  layout: {
+    type: String,
+    default: 'default',
+  }, 
+})
+</script>
