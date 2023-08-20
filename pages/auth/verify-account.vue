@@ -38,6 +38,9 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutStore } from '~/store/layout'  
+const { updateAuthCardSize } = useLayoutStore()
+
 import { useAuthStore } from '~/store/authentication'  
 definePageMeta({ layout: "auth" });
 
@@ -65,5 +68,8 @@ const resendUserVerification = async () =>  {
   console.log("data:::", data) 
 }
 
+onBeforeMount(async () => {
+  updateAuthCardSize('sm') 
+})
 </script>
 

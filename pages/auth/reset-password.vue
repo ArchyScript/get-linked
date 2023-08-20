@@ -34,6 +34,9 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutStore } from '~/store/layout'  
+const { updateAuthCardSize } = useLayoutStore()
+
 definePageMeta({ layout: "auth" });
 const loading: Ref<boolean> = ref(false);
 
@@ -46,5 +49,8 @@ const handleForgotPassword = async () => {
   }, 1500);
 };
 
+onBeforeMount(async () => {
+  updateAuthCardSize('sm') 
+})
 </script>
 

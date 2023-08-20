@@ -133,6 +133,9 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutStore } from '~/store/layout'  
+const { updateAuthCardSize } = useLayoutStore()
+
 import { useAuthStore } from '~/store/authentication'  
 import { required, email, minLength, maxLength, minValue, maxValue, helpers } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
@@ -185,6 +188,9 @@ const registerFinacier = async () => {
  router.push('/auth/verify-account')  
 };
 
+onBeforeMount(async () => {
+  updateAuthCardSize('sm') 
+})
 </script>
 
 <style>

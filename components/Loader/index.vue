@@ -9,7 +9,7 @@
 const props = defineProps({
   loading: {
     type: Boolean,
-    default: true,
+    default: false,
   }, 
 }) 
  </script>

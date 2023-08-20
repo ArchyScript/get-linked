@@ -75,7 +75,11 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutStore } from '~/store/layout'  
+const { updateAuthCardSize } = useLayoutStore()
+
 definePageMeta({ layout: "auth" });
+
 const showPassword: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
 const payload = ref({ password: "", confirm_password: "" });
@@ -95,11 +99,14 @@ const changePassword = async () => {
   }, 1500);
 };
 
+  onBeforeMount(async () => {
+    updateAuthCardSize('sm') 
+  })
 </script>
 
 <style scoped>
 .input-field {
-  @apply bg-transparent focus:bg-transparent focus:ring-secondary-400 focus:ring-1 w-full flex-1 rounded leading-5 block text-sm py-3.5  outline-0 border-0;
+  @apply bg-transparent focus:bg-transparent focus:ring-secondary-400 focus:ring-1 w-full flex-1 rounded leading-5 block text-sm py-3.5  outline-none border-0;
 }
 .icon {
   @apply absolute top-0 h-full rounded-tl rounded-bl bg-transparent flex justify-center items-center px-[1.125rem];

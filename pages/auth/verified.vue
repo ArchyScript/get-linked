@@ -16,5 +16,12 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutStore } from '~/store/layout'  
+const { updateAuthCardSize } = useLayoutStore()
+
 definePageMeta({ layout: "auth" }); 
+
+onBeforeMount(async () => {
+  updateAuthCardSize('sm') 
+})
 </script> 

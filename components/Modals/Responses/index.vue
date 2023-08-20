@@ -31,10 +31,10 @@
       </TypoNormalText>  
     </div>
 
-    <div class="flex items-center space-x-1"> 
+    <div class="flex items-center justify-center space-x-1 flex-1 w-[80%]"> 
       <Button  @click="close" :text="btnCloseText" v-if="type == 'error'" customClass="!text-secondary-500 !py-4 !px-10  !bg-white !font-medium !leading-[160%]"/> 
       
-      <Button @click="close" :text="btnContinueText" customClass="!py-4 !px-10 !text-white !font-medium !leading-[160%]" class="btn-shadow"/> 
+      <Button @click="next" :text="btnContinueText" customClass="!py-4 !px-10 !text-white !font-medium !leading-[160%] !max-w-fit" class="btn-shadow"/> 
     </div>
   </div>
 </template>
@@ -80,10 +80,13 @@ const props = defineProps({
 
 });
 
-const emit = defineEmits(["close"]); 
+const emit = defineEmits(["close", "next"]); 
 const close = () => {
   emit("close");
 };
+const next = () => {
+  emit("next");
+}; 
 </script>
 
 <style lang="scss" scoped>

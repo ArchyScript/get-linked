@@ -95,9 +95,11 @@
 </template>
 
 <script setup lang="ts"> 
+import { useLayoutStore } from '~/store/layout'  
+const { updateAuthCardSize } = useLayoutStore()
 import { useAuthStore } from '~/store/authentication'  
-import { required, email, minLength, maxLength, minValue, maxValue, helpers } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
+import { required, email, minLength, maxLength, minValue, maxValue, helpers } from '@vuelidate/validators';
 
 definePageMeta({ layout: "auth" });
 
@@ -136,9 +138,12 @@ const loginFinacier = async () => {
   setAuthToken(authToken) 
   setAuthUser(profile) 
 
- router.push('/dashboards') 
+ router.push('/auth/kyc') 
 }; 
 
+onBeforeMount(async () => {
+  updateAuthCardSize('sm') 
+})
 </script>
 
 <style scoped>

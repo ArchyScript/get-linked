@@ -4,9 +4,7 @@
     
     <TypoNormalText>
       Your identity verification failed
-    </TypoNormalText> 
-
-    
+    </TypoNormalText>  
   </div>
 </template>
 

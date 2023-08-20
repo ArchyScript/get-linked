@@ -1,6 +1,6 @@
 <template>
   <div> 
-    <LoadingFullscreen v-if="loading" />
+    <LoaderFullscreen v-if="loading" />
     
     <div class="bg-white rounded box-shadow p-8" v-else>
       <div class="text-sm p-1">
@@ -19,7 +19,10 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutStore } from '~/store/layout'  
 import { useAuthStore } from '~/store/authentication'  
+const { updateAuthCardSize } = useLayoutStore()
+
 definePageMeta({ layout: "auth" }); 
 
 const loading: Ref<boolean> = ref(false);
@@ -44,9 +47,13 @@ const verify = async () => {
   setAuthToken(authToken) 
   setAuthUser(profile)  
   
-  setTimeout(() => { router.push("/dashboards") }, 3000);
-
+  setTimeout(() => { router.push("/auth/kyc") }, 3000);
 }
 
 onMounted(()=> verify())
+
+
+  onBeforeMount(async () => {
+    updateAuthCardSize('sm') 
+  })
 </script> 

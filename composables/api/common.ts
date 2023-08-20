@@ -1,35 +1,34 @@
-import axiosInstance from '~/composables/axios/config'
-import { AxiosResponse } from 'axios'
-import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response'
+import { uploadAxiosInstance, commonAxiosInstance } from '~/composables/axios/config';
+import { AxiosResponse } from 'axios';
+import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response';
 
 export const useCommonApi = () => {
   // upload file
-  const upload = async (payload: any) => {
+  const uploadFile = async (payload: FormData) => {
     try {
-      const response = await axiosInstance
-        .post(`upload`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+      const response = await uploadAxiosInstance
+        .post(`cloudinary/upload`, payload)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
-  // logout
-  const logout = async (payload: any) => {
+  // liveness check
+  const livenessCheck = async (payload: any) => {
     try {
-      const response = await axiosInstance
-        .post(`user/logout`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+      const response = await commonAxiosInstance
+        .post(`liveness-check`, payload)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
-  //
   return {
-    upload,
-    logout,
-  }
-}
+    uploadFile,
+    livenessCheck,
+  };
+};

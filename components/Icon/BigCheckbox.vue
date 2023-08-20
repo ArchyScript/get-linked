@@ -1,20 +1,16 @@
 <template>
-  <span> 
+  <span>  
     <svg 
-      v-if="type == 'circle-outline'"
-      :height="height"
-      :width="width"
-      class="fill-current" viewBox="0 0 65 65"  xmlns="http://www.w3.org/2000/svg">
-<mask id="mask0_1489_106224" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="65" height="65">
-<path d="M64.5 32.5C64.5 14.8269 50.1731 0.5 32.5 0.5C14.8269 0.5 0.5 14.8269 0.5 32.5C0.5 50.1731 14.8269 64.5 32.5 64.5C50.1731 64.5 64.5 50.1731 64.5 32.5ZM6.8936 32.5C6.8936 18.358 18.358 6.8936 32.5 6.8936C46.642 6.8936 58.1064 18.358 58.1064 32.5C58.1064 46.642 46.642 58.1064 32.5 58.1064C18.358 58.1064 6.8936 46.642 6.8936 32.5Z" fill="white"/>
-</mask>
-<g mask="url(#mask0_1489_106224)">
-<rect x="-12.3047" y="-12.2998" width="89.6" height="89.6"/>
-<circle cx="32.0359" cy="61.3006" r="3.2"/>
-</g>
-<path d="M21.5 32.5003L28.8333 39.8337L43.5 25.167" stroke="#47BD8F" stroke-width="3.66667" stroke-linecap="round" stroke-linejoin="round"/>
-</svg> 
-
+      v-if="type == 'circle-outline'" xmlns="http://www.w3.org/2000/svg" width="65" height="64" viewBox="0 0 65 64" fill="none">
+      <mask id="mask0_1355_102976" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="65" height="64">
+      <path d="M64.5 32C64.5 14.3269 50.1731 0 32.5 0C14.8269 0 0.5 14.3269 0.5 32C0.5 49.6731 14.8269 64 32.5 64C50.1731 64 64.5 49.6731 64.5 32ZM6.8936 32C6.8936 17.858 18.358 6.3936 32.5 6.3936C46.642 6.3936 58.1064 17.858 58.1064 32C58.1064 46.142 46.642 57.6064 32.5 57.6064C18.358 57.6064 6.8936 46.142 6.8936 32Z" fill="white"/>
+      </mask>
+      <g mask="url(#mask0_1355_102976)">
+      <rect x="-12.3047" y="-12.8003" width="89.6" height="89.6" fill="#47BD8F"/>
+      <circle cx="32.0359" cy="60.7996" r="3.2" fill="#47BD8F"/>
+      </g>
+      <path d="M21.5 31.9998L28.8333 39.3332L43.5 24.6665" stroke="#47BD8F" stroke-width="3.66667" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg> 
 
     <svg 
       v-if="type == 'circle-outline-cancel'"
@@ -29,8 +25,7 @@
     <rect x="-12.3047" y="-12.2998" width="89.6" height="89.6" />
     <circle cx="32.0359" cy="61.3006" r="3.2" />
     </g>
-    </svg>
-
+    </svg> 
   </span>
 </template>
   

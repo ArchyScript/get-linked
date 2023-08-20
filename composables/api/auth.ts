@@ -1,129 +1,129 @@
-import axiosInstance from '~/composables/axios/config'
-import { AxiosResponse } from 'axios'
-import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response'
-import { LoginPayloadType, RegisterPayloadType } from '~/types/auth'
+import {defaultAxiosInstance} from '~/composables/axios/config';
+import { AxiosResponse } from 'axios';
+import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response';
+import { LoginPayloadType, RegisterPayloadType } from '~/types/auth';
 
 export const useAuthApi = () => {
   // login
   const login = async (payload: LoginPayloadType) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .post(`login`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   // register
   // const register = async (payload: RegisterPayloadType) => {
   const register = async (payload: any) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .post(`register`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   // resend verification
   const resendtVerification = async (payload: any) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .post(`resend-verification-mail`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   // changePassowrd
   const changePassowrd = async (payload: any) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .post(`auth/change-password`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   // resetPassword
   const resetPassword = async (payload: any) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .post(`reset-password`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   // verify2FA
   const verify2FA = async (payload: any) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .post(`verify-2fa`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   // initiate2FA
   const initiate2FA = async (payload: any) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .post(`initiate-2fa`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   // requestUserPassword
   const requestUserPassword = async (payload: any) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .post(`request-password`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   // verifyUser
   const verifyUser = async (token: string | string[]) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .get(`verify/${token}`)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   // logout
   const logout = async (payload: any) => {
     try {
-      const response = await axiosInstance
+      const response = await defaultAxiosInstance
         .post(`logout`, payload)
-        .then(async (response: AxiosResponse) => response)
-      return HandleAxiosResponse(response)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
     } catch (error: any) {
-      return HandleAxiosError(error)
+      return HandleAxiosError(error);
     }
-  }
+  };
 
   return {
     login,
@@ -136,5 +136,5 @@ export const useAuthApi = () => {
     requestUserPassword,
     verifyUser,
     logout,
-  }
-}
+  };
+};
