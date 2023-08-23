@@ -600,7 +600,7 @@ const nextStep = async () => {
     "selfie":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
     "director_passport":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
     "passport_number":"YES",
-    "recaptchaToken": "false" 
+    "recaptchaToken": "true"
   }
 
   console.log('started api call')

@@ -1,4 +1,4 @@
-import {defaultAxiosInstance} from '~/composables/axios/config';
+import { defaultAxiosInstance } from '~/composables/axios/config';
 import { AxiosResponse } from 'axios';
 import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response';
 import { LoginPayloadType, RegisterPayloadType } from '~/types/auth';
@@ -17,9 +17,9 @@ export const useAuthApi = () => {
   };
 
   // register
-  // const register = async (payload: RegisterPayloadType) => {
-  const register = async (payload: any) => {
+  const register = async (payload: RegisterPayloadType) => {
     try {
+      // const register = async (payload: any) => {
       const response = await defaultAxiosInstance
         .post(`register`, payload)
         .then(async (response: AxiosResponse) => response);

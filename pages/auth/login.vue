@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded box-shadow p-8">
+  <div class="bg-white rounded box-shadow p-8">  
     <div class="text-sm p-1">
       <h3
         class="text-center leading-7 mb-2 text-[1.75rem] font-semibold text-grey-600"
@@ -96,12 +96,11 @@
 
 <script setup lang="ts"> 
 import { useLayoutStore } from '~/store/layout'  
-const { updateAuthCardSize } = useLayoutStore()
+const { updateAuthCardSize } = useLayoutStore() 
 import { useAuthStore } from '~/store/authentication'  
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, maxLength, minValue, maxValue, helpers } from '@vuelidate/validators';
-
-definePageMeta({ layout: "auth" });
+definePageMeta({ layout: "auth" }); 
 
 const { login } =  useAuthApi() 
 const { setAuthUser, setAuthToken, logout } = useAuthStore()
@@ -128,6 +127,7 @@ const loginFinacier = async () => {
  
   const response = await  login(payload.value)
   const { data, error } = response 
+
   loading.value = false
   if (error) return console.log("error:::", error);
 

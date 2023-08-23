@@ -5,7 +5,7 @@ import { useCommonApi } from './api/common';
 
 export { useAuthApi, useDealsApi, useKYCApi, useCommonApi };
 
-/* 
+/*
 {
     "status": true,
     "data": {

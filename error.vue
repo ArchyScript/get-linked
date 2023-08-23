@@ -12,7 +12,7 @@
         never see it again.
       </p> 
 
-      <nuxt-link to="/dashboards" class="rounded-lg px-8 py-3 border"> Dashboard </nuxt-link>
+      <nuxt-link to="/dashboards" class="rounded-lg px-8 py-3 border"> Dashboards </nuxt-link>
     </div>
   </section>
 </template>
