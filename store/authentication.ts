@@ -5,10 +5,13 @@ const serializer = {
 };
 
 export const useAuthStore = defineStore('auth', () => {
+  const router = useRouter();
+
   const unVerifiedUserEmail = ref<String>('');
   const token = ref<String>('');
   const user = ref<any>({});
   const kycData = ref<Object>({});
+  const previousRoute = ref<string | null>(null);
 
   // getters
   const getKYCData = computed(() => kycData.value);
@@ -19,8 +22,6 @@ export const useAuthStore = defineStore('auth', () => {
   };
 
   const setAuthToken = (authToken: string) => {
-    //
-    // localStorage.removeItem('authToken');
     token.value = authToken;
     localStorage.setItem('authToken', authToken);
   };
@@ -48,17 +49,22 @@ export const useAuthStore = defineStore('auth', () => {
     }
   };
 
-  // onBeforeMount(async () => {
-  //   await loadKYCDataFromLocalStorage();
-  // });
+  const clearAuthStore = () => {
+    token.value = '';
+    user.value = {};
+    kycData.value = '';
+    unVerifiedUserEmail.value = '';
+  };
 
   const logout = () => {
-    const router = useRouter();
-    user.value = {};
-    token.value = '';
     localStorage.removeItem('authToken');
-    router.push('/');
+    clearAuthStore();
+    useRouter().push('/auth/login');
   };
+
+  function savePreviousRoute() {
+    previousRoute.value = router.currentRoute.value.fullPath;
+  }
 
   return {
     setAuthToken,
@@ -67,11 +73,13 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     user,
     kycData,
+    previousRoute,
     getKYCData,
     unVerifiedUserEmail,
     setUnVerifiedUserEmail,
     loadKYCDataFromLocalStorage,
     saveKYCDataToLocalStorage,
     setKYCData,
+    savePreviousRoute,
   };
 });

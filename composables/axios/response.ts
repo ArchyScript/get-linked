@@ -14,7 +14,7 @@ export const HandleAxiosError = (error: AxiosError) => {
   const status = error.response?.status || null;
 
   console.log('error from config:::::', error);
-
+ 
   if (error_data) {
     const errorIsArray = Array.isArray(error_data);
     const error_message = errorIsArray ? error_data[0] : error_data;
@@ -30,6 +30,8 @@ export const HandleAxiosError = (error: AxiosError) => {
 
   //     return setResponseReturn(null, status, error_message)
   //   }
+
+  // check if user is session has expired
 
   return setResponseReturn(null, status, error_data); // return error.message || 'Sorry, an error occurred'
 };

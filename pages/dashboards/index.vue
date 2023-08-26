@@ -10,75 +10,80 @@
         <Button text="Fund new offer" class="!font-medium !py-3.5 !px-6 !text-sm" />
       </span>
     </section>
+ 
 
     <!-- card -->
     <section class="grid w-full  grid-cols-4 gap-5 ">
         <div v-for="card in cards" :key="card.title">
           <CardLeaderboard :data="card" />
         </div>
-    </section> 
-
+    </section>  
      
     <!-- chart and trades section -->
-    <section class="grid w-full  grid-cols-5 gap-4 ">  
+    <section class="grid w-full  grid-cols-5 gap-x-4 ">  
       <!-- chart -->
       <div class="col-span-3"> 
-          <CardContainer class="space-y-8 px-8 py-6 flex-col">
-            <div class="flex justify-between items-center">
-              <TypoHeaderText> Revenue </TypoHeaderText>
+        <CardContainer class="space-y-8 px-8 py-6 flex-col">
+          <div class="flex justify-between items-center">
+            <TypoHeaderText> Revenue </TypoHeaderText>
 
-              <TypoNormalText customClass="cursor-pointer border px-4 py-1.5 rounded"> 2021 </TypoNormalText> 
+            <TypoNormalText customClass="cursor-pointer border px-4 py-1.5 rounded"> 2021 </TypoNormalText> 
+          </div>
+
+          <!-- chart --> 
+          <div class="flex items-center justify-center flex-grow">
+            <div v-if="hasChart" class="flex-grow">
+              <ChartsLine :chartData="lineChartData" :chartOptions="lineChartOptions" />
             </div>
 
-            <!-- chart --> 
-            <div class="flex items-center justify-center">
-              <GenericNoData/>
-            </div>  
+            <GenericNoData v-else/> 
+          </div>  
 
-            <div class="flex justify-between items-center">
-              <TypoNormalText customClass="cursor-pointer flex-1"> Here is the CSV file you can download </TypoNormalText>
+          <div class="flex justify-between items-center">
+            <TypoNormalText customClass="cursor-pointer flex-1"> Here is the CSV file you can download </TypoNormalText>
 
-              <span> 
-                <Button text="Fund new offer" class="!font-normal !py-1.5 !px-4 !bg-secondary-300 !text-xs" />
-              </span>
-            </div>
-          </CardContainer>
+            <span> 
+              <Button text="Fund new offer" class="!font-normal !py-1.5 !px-4 !bg-secondary-300 !text-xs" />
+            </span>
+          </div>
+        </CardContainer>
       </div>
  
       <!-- recent trades -->
       <div class="col-span-2">
-          <CardContainer class="space-y-5 px-8 py-6 flex-col">
-            <div class="flex justify-between items-center">
-              <TypoHeaderText> Recent requests </TypoHeaderText>
+        <CardContainer class="space-y-5 px-8 py-6 flex-col">
+          <div class="flex justify-between items-center">
+            <TypoHeaderText> Recent requests </TypoHeaderText>
 
-              <TypoNormalText customClass="cursor-pointer text-secondary-500"> see all </TypoNormalText> 
+            <TypoNormalText customClass="cursor-pointer text-secondary-500"> see all </TypoNormalText> 
+          </div>
+
+          <div class="space-y-4 pb-6">
+            <div class="flex justify-between items-center">
+              <TypoHeaderText size="sm" customClass="cursor-pointer !text-grey-200"> Name </TypoHeaderText>
+
+              <TypoNormalText customClass="cursor-pointer !text-grey-200"> Price </TypoNormalText> 
             </div>
 
-            <div class="space-y-4 pb-6">
-              <div class="flex justify-between items-center">
-                <TypoHeaderText size="sm" customClass="cursor-pointer !text-grey-200"> Name </TypoHeaderText>
+            <!-- trade list -->
+            <div>
+              <div v-if="recentTrades.length" class="flex-col max-h-[25rem] overflow-scroll no-scrollbar">
+                <CardTrade  v-for="trade in recentTrades" :key="trade.id" :trade="trade" /> 
+              </div>
 
-                <TypoNormalText customClass="cursor-pointer !text-grey-200"> Price </TypoNormalText> 
-              </div>  
-
-              <!-- trade list -->
-              <div>
-                <div v-if="recentTrades.length" class="flex-col max-h-[25rem] overflow-scroll no-scrollbar">
-                    <CardTrade  v-for="trade in recentTrades" :key="trade.id" :trade="trade" /> 
-                </div>
-
-                <div v-else class="flex items-center justify-center">
-                  <GenericNoData/>
-                </div>
+              <div v-else class="flex items-center justify-center">
+                <GenericNoData/>
               </div>
             </div>
-          </CardContainer>
+          </div>
+        </CardContainer>
       </div> 
     </section> 
   </div>
 </template>
 
 <script setup lang="ts">
+const hasChart = ref (true)
 const cards = ref([
   {
     title: "Total funded trades",
@@ -189,4 +194,29 @@ const recentTrades = ref([
     status: "new request"
   },
 ])
+
+const lineChartData = {
+  labels: ['January', 'February', 'March', 'April', 'May'],
+  datasets: [
+    {
+      label: 'Sample Data',
+      data: [10, 20, 15, 30, 25],
+      borderColor: '#007bff',
+      fill: false,
+    },
+  ],
+};
+
+const lineChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    x: {
+      beginAtZero: true,
+    },
+    y: {
+      beginAtZero: true,
+    },
+  },
+}; 
 </script>

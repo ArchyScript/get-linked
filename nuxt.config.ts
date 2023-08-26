@@ -10,6 +10,7 @@ export default defineNuxtConfig({
       API_BASE_URL: process.env.API_BASE_URL,
     },
   },
+
   pinia: {
     autoImports: [
       // automatically imports `defineStore`

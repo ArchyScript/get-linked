@@ -100,10 +100,11 @@ const { updateAuthCardSize } = useLayoutStore()
 import { useAuthStore } from '~/store/authentication'  
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, maxLength, minValue, maxValue, helpers } from '@vuelidate/validators';
+
 definePageMeta({ layout: "auth" }); 
 
 const { login } =  useAuthApi() 
-const { setAuthUser, setAuthToken, logout } = useAuthStore()
+const { setAuthUser, setAuthToken, logout, previousRoute } = useAuthStore()
 const router = useRouter()
  
 const showPassword: Ref<boolean> = ref(false);
@@ -117,6 +118,7 @@ const rules = computed(() => {
     password: { required }, 
   };
 });
+const computedPreviousRoute = computed(()=> previousRoute)
 
 // 
 const v$ = useVuelidate(rules, payload.value);
@@ -138,7 +140,12 @@ const loginFinacier = async () => {
   setAuthToken(authToken) 
   setAuthUser(profile) 
 
- router.push('/auth/kyc') 
+  // if the user have not completed their kyc
+  if (!profile.isKYC) return router.push('/auth/kyc')
+
+  // check if session expired before login or it is a fresh login
+  if (computedPreviousRoute.value) return router.push(computedPreviousRoute.value)
+  else router.push('/dashboards') 
 }; 
 
 onBeforeMount(async () => {

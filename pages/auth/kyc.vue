@@ -18,7 +18,7 @@
           @close="toggleLivenessCheck"
         /> 
       </Modal>
-    </div>
+    </div> 
 
     <div class="bg-white rounded box-shadow p-8"> 
       <div class="text-sm p-1">
@@ -39,8 +39,7 @@
           <h4 class="text-center text-grey-500 text-xl font-medium leading-6">
             {{ activeStep == 0 ? `Authorized representative / signatories details` : `Financial Institute details`}}
           </h4>
-        </div>
-
+        </div> 
 
         <!-- Step 1 -->
         <form class="mt-8" @submit.prevent="nextStep" v-if="activeStep == 0">

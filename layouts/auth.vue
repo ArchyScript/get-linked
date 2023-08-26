@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"> 
 import { useLayoutStore } from '~/store/layout'
 import { Brandname } from '../.nuxt/components';
 const authCardSize = computed(() => useLayoutStore().authCardSize) 
