@@ -1,12 +1,12 @@
 <template>
   <div class="w-full h-full">
-    <canvas ref="chartCanvas" class="w-full h-full"></canvas>
+    <canvas ref="chartCanvas"></canvas>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { Chart, LineController, CategoryScale } from 'chart.js';
+<script setup lang="ts">  
+
+import { Chart, LineController, CategoryScale, ChartOptions } from 'chart.js';
 
 Chart.register(LineController, CategoryScale);
 
@@ -22,21 +22,22 @@ interface ChartData {
 
 const props = defineProps<{
   chartData: ChartData;
-  chartOptions?: any;
-}>()
+  chartOptions?: ChartOptions;
+}>();
 
 const chartCanvas = ref<HTMLCanvasElement | null>(null);
+let chart: Chart | null = null;
 
 onMounted(() => {
   if (chartCanvas.value) {
     const ctx = chartCanvas.value.getContext('2d');
     if (ctx) {
-      new Chart(ctx, {
+      chart = new Chart(ctx, {
         type: 'line',
         data: props.chartData,
         options: props.chartOptions || {},
       });
     }
-  } 
+  }
 });
 </script>

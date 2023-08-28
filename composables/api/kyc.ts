@@ -15,7 +15,33 @@ export const useKYCApi = () => {
     }
   };
 
+  // update file
+  const updateKYC = async (payload: any) => {
+    try {
+      const response = await defaultAxiosInstance
+        .post(`account`, payload)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
+    } catch (error: any) {
+      return HandleAxiosError(error);
+    }
+  };
+
+  // get user profile
+  const getUserProfile = async (payload: any) => {
+    try {
+      const response = await defaultAxiosInstance
+        .get(`account`, payload)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
+    } catch (error: any) {
+      return HandleAxiosError(error);
+    }
+  };
+
   return {
     verifyKYC,
+    updateKYC,
+    getUserProfile,
   };
 };

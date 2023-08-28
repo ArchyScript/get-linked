@@ -8,7 +8,7 @@ export type RegisterPayloadType = {
   email: String
   password: String
   payback_days: String
-  interest_rate: Number
+  interest_rate: String
 }
 
 //

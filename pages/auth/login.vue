@@ -91,6 +91,8 @@
         </div>
       </form>
     </div>
+
+    <!-- <Toast message="Test" severity="success"  /> -->
   </div>
 </template>
 
@@ -106,7 +108,7 @@ definePageMeta({ layout: "auth" });
 const { login } =  useAuthApi() 
 const { setAuthUser, setAuthToken, logout, previousRoute } = useAuthStore()
 const router = useRouter()
- 
+
 const showPassword: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
 const payload = ref({ email: "", password: "" });  
@@ -135,16 +137,21 @@ const loginFinacier = async () => {
 
   console.log("data:::", data)
   
-  const { profile, authToken } = data
+  const { profile, authToken, kyc } = data
   
   setAuthToken(authToken) 
   setAuthUser(profile) 
 
+  if (Object.keys(kyc).length < 1)  return router.push('/auth/kyc')
+    
+
   // if the user have not completed their kyc
-  if (!profile.isKYC) return router.push('/auth/kyc')
+  // if (!profile.isKYC) return router.push('/auth/kyc')
+
 
   // check if session expired before login or it is a fresh login
-  if (computedPreviousRoute.value) return router.push(computedPreviousRoute.value)
+  // if (computedPreviousRoute.value) return router.push(computedPreviousRoute.value)
+  
   else router.push('/dashboards') 
 }; 
 

@@ -1,4 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
+// import { useStore } from '@pinia/nuxt';
+import { useAuthStore } from '~/store/authentication';
 
 const setResponseReturn = (data: any, status: any, error: any) => {
   return {
@@ -9,15 +11,22 @@ const setResponseReturn = (data: any, status: any, error: any) => {
 };
 
 export const HandleAxiosError = (error: AxiosError) => {
-  // const error_data = error.response?.data;
+  // pinia store will be available before any api request is made so no error
+  const { logout } = useAuthStore();
+
   const error_data = error.response;
   const status = error.response?.status || null;
 
-  console.log('error from config:::::', error);
- 
+  // logout if error is an unauthorized error
+  // don't return from here so that {data, status and error} will be reurned as an object
+
+  // check if user is session has expired
+
   if (error_data) {
     const errorIsArray = Array.isArray(error_data);
     const error_message = errorIsArray ? error_data[0] : error_data;
+
+    if (error_data?.status == 401) logout();
 
     return setResponseReturn(null, status, error_message);
   }
@@ -30,8 +39,6 @@ export const HandleAxiosError = (error: AxiosError) => {
 
   //     return setResponseReturn(null, status, error_message)
   //   }
-
-  // check if user is session has expired
 
   return setResponseReturn(null, status, error_data); // return error.message || 'Sorry, an error occurred'
 };

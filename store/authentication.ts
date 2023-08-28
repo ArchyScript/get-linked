@@ -56,15 +56,16 @@ export const useAuthStore = defineStore('auth', () => {
     unVerifiedUserEmail.value = '';
   };
 
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    clearAuthStore();
-    useRouter().push('/auth/login');
-  };
-
   function savePreviousRoute() {
     previousRoute.value = router.currentRoute.value.fullPath;
   }
+
+  const logout = () => {
+    localStorage.removeItem('authToken');
+    clearAuthStore();
+    savePreviousRoute();
+    router.push('/auth/login');
+  };
 
   return {
     setAuthToken,

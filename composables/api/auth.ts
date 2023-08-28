@@ -1,4 +1,4 @@
-import { defaultAxiosInstance } from '~/composables/axios/config';
+import { defaultAxiosInstance, commonAxiosInstance } from '~/composables/axios/config';
 import { AxiosResponse } from 'axios';
 import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response';
 import { LoginPayloadType, RegisterPayloadType } from '~/types/auth';
@@ -44,7 +44,7 @@ export const useAuthApi = () => {
   // changePassowrd
   const changePassowrd = async (payload: any) => {
     try {
-      const response = await defaultAxiosInstance
+      const response = await commonAxiosInstance
         .post(`auth/change-password`, payload)
         .then(async (response: AxiosResponse) => response);
       return HandleAxiosResponse(response);
@@ -69,7 +69,7 @@ export const useAuthApi = () => {
   const verify2FA = async (payload: any) => {
     try {
       const response = await defaultAxiosInstance
-        .post(`verify-2fa`, payload)
+        .post(`verify`, payload)
         .then(async (response: AxiosResponse) => response);
       return HandleAxiosResponse(response);
     } catch (error: any) {
@@ -81,7 +81,7 @@ export const useAuthApi = () => {
   const initiate2FA = async (payload: any) => {
     try {
       const response = await defaultAxiosInstance
-        .post(`initiate-2fa`, payload)
+        .post(`authentication`, payload)
         .then(async (response: AxiosResponse) => response);
       return HandleAxiosResponse(response);
     } catch (error: any) {
@@ -113,6 +113,18 @@ export const useAuthApi = () => {
     }
   };
 
+  // delete financier
+  const deleteFinancier = async () => {
+    try {
+      const response = await defaultAxiosInstance
+        .post(`delete_financier`)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
+    } catch (error: any) {
+      return HandleAxiosError(error);
+    }
+  };
+
   // logout
   const logout = async (payload: any) => {
     try {
@@ -136,5 +148,6 @@ export const useAuthApi = () => {
     requestUserPassword,
     verifyUser,
     logout,
+    deleteFinancier,
   };
 };

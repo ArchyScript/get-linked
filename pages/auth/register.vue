@@ -135,6 +135,7 @@
 <script setup lang="ts">
 import { useLayoutStore } from '~/store/layout'  
 const { updateAuthCardSize } = useLayoutStore()
+import { RegisterPayloadType } from '~/types/auth';
 
 import { useAuthStore } from '~/store/authentication'  
 import { required, email, minLength, maxLength, minValue, maxValue, helpers } from '@vuelidate/validators';
@@ -148,7 +149,7 @@ const router = useRouter()
 
 const showPassword: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
-const payload = ref({
+const payload: Ref<any> = ref({
   email: "",
   password: "",
   payback_days: "",
@@ -175,7 +176,7 @@ const registerFinacier = async () => {
 
   console.log(payload.value)
  
-  const response = await  register(payload.value)
+  const response = await  register(payload.value) 
   const { data, error } = response 
   loading.value = false
   

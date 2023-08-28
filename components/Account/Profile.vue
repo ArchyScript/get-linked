@@ -1,11 +1,11 @@
 <template>
   <div class="grid grid-cols-3 gap-x-8"> 
-    <section class="col-span-2 space-y-6 items-center">
+    <section class="col-span-2 space-y-6 items-center mb-16">
       <CardContainer class="!p-5 rounded-md !pr-8 space-y-4 w-full">
         <div class=" flex items-center  !bg-primary-50  rounded-md ">
          <TypoHeaderText 
             v-for="(tab, index) in tabs" :key="`${tab.id}_${index}`"
-            size="sm"
+            size="sm" 
             :customClass="`
               flex-1 text-center !text-grey-700 capitalize select-none !font-medium px-6 py-3 rounded-md cursor-pointer
               ${ activeTabId == tab.id ? '!bg-primary-500 !text-white' : '!text-primary-500 !bg-primary-50' }
@@ -50,7 +50,7 @@
                 <span class="icon icon-left">
                   <IconUser />
                 </span>
-  
+   
                 <input
                   id="lastname"
                   class="input-field !pl-12 pr-4"
@@ -300,7 +300,7 @@
         </div>
         
         <div class="flex pt-3"> 
-          <Button text="Delete my account"  class="!w-auto py-3 !px-6 !bg-error-50 !text-error-500"  :hasIcon="true" iconName="trash"   /> 
+          <Button @click="deleteFinancierAccount" text="Delete my account"  class="!w-auto py-3 !px-6 !bg-error-50 !text-error-500"  :hasIcon="true" iconName="trash"   /> 
         </div>
       </CardContainer>
     </section>
@@ -349,6 +349,11 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '~/store/authentication'  
+const { logout } = useAuthStore()  
+const { deleteFinancier } =  useAuthApi() 
+const { $showToast } = useNuxtApp()
+
 const activeTabId = ref("rep_details")
 
 const tabs = ref([
@@ -385,6 +390,19 @@ const testRadioBtn = ref(true)
 const toggleActiveTab = (tabId: string) => {
   activeTabId.value = tabId 
 }
+
+const deleteFinancierAccount = async () => { 
+  console.log("useNuxtApp():::", useNuxtApp())
+  const response = await  deleteFinancier()
+  const { data, error } = response  
+ console.log("response:::", response)
+  console.log("error:::", error)
+  if (error) return console.log("error:::", error);
+
+  console.log("data:::", data)
+}
+
+
 </script>
 
 

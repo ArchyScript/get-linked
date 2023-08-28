@@ -33,7 +33,8 @@
           <!-- chart --> 
           <div class="flex items-center justify-center flex-grow">
             <div v-if="hasChart" class="flex-grow">
-              <ChartsLine :chartData="lineChartData" :chartOptions="lineChartOptions" />
+              <ChartsLine  :chartData="temperatureChartData" :chartOptions="chartOptions"/>
+              <!-- <ChartsLine  :data="temperatureData" :labels="timeLabels" /> -->
             </div>
 
             <GenericNoData v-else/> 
@@ -83,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-const hasChart = ref (true)
+const hasChart = ref (false)
 const cards = ref([
   {
     title: "Total funded trades",
@@ -194,29 +195,33 @@ const recentTrades = ref([
     status: "new request"
   },
 ])
+ 
+interface ChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    borderColor: string;
+    fill?: boolean;
+  }[];
+}
 
-const lineChartData = {
-  labels: ['January', 'February', 'March', 'April', 'May'],
+const temperatureData = ref<number[]>([25, 28, 30, 27, 26, 29]);
+const timeLabels = ref<string[]>(['12:00', '12:30', '1:00', '1:30', '2:00', '2:30']);
+const temperatureChartData = ref<ChartData>({
+  labels: ['12:00', '12:30', '1:00', '1:30', '2:00', '2:30'],
   datasets: [
     {
-      label: 'Sample Data',
-      data: [10, 20, 15, 30, 25],
-      borderColor: '#007bff',
+      label: 'Temperature',
+      data: [25, 28, 30, 27, 26, 29],
+      borderColor: 'blue',
       fill: false,
     },
   ],
-};
+});
 
-const lineChartOptions = {
+const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
-  scales: {
-    x: {
-      beginAtZero: true,
-    },
-    y: {
-      beginAtZero: true,
-    },
-  },
-}; 
+};
 </script>

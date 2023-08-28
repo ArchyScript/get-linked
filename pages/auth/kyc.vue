@@ -381,7 +381,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { useLayoutStore } from '~/store/layout'  
 const { updateAuthCardSize } = useLayoutStore()
 
-const { verifyKYC } =  useKYCApi() 
+const { verifyKYC, updateKYC } =  useKYCApi() 
 const { uploadFile } =  useCommonApi() 
 const { kycData, loadKYCDataFromLocalStorage, setKYCData } = useAuthStore()
 
@@ -574,36 +574,36 @@ const nextStep = async () => {
   // activeStep.value = 1
   
   const payload = {
-    "first_name":"weeeee",
-    "last_name":"meeeee",
-    "address":"living somewhere",
-    "gender":"male",
-    "nationality":"living somewhere",
-    "email":"script@mailinator.com",
-    "phone_number":"+2348164629033",
-    "power_of_attorney":"yes",
+    "first_name":"Santos",
+    "last_name":"Cristiano",
+    "address":"living somewhere in the hood .... ",
+    // "gender":"male",
+    // "nationality":"living somewhere",
+    // "email":"scripts@mailinator.com",
+    // "phone_number":"+2348136029708",
+    // "power_of_attorney":"yes",
     // "payback_days":"65",
     // "interest_rate":24,
     // "min_amount":"20000000",
     // "max_amount":"200000000",
-    "pep":"yes",
-    "international_passport":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
-    "company_name":"yes",
-    "company_reg_number":"yes",
-    "company_country":"yes",
-    "company_address":"yes",
-    "company_financial_intermediary":"yes",
-    "aml_appropriate_regulation":"yes",
-    "appropriate_prudential_supervision":"yes",
-    "investigated_for_money_laundering":"yes",
-    "selfie":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
-    "director_passport":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
-    "passport_number":"YES",
-    "recaptchaToken": "true"
+    // "pep":"yes",
+    // "international_passport":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
+    // "company_name":"yes",
+    // "company_reg_number":"444242",
+    // "company_country":"yes",
+    // "company_address":"yes",
+    // "company_financial_intermediary":"yes",
+    // "aml_appropriate_regulation":"yes",
+    // "appropriate_prudential_supervision":"yes",
+    // "investigated_for_money_laundering":"yes",
+    // "selfie":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
+    // "director_passport":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
+    // "passport_number":"4544646464",
+    // "recaptchaToken": "true"
   }
 
   console.log('started api call')
-  const response = await  verifyKYC(payload)
+  const response = await  updateKYC(payload)
   const { data, error } = response
   console.log("data:::", data)
   if (error) return console.log("error:::", error);
