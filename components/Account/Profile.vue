@@ -15,13 +15,13 @@
             {{tab.title}}
           </TypoHeaderText> 
         </div>
-        
+
         <!-- Representative details -->
         <div class="space-y-4" v-if="activeTabId == 'rep_details'">
           <TypoHeaderText size="sm" customClass="!text-grey-300 py-3 border-b-[1.5px] border-ui-bg"> Personal Information </TypoHeaderText> 
 
           <!--  -->
-          <form class="mt-8 grid grid-cols-2 gap-4">
+          <form class="mt-8 grid grid-cols-2 gap-4" @submit.prevent="updateKYCDetails">
             <div class="flex-col space-y-2"> 
               <TypoNormalText size="sm" customClass="!text-grey-500 !leading-[160%]  flex-1"> 
                 First name
@@ -166,7 +166,7 @@
 
             <!--  --> 
             <div class="flex col-span-2 justify-end pt-6"> 
-              <Button text="Save"  class="!w-auto !px-11 !bg-primary-500 !text-white"  /> 
+              <Button text="Save" type="submit" class="!w-auto !px-11 !bg-primary-500 !text-white"  /> 
             </div>
           </form>  
         </div>
@@ -349,10 +349,11 @@
 </template>
 
 <script setup lang="ts">
+// const { $toast } = useNuxtApp()
 import { useAuthStore } from '~/store/authentication'  
 const { logout } = useAuthStore()  
 const { deleteFinancier } =  useAuthApi() 
-const { $showToast } = useNuxtApp()
+const {$toast} = useNuxtApp()
 
 const activeTabId = ref("rep_details")
 
@@ -391,13 +392,19 @@ const toggleActiveTab = (tabId: string) => {
   activeTabId.value = tabId 
 }
 
-const deleteFinancierAccount = async () => { 
-  console.log("useNuxtApp():::", useNuxtApp())
+const updateKYCDetails = () => {
+  console.log("updating in progress") 
+  $toast('show', {
+    type: "success",
+    message: `Test  nifegjh `,
+  })
+}
+
+const deleteFinancierAccount = async () => {  
   const response = await  deleteFinancier()
   const { data, error } = response  
- console.log("response:::", response)
-  console.log("error:::", error)
-  if (error) return console.log("error:::", error);
+ 
+  if (error) return  $toast('show', { type: "error", message: error.message  })
 
   console.log("data:::", data)
 }

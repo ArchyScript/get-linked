@@ -11,7 +11,7 @@ export const getAuthHeaders = (): AxiosRequestHeaders & any => {
     authToken = window.localStorage.getItem('authToken');
   }
 
-  authToken = !authToken || authToken === undefined ? '' : authToken;
+  authToken = !authToken || authToken === undefined ? authToken : authToken;
 
   const headers = {
     Authorization: `Bearer ${authToken}`,
@@ -23,11 +23,6 @@ export const getAuthHeaders = (): AxiosRequestHeaders & any => {
 // Axios instances
 const defaultAxiosInstance = axios.create({
   baseURL: `${API_BASE_URL}/financier`,
-
-  // headers: {
-  //   Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFyY2h5c2NyaXB0KzEwQGdtYWlsLmNvbSIsImlkIjoiNjRlNWIyMTQ0ZTZlYTM0Y2EwNDFkMDJlIiwidHlwZSI6IkZpbmFuY2llciIsImlhdCI6MTY5Mjc3NDkzMiwiZXhwIjoxNjkyODE4MTMyfQ.bb-4b19B0IZ8waM3WefhqrxHAABBst_pA8NkfcTraB8`,
-  // },
-
   headers: { ...getAuthHeaders() },
 });
 
@@ -36,7 +31,6 @@ const commonAxiosInstance = axios.create({
   headers: { ...getAuthHeaders() },
 });
 
-// Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjcmlwdEBtYWlsaW5hdG9yLmNvbSIsImlkIjoiNjRkMjY3OTlkYTU3ZGQwYjQ1MDdiMzc0IiwidHlwZSI6IkZpbmFuY2llciIsImlhdCI6MTY5MjI3Mzk5MiwiZXhwIjoxNjkyMzE3MTkyfQ.8pXgfRYwzIXMeSdN464LbteXrAjLPrjc1E3-CSxZz6M`,
 const uploadAxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {

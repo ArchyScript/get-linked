@@ -16,7 +16,7 @@
           class="m-auto h-[3.875rem]"
           alt="logo"
         /> 
-      </div>
+      </div> 
 
       <div class="mt-8 font-Poppins">
         <slot />
@@ -24,7 +24,10 @@
     </div>
 
     <PartialsAppFooter layout="auth"/>
-  </div>
+  </div> 
+ 
+  <!-- all general components here e.g toast -->
+  <Toast/> 
 </template>
 
 <script setup lang="ts"> 

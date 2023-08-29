@@ -2,7 +2,6 @@
 // import { isAuthenticated } from '~/authService';
 // import { useAuthStore } from '~/store/authentication';
 // const { logout, savePreviousRoute } = useAuthStore();
-import { useAuthStore } from '~/store/authentication';
 // const { logout, previousRoute } = useAuthStore();
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -15,7 +14,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   //   if (process.client && nuxtApp.isHydrating && nuxtApp.payload.serverRendered) return;
 
   console.log('middleware/auth');
-  console.log('useAuthStore()', useAuthStore());
   // console.log('process.server', process.server);
   // console.log('process.client', process.client);
   // console.log(

@@ -5,6 +5,9 @@
     >
       <slot />
     </div>
+
+    <!-- all general components here e.g toast -->
+    <Toast/> 
   </div>
 </template>
 

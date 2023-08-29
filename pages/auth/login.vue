@@ -90,13 +90,12 @@
           </nuxt-link>
         </div>
       </form>
-    </div>
-
-    <!-- <Toast message="Test" severity="success"  /> -->
+    </div> 
   </div>
 </template>
 
 <script setup lang="ts"> 
+const {$toast} = useNuxtApp()
 import { useLayoutStore } from '~/store/layout'  
 const { updateAuthCardSize } = useLayoutStore() 
 import { useAuthStore } from '~/store/authentication'  
@@ -127,15 +126,13 @@ const v$ = useVuelidate(rules, payload.value);
  
 const loginFinacier = async () => { 
   v$.value.$touch() 
-  loading.value = true 
- 
+  loading.value = true  
+
   const response = await  login(payload.value)
   const { data, error } = response 
 
   loading.value = false
-  if (error) return console.log("error:::", error);
-
-  console.log("data:::", data)
+  if (error) return  $toast('show', { type: "error", message: error.message  })
   
   const { profile, authToken, kyc } = data
   
@@ -143,14 +140,12 @@ const loginFinacier = async () => {
   setAuthUser(profile) 
 
   if (Object.keys(kyc).length < 1)  return router.push('/auth/kyc')
-    
-
+     
   // if the user have not completed their kyc
   // if (!profile.isKYC) return router.push('/auth/kyc')
-
-
+ 
   // check if session expired before login or it is a fresh login
-  // if (computedPreviousRoute.value) return router.push(computedPreviousRoute.value)
+  if (computedPreviousRoute.value) return router.push(computedPreviousRoute.value)
   
   else router.push('/dashboards') 
 }; 

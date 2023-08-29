@@ -1,55 +1,60 @@
 <template>
-  <div class="toast" :class="`toast--${severity}`">
-    <div class="toast__message">
-      {{ message }}
-    </div>
-    <button class="toast__close" @click="close">
-      <i class="fas fa-times"></i>
-    </button>
+  <div 
+    v-show="showToast" 
+    :class="`z-50 fixed top-2 right-2 w-80 p-4 rounded-sm bg-${updatedTypeWithColorMatch}-50`"  
+  >
+    <!-- message -->
+    <TypoNormalText size="base" :customClass="`!text-${updatedTypeWithColorMatch}-500 mt-2`"> {{ message }} </TypoNormalText>  
+    
+    <!-- progress bar --> 
+    <div :class="`absolute top-0 left-0 w-full h-1 bg-${updatedTypeWithColorMatch}-500`" :style="{ width: `${progressBarWidth}%` }"></div>
+   
+    <!-- close btn -->
+    <span class="absolute cursor-pointer top-0 right-0 p-2.5" @click="hide">
+      <IconClose :height="12" :width="12"/> 
+    </span>
   </div>
 </template>
 
 <script setup lang="ts"> 
-// enum ToastSeverity {
-//   Info = 'info',
-//   Success = 'success',
-//   Warning = 'warning',
-//   Error = 'error',
-// }
-const props = defineProps({
-  message: {
-    type: String,
-    required: true,
-  },
-  severity: {
-    type: String,
-    default: 'info',
-  },
-  duration: {
-    type: Number,
-    default: 3000,
-  },
-});
+import { useCustomStore } from '~/store/custom'  
+const { toastObject, hideToast } = useCustomStore() 
 
-const emits = defineEmits(['close']);
+const progressBarWidth: Ref<number> =  ref(0)
 
-function close() {
-  emits('close');
+// 
+const message = computed(() => useCustomStore().toastObject?.message)
+const type = computed(() => useCustomStore().toastObject?.type)
+const duration = computed(() => useCustomStore().toastObject?.duration)
+const showToast = computed(() => {
+  if (useCustomStore().showToast) startCountdown()
+  // return value regardless 
+  return useCustomStore().showToast
+})
+
+const updatedTypeWithColorMatch =  computed(()=> {
+  if (type.value == 'info') return 'secondary' 
+  return type.value
+}) 
+
+// 
+const startCountdown = () => {
+ const timer =  10
+  let remainder = duration.value / timer;
+
+  const countdownInterval = setInterval(()=> { 
+    // get the percentage for every count down
+    progressBarWidth.value = (remainder / (duration.value / timer)) * 100
+    remainder--;
+
+    if (remainder < 0) clearInterval(countdownInterval);
+  }, timer);
+};  
+
+
+const hide =  () => {
+  hideToast() 
 }
 </script>
 
-<style lang="css">
-.toast {
-  @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 p-4 border-t-4 
-}
-.toast--success {    @apply bg-green-100; }
-.toast--warning {    @apply bg-yellow-100; }
-.toast--info {    @apply bg-blue-100; }
-.toast--error {    @apply bg-error-100; }
-
-.toast__message {   @apply mt-2 text-lg; }
-
-.toast__close {
-  @apply absolute top-2 right-2 text-gray-600 text-xl cursor-pointer;
-}
-</style>
+<style scoped>  </style>
