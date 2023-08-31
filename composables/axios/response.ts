@@ -2,7 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 // import { useStore } from '@pinia/nuxt';
 import { useAuthStore } from '~/store/authentication';
 
-const setResponseReturn = (data: any, status: any, error: any) => {
+export const setResponseReturn = (data: any, status: any, error: any) => {
   return {
     data,
     status,
@@ -12,8 +12,9 @@ const setResponseReturn = (data: any, status: any, error: any) => {
 
 export const HandleAxiosError = (error: AxiosError | any) => {
   // pinia store will be available before any api request is made so no error
-  const { logout, previousRoute } = useAuthStore();
+  const { logout } = useAuthStore();
 
+  console.log('error', error);
   const error_response = error.response;
   const status = error_response?.status || null;
 
@@ -23,7 +24,11 @@ export const HandleAxiosError = (error: AxiosError | any) => {
 
     // logout if error is an unauthorized error
     // don't return from here so that {data, status and error} will be reurned as an object
-    if ((status && status == 401) || status == 403) logout();
+    if ((status && status == 401) || status == 403) {
+      setTimeout(() => {
+        logout();
+      }, 5000);
+    }
 
     return setResponseReturn(null, status, error_message?.data);
   }

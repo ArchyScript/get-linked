@@ -133,7 +133,11 @@ const loginFinacier = async () => {
 
   loading.value = false
   if (error) return  $toast('show', { type: "error", message: error.message  })
+  console.log("data:", data)
   
+  // success message for login
+  $toast('show', { type: "success", message: `Login Successful`})
+
   const { profile, authToken, kyc } = data
   
   setAuthToken(authToken) 
@@ -144,6 +148,8 @@ const loginFinacier = async () => {
   // if the user have not completed their kyc
   // if (!profile.isKYC) return router.push('/auth/kyc')
  
+  console.log("data:::", data)
+  
   // check if session expired before login or it is a fresh login
   if (computedPreviousRoute.value) return router.push(computedPreviousRoute.value)
   

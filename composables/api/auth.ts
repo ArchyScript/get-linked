@@ -1,19 +1,24 @@
 import { defaultAxiosInstance, commonAxiosInstance } from '~/composables/axios/config';
 import { AxiosResponse } from 'axios';
-import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response';
+import {
+  HandleAxiosResponse,
+  HandleAxiosError,
+  setResponseReturn,
+} from '~/composables/axios/response';
 import { LoginPayloadType, RegisterPayloadType } from '~/types/auth';
 
 export const useAuthApi = () => {
   // login
   const login = async (payload: LoginPayloadType) => {
     try {
-      const response = await defaultAxiosInstance
-        .post(`login`, payload)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`login`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
     }
+    // finally {
+    //   return setResponseReturn(null, null, { message: 'Something happened' });
+    // }
   };
 
   // register
@@ -117,7 +122,7 @@ export const useAuthApi = () => {
   const deleteFinancier = async () => {
     try {
       const response = await defaultAxiosInstance
-        .post(`delete_financier`)
+        .post(`delete-account`)
         .then(async (response: AxiosResponse) => response);
       return HandleAxiosResponse(response);
     } catch (error: any) {

@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+// const { $toast } = useNuxtApp();
+
 const serializer = {
   serialize: JSON.stringify,
   deserialize: JSON.parse,
@@ -28,6 +30,16 @@ export const useAuthStore = defineStore('auth', () => {
 
   const setAuthUser = (userProfile: object) => {
     user.value = userProfile;
+  };
+
+  const updateUserProfile = async () => {
+    // const { getUserProfile } = useKYCApi();
+    // const response = await getUserProfile();
+    // const { data, error } = response;
+    // if (error) return $toast('show', { type: 'error', message: error.message });
+    // $toast('show', { type: 'success', message: data.message || 'Profile update Successful' });
+    // user.value = data;
+    console.log(98);
   };
 
   const setKYCData = (data: any) => {
@@ -70,8 +82,8 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     setAuthToken,
     setAuthUser,
-    token,
     logout,
+    token,
     user,
     kycData,
     previousRoute,
@@ -82,5 +94,6 @@ export const useAuthStore = defineStore('auth', () => {
     saveKYCDataToLocalStorage,
     setKYCData,
     savePreviousRoute,
+    updateUserProfile,
   };
 });

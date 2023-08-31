@@ -24,7 +24,7 @@
       <div class="text-sm p-1">
         <div class="flex-col space-y-8">
           <p class="text-center text-grey-400 leading-6">
-            Hi, Badmusfrank@sample.com! Take some minutes to setup your account,
+            Hi, {{kycPayload.email}}! Take some minutes to setup your account,
             kindly complete KYC information below to enable you Fund offers on our
             marketplace.
           </p>
@@ -42,7 +42,7 @@
         </div> 
 
         <!-- Step 1 -->
-        <form class="mt-8" @submit.prevent="nextStep" v-if="activeStep == 0">
+        <form class="mt-8" v-show="activeStep == 0">
           <div class="mb-4 flex items-center space-x-4">
             <div class="flex-1">
               <label for="firstname" class="block mb-2 leading-6 text-grey-500">
@@ -59,6 +59,7 @@
                   type="text" 
                   class="input-field !pl-12 pr-4" 
                   placeholder="enter first name" 
+                  v-model.trim="kycPayload.first_name"
                 />  
                   <!-- v-model.trim="kycPayload.first_name"
                   @change="vRep$.first_name.$touch()"
@@ -81,7 +82,7 @@
                   type="text" 
                   class="input-field !pl-12 pr-4" 
                   placeholder="enter first name" 
-                  v-model="kycPayload.last_name" 
+                  v-model.trim="kycPayload.last_name" 
                 /> 
               </div> 
             </div>
@@ -118,10 +119,30 @@
                   <IconLocation />
                 </span>
 
-                <el-select v-model="kycPayload.nationality" class="p-1 !bg-transparent !focus:text-black  !w-full"
-                  placeholder="Select" size="large">
-                  <el-option v-for="country in countries" :key="country.name" :label="country.name" :name="country.value" />
-                </el-select>
+                <el-select 
+                  v-model="kycPayload.nationality" 
+                  class="p-1 !bg-transparent !focus:text-black  !w-full"
+                  placeholder="Select Country"
+                  size="large" 
+                  remote
+                  filterable
+                  remote-show-suffix
+                  :loading="loading"
+                  :remote-method="handleCountrySearch"
+                  loading-text="Loading Countries"
+                  no-match-text="No country match... check spelling"
+                  no-data-text="No match"
+                >
+                  <!-- reserve-keyword  -->
+                  <el-option 
+                    v-for="country in countries" 
+                    :key="country.name" 
+                    :label="country.name" 
+                    :value="country.name" 
+                    :name="country.value" 
+                    @click="getCountryCode(country)"
+                  />
+                </el-select> 
               </div>
             </div>
 
@@ -137,7 +158,20 @@
                 class="input-with-select  bg-input-bg  h-[3rem]"
               >
                 <template #prepend>
-                  <el-select v-model="select" :placeholder="+234" class="w-[5rem]">  
+                  <!-- <el-select v-model="kycPayload.nationality?.phone_code" :placeholder="kycPayload.nationality?.phone_code " class="w-[5rem]">   -->
+                  <el-select 
+                    filterable
+                    remote
+                    reserve-keyword 
+                    :placeholder="countryCode " 
+                    class="w-[5rem]" 
+                    disabled
+                  >  
+                    <!-- :loading="loading"
+                    :no-match-text="no-match-text"
+                    :no-data-text="no-data-text"
+                    :loading-text="loading-text"
+                    :remote-method="handleCountrySearch" -->
                     <el-option
                       v-for="item in 7"
                       :key="item"
@@ -154,36 +188,133 @@
             </div> 
           </div>
 
-          <div class="mb-4 w-1/2">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
-              Email Address
-            </label>
+          <div class="mb-4 flex items-center space-x-4">
+            <div class="flex-1">
+              <label for="min_amount" class="block mb-2 leading-6 text-grey-500">
+                Minimum Amount
+              </label>
 
-            <div class="relative bg-input-bg rounded">
-              <span class="icon icon-left text-grey-200" >
-                <IconEmail />
-              </span>
-
-              <input 
-                id="email"
-                class="input-field !px-12"
-                type="email"
-                placeholder="example@gmail.com"  
-                v-model="kycPayload.email" 
-              />
-                <!-- :class="{
-                  'error': vRep$.email.$error || vRep$.email.$invalid,
-                  'success': !vRep$.email.$invalid,
-                }"  -->
-
-              <!-- <span class="icon icon-right" v-if="!vRep$.email.$invalid" :class="!vRep$.email.$invalid && 'text-success-500'" >
-                <IconCheckbox type="square" />
-              </span> -->
+              <div class="relative bg-input-bg w-full rounded">
+                <input 
+                  id="min_amount"
+                  type="text" 
+                  class="input-field !pl-4 pr-4" 
+                  placeholder="enter minimum amount" 
+                  v-model="kycPayload.min_amount"
+                />   
+              </div>  
             </div>
 
-            {{kycPayload.email}} 
-              {{vRep$.email.$dirty}} 
-              {{vRep$.email.$error}} 
+            <div class="flex-1">
+              <label for="max_amount" class="block mb-2 leading-6 text-grey-500">
+                Maximum Amount
+              </label>
+
+              <div class="relative bg-input-bg w-full rounded">
+                <input 
+                  id="max_amount"
+                  type="text" 
+                  class="input-field !pl-4 pr-4" 
+                  placeholder="enter maximum amount" 
+                  v-model="kycPayload.max_amount"
+                />   
+              </div>  
+            </div> 
+          </div>
+          
+          <div class="mb-4 flex items-center space-x-4">
+            <div class="flex-1">
+              <label for="payback_days" class="block mb-2 leading-6 text-grey-500">
+                Payback Days
+              </label>
+
+              <div class="relative bg-input-bg w-full rounded">
+                <input 
+                  id="payback_days"
+                  type="text" 
+                  class="input-field !pl-4 pr-4" 
+                  placeholder="enter payback days" 
+                  v-model="kycPayload.payback_days"
+                />   
+              </div>  
+            </div> 
+
+            <div class="flex-1">
+              <label for="interest_rate" class="block mb-2 leading-6 text-grey-500">
+                Interest Rate
+              </label>
+
+              <div class="relative bg-input-bg w-full rounded">
+                <input 
+                  id="interest_rate"
+                  type="text" 
+                  class="input-field !pl-4 pr-4" 
+                  placeholder="enter payback days" 
+                  v-model="kycPayload.interest_rate"
+                />   
+              </div>
+            </div> 
+          </div>
+
+          <div class="mb-4 flex items-center space-x-4">
+            <div class="w-1/2">
+              <label for="email" class="block mb-2 leading-6 text-grey-500">
+                Email Address
+              </label>
+
+              <div class="relative bg-input-bg rounded">
+                <span class="icon icon-left text-grey-200" >
+                  <IconEmail />
+                </span>
+
+                <input 
+                  id="email"
+                  class="input-field !px-12"
+                  type="email"
+                  readonly
+                  placeholder="example@gmail.com"  
+                  :value="kycPayload.email" 
+                  :class="{
+                    'error': vRep$.email.$error || vRep$.email.$dirty,
+                    'success': !vRep$.email.$dirty,
+                  }" 
+                />
+                <span class="icon icon-right" v-if="!vRep$.email.$dirty" :class="!vRep$.email.$dirty && 'text-success-500'" >
+                  <IconCheckbox type="square" />
+                </span> 
+                <!-- <pre>
+                {{kycPayload}}
+                </pre> -->
+                  <!-- :class="{
+                    'error': vRep$.email.$error || vRep$.email.$invalid,
+                    'success': !vRep$.email.$invalid,
+                  }"  -->
+
+                <!-- <span class="icon icon-right" v-if="!vRep$.email.$invalid" :class="!vRep$.email.$invalid && 'text-success-500'" >
+                  <IconCheckbox type="square" />
+                </span> -->
+              </div>
+
+              <!-- {{kycPayload.email}} 
+                {{vRep$.email.$dirty}} 
+                {{vRep$.email.$error}}  -->
+            </div>
+ 
+            <div class="flex-1">
+              <label for="passport_number" class="block mb-2 leading-6 text-grey-500">
+                Passport Number
+              </label>
+
+              <div class="relative bg-input-bg w-full rounded">
+                <input 
+                  id="passport_number"
+                  type="text" 
+                  class="input-field !pl-4 pr-4" 
+                  placeholder="enter passport number" 
+                  v-model="kycPayload.passport_number"
+                />   
+              </div>  
+            </div> 
           </div>
   
           <div class="mb-4">
@@ -193,10 +324,10 @@
 
             <div class="w-3/5 flex items-center space-x-0">
               <el-radio-group v-model="kycPayload.power_of_attorney" class="!w-full  ">
-                <el-radio label="YES" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
-                <el-radio label="NO" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
+                <el-radio label="yes" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
+                <el-radio label="no" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
               </el-radio-group> 
-            </div>
+            </div> 
           </div>
   
           <div class="mb-4">
@@ -206,8 +337,8 @@
 
             <div class="w-3/5 flex items-center space-x-4">
               <el-radio-group v-model="kycPayload.pep" class="!w-full  ">
-                <el-radio :label="'YES'" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
-                <el-radio :label="'NO'" border class="flex-1  !h-[3rem] !px-4">No</el-radio>
+                <el-radio label="yes" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
+                <el-radio label="no" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
               </el-radio-group> 
             </div>
           </div>
@@ -222,16 +353,16 @@
                 <span class="icon icon-left text-grey-300">
                   <IconUpload />
                 </span>
-
+ 
                 <input 
                   id="file"
                   type="file" 
                   class="input-field !pl-12 pr-4" 
                   placeholder="Click to upload files here" 
-                  @change="handleUpload"
                 />   
 
-                <div v-if="kycPayload.international_passport" class="flex-1 text-success-500">attached successfully</div>
+                  <!-- @change="handleUpload" -->
+                <!-- <div v-if="kycPayload.international_passport" class="flex-1 text-success-500">attached successfully</div> -->
               </div>
             </div>
           </div>
@@ -247,25 +378,62 @@
         </form>
 
         <!-- Step 2 -->
-        <form class="mt-8" v-else-if="activeStep = 1">
-          <!-- <div class="mb-4 flex items-center space-x-4">
+        <form class="mt-8"  v-show="activeStep == 1">
+          <div class="mb-4 flex items-center space-x-4">
             <div class="flex-1">
               <label for="company_name" class="block mb-2 leading-6 text-grey-500">
                 Company name on the commercial register
               </label>
 
               <div class="relative bg-input-bg w-full rounded"> 
-                <input id="company_name" type="text" class="input-field px-4" placeholder="Company name" v-model="financialInstitution.name" />
+                <input id="company_name" type="text" class="input-field px-4" placeholder="Company name" v-model="kycPayload.company_name" />
               </div>
             </div>
 
             <div class="flex-1">
               <label for="reg_number" class="block mb-2 leading-6 text-grey-500">
-            Company registration number
+                Company registration number
               </label>
 
               <div class="relative bg-input-bg w-full rounded"> 
-                <input id="reg_number" type="text" class="input-field px-4" placeholder="Registration number"  v-model="financialInstitution.reg_no" />
+                <input id="reg_number" type="text" class="input-field px-4" placeholder="Registration number"  v-model="kycPayload.company_reg_number" />
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4 flex items-center space-x-4">
+            <div class="w-1/2">
+              <label for="company_country" class="block mb-2  leading-6 text-grey-500">
+                Company Country
+              </label>
+
+              <div class="relative bg-input-bg w-full pl-8 rounded">
+                <span class="icon icon-left text-grey-300">
+                  <IconLocation />
+                </span>
+
+                <el-select 
+                  v-model="kycPayload.company_country" 
+                  class="p-1 !bg-transparent !focus:text-black  !w-full"
+                  placeholder="Select"
+                  size="large"
+                  remote
+                  filterable
+                  remote-show-suffix
+                  :loading="loading"
+                  :remote-method="handleCountrySearch"
+                  loading-text="Loading Countries"
+                  no-match-text="No country match... check spelling"
+                  no-data-text="No match"
+                >
+                  <el-option 
+                    v-for="country in countries" 
+                    :key="country.name" 
+                    :label="country.name" 
+                    :value="country.name" 
+                    :name="country.value"  
+                  />
+                </el-select> 
               </div>
             </div>
           </div>
@@ -280,8 +448,13 @@
                 <IconLocation />
               </span>
 
-              <input id="address" v-model="financialInstitution.address" class="input-field !pl-12 pr-4" type="text"
-                placeholder="enter your company Domicile address" />
+              <input 
+                id="domicile_address" 
+                v-model="kycPayload.company_address" 
+                class="input-field !pl-12 pr-4" 
+                type="text"
+                placeholder="enter your company Domicile address" 
+              />
             </div>
           </div>
 
@@ -291,9 +464,9 @@
             </label>
 
             <div class="w-3/5 flex items-center space-x-0">
-              <el-radio-group v-model="financialInstitution.is_financial_intermediary" class="!w-full  ">
-                <el-radio :label="3" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
-                <el-radio :label="6" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
+              <el-radio-group v-model="kycPayload.company_financial_intermediary" class="!w-full  ">
+                <el-radio label="yes" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
+                <el-radio label="no" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
               </el-radio-group> 
             </div>
           </div>
@@ -304,9 +477,9 @@
             </label>
 
             <div class="w-3/5 flex items-center space-x-0">
-              <el-radio-group v-model="financialInstitution.is_regulated" class="!w-full  ">
-                <el-radio :label="3" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
-                <el-radio :label="6" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
+              <el-radio-group v-model="kycPayload.aml_appropriate_regulation" class="!w-full  ">
+                <el-radio label="yes" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
+                <el-radio label="no" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
               </el-radio-group> 
             </div>
           </div>
@@ -317,9 +490,9 @@
             </label>
 
             <div class="w-3/5 flex items-center space-x-0">
-              <el-radio-group v-model="financialInstitution.is_supervised" class="!w-full  ">
-                <el-radio :label="3" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
-                <el-radio :label="6" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
+              <el-radio-group v-model="kycPayload.appropriate_prudential_supervision" class="!w-full  ">
+                <el-radio label="yes" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
+                <el-radio label="no" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
               </el-radio-group> 
             </div>
           </div>
@@ -330,9 +503,9 @@
             </label>
 
             <div class="w-3/5 flex items-center space-x-0">
-              <el-radio-group v-model="financialInstitution.is_under_investigation" class="!w-full  ">
-                <el-radio :label="3" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
-                <el-radio :label="6" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
+              <el-radio-group v-model="kycPayload.investigated_for_money_laundering" class="!w-full  ">
+                <el-radio label="yes" border class="flex-1 !h-[3rem] !px-4 ">Yes</el-radio>
+                <el-radio label="no" border class="flex-1 !h-[3rem] !px-4">No</el-radio>
               </el-radio-group> 
             </div>
           </div>
@@ -345,29 +518,38 @@
             <div class="w-3/5 flex items-center space-x-4">
               <div class="relative w-1/2 bg-input-bg  rounded"> 
                 <el-input
-                  v-model="financialInstitution.directors_passport"
+                  v-model="director_passport"
                   class="!w-full flex-1 !h-[3rem] bg-transparent"
                   size="large"
                   placeholder="Click to upload files here " 
                   type="file"
-                  :prefix-icon="UploadIcon"
+                  :prefix-icon="IconUpload"
                 /> 
               </div>
             
-              <div v-if="financialInstitution.directors_passport" class="flex-1 text-success-500">attached successfully</div>
+              <div v-if="kycPayload.director_passport" class="flex-1 text-success-500">attached successfully</div>
             </div>
-          </div>  -->
-        </form>
-
+          </div>  
+       </form> 
 
         <!--  -->
         <div 
           class="flex justify-end items-center space-x-4 mt-8" 
           :class="activeStep == 1 && 'justify-between'"
         >
-          <Button text="back"  v-if="activeStep == 1" class="!w-auto !px-8 !bg-transparent border-2 border-secondary-500 !text-secondary-500"  @click="activeStep--" /> 
+          <Button 
+            text="back" 
+            v-if="activeStep == 1" 
+            class="!w-auto !px-8 !bg-transparent border-2 border-secondary-500 !text-secondary-500"  
+            @click="activeStep--" 
+          /> 
 
-          <Button text="Continue"  class="!w-auto !px-8 flex-end !text-white" @click="nextStep"/> 
+          <Button 
+            :text="activeStep == 0 ? 'Continue' : 'Verify KYC'" 
+            class="!w-auto !px-8 flex-end !text-white" 
+            @click="nextStep"
+            :loading="isVerifying"
+          /> 
         </div>
       </div> 
     </div>
@@ -375,18 +557,26 @@
 </template>
 
 <script setup lang="ts">  
-import { useAuthStore } from '~/store/authentication'  
+definePageMeta({ layout: "auth" });  
+
 import { required, email, minLength, maxLength, helpers } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core'; 
+import { useAuthStore } from '~/store/authentication'  
 import { useLayoutStore } from '~/store/layout'  
-const { updateAuthCardSize } = useLayoutStore()
+import { useConstantsStore } from '~/store/constants'  
 
-const { verifyKYC, updateKYC } =  useKYCApi() 
-const { uploadFile } =  useCommonApi() 
-const { kycData, loadKYCDataFromLocalStorage, setKYCData } = useAuthStore()
+const { $toast } = useNuxtApp()
+const router = useRouter()
+const { verifyKYC } =  useKYCApi() 
+const { uploadFile, getConstantData } =  useCommonApi() 
+const { updateAuthCardSize } = useLayoutStore() 
+const { user, kycData, loadKYCDataFromLocalStorage, setKYCData } = useAuthStore()
 
-definePageMeta({ layout: "auth" });  
- 
+
+const international_passport = ref(null)
+const selfie = ref(null)
+const director_passport = ref(null)
+  
 //  
 const showLivenessCheck: Ref<boolean>  = ref(false);
 const compKey: Ref<number> = ref(345466); // can be any random number
@@ -395,27 +585,27 @@ const errors: Ref<object> = ref({});
 const showPassword: Ref<boolean> = ref(false);
 const activeStep: Ref<number> = ref(0);
 const loading: Ref<boolean> = ref(false);  
-const isUploading: Ref<boolean> = ref(false)
-const fileType: Ref<string> = ref('all') 
-const documentType: Ref<any> = ref(null)
- 
-// 
+const isUploading: Ref<boolean> = ref(false);
+const isVerifying: Ref<boolean> = ref(false);
+const fileType: Ref<string> = ref('all');
+const documentType: Ref<any> = ref(null);
+const countries = ref([]) 
+const countryCode = ref('')  
 const kycPayload: Ref<any> = ref({
   first_name: "",
   last_name: "",
   address: "",
   nationality: "",
   email: "",
-  power_of_attorney: null, 
-  pep: null,
-  international_passport: "",
-  selfie: "https://res.cloudinary.com/vesseltrust/image/upload/v1684709155/kecmic",
-  // selfie: "https://res.cloudinary.com/vesseltrust/image/upload/v1684709155/kecmic",
-  // max_amount: "",
-  // min_amount: "",
+  phone_number: "", 
+  min_amount: "",
+  max_amount: "",
+  power_of_attorney: '', 
+  pep: '',
+  international_passport: "https://res.cloudinary.com/vesseltrust/image/upload/v1684709155/kecmic",
+  selfie: "https://res.cloudinary.com/vesseltrust/image/upload/v1684709155/kecmic", 
   payback_days: "",
   interest_rate: 0,
-  phone_number: "",
   company_name: "",
   company_reg_number: "",
   company_country: "",
@@ -424,63 +614,35 @@ const kycPayload: Ref<any> = ref({
   aml_appropriate_regulation: "",
   appropriate_prudential_supervision: "",
   investigated_for_money_laundering: "",
-  director_passport: "",
+  director_passport: "https://res.cloudinary.com/vesseltrust/image/upload/v1684709155/kecmic",
   passport_number: "",
-  recaptchaToken:  ""
-})
+  recaptchaToken:  "true"
+}) 
+
+// computed
+const loggedInUser = computed(() => user)
+const allCountries = computed(() => useConstantsStore().countries)
  
-const nationality = ref('')
 
-const countries = ref([
-  {name: 'Nigeria'},
-  {name: 'England'},
-  {name: 'Argentina'},
-  {name: 'Brazil'}, 
-])
+//  watch  
+// Watch for changes in the kycPayload object
+watch(kycPayload, (newValue) => {  
+  setKYCData(newValue) 
+}, { deep: true }); // Use the deep option to watch nested properties
 
-/* 
-{
-    "first_name":"weeeee",
-    "last_name":"meeeee",
-    "address":"living somewhere",
-    "nationality":"living somewhere",
-    "email":"ssswas@gmail.com",
-    "phone_number":"+2348164629033",
-    "power_of_attorney":"yes",
-    "payback_days":"65",
-    "interest_rate":24,
-    "min_amount":"20000000",
-    "max_amount":"200000000",
-    "pep":"yes",
-    "international_passport":"https://www.com/ass/",
-    "company_name":"yes",
-    "company_reg_number":"yes",
-    "company_country":"yes",
-    "company_address":"yes",
-    "company_financial_intermediary":"yes",
-    "aml_appropriate_regulation":"yes",
-    "appropriate_prudential_supervision":"yes",
-    "investigated_for_money_laundering":"yes",
-    "selfie":"https://www.com/ass/",
-    "director_passport":"https://www.com/ass/",
-    "passport_number":"YES",
-    "recaptchaToken": "true"
 
-}
-*/
- 
 // rules  
 const authourizedRepRules = {
-    first_name: { required },
-    last_name: { required }, 
-    address: { required },
-    nationality: { required },
-    email: { required },
-    power_of_attorney: { required },
-    pep: { required },
-    international_passport: { required },
-    selfie: { required }, 
-  } 
+  first_name: { required },
+  last_name: { required }, 
+  address: { required },
+  nationality: { required },
+  email: { required },
+  power_of_attorney: { required },
+  pep: { required },
+  international_passport: { required },
+  selfie: { required }, 
+} 
 const finiancialInstistutionRules = computed(() => {
    return {
     first_name: { required },
@@ -495,18 +657,18 @@ const finiancialInstistutionRules = computed(() => {
   };
 }) 
 
+
 //  validation
 const vRep$ = useVuelidate(authourizedRepRules, kycPayload.value);
 const finInst$ = useVuelidate(finiancialInstistutionRules, kycPayload.value);
 
-//  watch  
-// Watch for changes in the kycPayload object
-watch(kycPayload, (newValue) => {  
-  setKYCData(newValue)
-}, { deep: true }); // Use the deep option to watch nested properties
-
 
 // functions
+// 
+const getCountryCode = (selectedCountry: any) => {
+  countryCode.value = selectedCountry.phone_code
+}
+// 
 const handleUpload = async (event: Event | any) => { 
   const file = event.target.files[0]; 
 
@@ -517,7 +679,7 @@ const handleUpload = async (event: Event | any) => {
 
   await upload(file);  
 }
-
+// 
 const beforeUpload = ({ type, size }: any) => { 
   const imageTypes = ['image/jpeg', 'image/jpg'];
   const documentTypes = ['application/pdf'];
@@ -545,6 +707,7 @@ const beforeUpload = ({ type, size }: any) => {
 
   return null;
 }
+// 
 const upload = async (file: any) => { 
   let formData = new FormData();
   formData.append('doc', file);
@@ -564,83 +727,75 @@ const upload = async (file: any) => {
 //     },
 //     "code": "VT200"
 // }
-} 
-
+}  
+// 
 const nextStep = async () => { 
   // console.log("validity", vRep$.value) 
   // vRep$.value.$touch()   
   // if (vRep$.value.$error ) return console.log("vRep$.value.$errors:::", vRep$.value.$errors)
+  if (activeStep.value < 1) return  activeStep.value = 1 
+  isVerifying.value = true
  
-  // activeStep.value = 1
-  
-  const payload = {
-    "first_name":"Santos",
-    "last_name":"Cristiano",
-    "address":"living somewhere in the hood .... ",
-    // "gender":"male",
-    // "nationality":"living somewhere",
-    // "email":"scripts@mailinator.com",
-    // "phone_number":"+2348136029708",
-    // "power_of_attorney":"yes",
-    // "payback_days":"65",
-    // "interest_rate":24,
-    // "min_amount":"20000000",
-    // "max_amount":"200000000",
-    // "pep":"yes",
-    // "international_passport":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
-    // "company_name":"yes",
-    // "company_reg_number":"444242",
-    // "company_country":"yes",
-    // "company_address":"yes",
-    // "company_financial_intermediary":"yes",
-    // "aml_appropriate_regulation":"yes",
-    // "appropriate_prudential_supervision":"yes",
-    // "investigated_for_money_laundering":"yes",
-    // "selfie":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
-    // "director_passport":"https://res.cloudinary.com/demo/image/upload/sample.jpg",
-    // "passport_number":"4544646464",
-    // "recaptchaToken": "true"
-  }
-
-  console.log('started api call')
-  const response = await  updateKYC(payload)
+  const response = await  verifyKYC(kycPayload.value)
   const { data, error } = response
-  console.log("data:::", data)
-  if (error) return console.log("error:::", error);
+
+  isVerifying.value = false 
+  if (error) return  $toast('show', { type: "error", message: error.message  })
  
-  console.log("data:::", data) 
+  $toast('show', { type: "success", message: data.message || `Login Successful`}) 
+  router.push("/dashboards")
 } 
-
+// 
 const retoreSession = async  () => {    
-    const kycInStorage = localStorage.getItem('kycData'); 
+  const kycInStorage = localStorage.getItem('kycData');  
+  
+  if (!kycInStorage) return kycPayload.value.email = loggedInUser.value?.email
 
-    if (!kycInStorage) return;
-    const deserializedData = JSON.parse(kycInStorage);
+  const deserializedData = JSON.parse(kycInStorage);
 
-    if (Object.keys(deserializedData).length > 0) { 
-      kycPayload.value = deserializedData; 
-    } else { 
-      return setKYCData(kycPayload.value)   
-    }
+  if (Object.keys(deserializedData).length > 0) {   
+    kycPayload.value = deserializedData; 
+    if (loggedInUser.value?.email) kycPayload.value.email = loggedInUser.value.email 
+    // get country code
+    allCountries.value.forEach((country: any) => {
+      if (country.name == kycPayload.value.nationality) {
+        countryCode.value = country.phone_code
+      }
+    })
+    if (!countryCode.value) countryCode.value = "+234"
+  } else {   
+    setKYCData(kycPayload.value)   
+    if (loggedInUser.value?.email) kycPayload.value.email = loggedInUser.value?.email
+  }  
 }
-
-
+// 
 const toggleLivenessCheck = () => { 
   if (showLivenessCheck.value) profile.value.selfie = null; 
-
-  // re-render component to reset it
+ 
   compKey.value++;
   showLivenessCheck.value = !showLivenessCheck.value;
 }
- 
+//  
 const getSelfie = (selfie: any) => {  
   profile.value.selfie = selfie; 
+} 
+// 
+const handleCountrySearch = (query: string) => {
+  if (query) {
+    loading.value = true
+    setTimeout(() => {
+      loading.value = false
+      countries.value = allCountries.value.filter((country: any) => {
+        return country.name.toLowerCase().includes(query.toLowerCase())
+      })
+    }, 200)
+  } else {
+    countries.value = []
+  }
 }
-
-
 // lifecycle
 onBeforeMount(async () => { 
-  updateAuthCardSize('md') 
+  updateAuthCardSize('md')  
   retoreSession() 
 })  
 </script>

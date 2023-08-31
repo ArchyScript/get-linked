@@ -2,7 +2,7 @@
   <div class="min-h-screen flex flex-col flex-auto flex-shrink-0  no-scrollbar antialiased bg-ui-bg">
     
     <!-- Sidebar -->
-    <div class="fixed flex flex-col left-0 w-[17.5rem] p-4 bg-grey-700 h-full transition-all duration-300 border-none z-10">
+    <div class=" fixed flex flex-col left-0 w-[17.5rem] p-4 bg-grey-700 h-full transition-all duration-300 border-none z-10">
       <PartialsSidebar/>
     </div> 
   
@@ -18,7 +18,7 @@
     </div> 
 
     <!-- all general components here e.g toast -->
-    <Toast/> 
+        <Toast/> 
   </div> 
 </template>   
 

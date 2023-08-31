@@ -70,11 +70,11 @@ const mainMenu = ref([
     route: "/my-deals",
     icon: "my-deals"
   },
-  {
-    title: "Marketplace",
-    route: "/marketplace",
-    icon: "marketplace"
-  },
+  // {
+  //   title: "Marketplace",
+  //   route: "/marketplace",
+  //   icon: "marketplace"
+  // },
   {
     title: "Messages",
     route: "/messages",

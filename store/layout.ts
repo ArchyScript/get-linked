@@ -8,7 +8,7 @@ export const useLayoutStore = defineStore('layoutStore', () => {
   }
 
   return {
-    updateAuthCardSize,
+    updateAuthCardSize, 
     authCardSize,
   };
 });

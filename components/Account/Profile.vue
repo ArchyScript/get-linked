@@ -159,7 +159,7 @@
                   class="p-1 !bg-transparent !focus:text-black !w-full"
                   placeholder="Select" size="large"
                 >
-                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                  <el-option v-for="titleOption in titleOptions" :key="titleOption.title" :label="titleOption.title" :value="titleOption.title" />
                 </el-select>
               </div>
             </div>  
@@ -351,8 +351,10 @@
 <script setup lang="ts">
 // const { $toast } = useNuxtApp()
 import { useAuthStore } from '~/store/authentication'  
-const { logout } = useAuthStore()  
+const { logout, updateUserProfile } = useAuthStore()  
 const { deleteFinancier } =  useAuthApi() 
+const { updateKYC, getUserProfile } =  useKYCApi() 
+const { getConstantData } =  useCommonApi() 
 const {$toast} = useNuxtApp()
 
 const activeTabId = ref("rep_details")
@@ -371,6 +373,12 @@ const options = ref([
     value: 'Option2',
     label: 'Option2',
   }, 
+])
+
+const titleOptions =  ref([
+  {title: "Mr."}, 
+  {title: "Mrs."}, 
+  {title: "Miss"}, 
 ])
 
 const deleteWarnings = ref([
@@ -392,15 +400,25 @@ const toggleActiveTab = (tabId: string) => {
   activeTabId.value = tabId 
 }
 
-const updateKYCDetails = () => {
+const updateKYCDetails = async () => {
   console.log("updating in progress") 
-  $toast('show', {
-    type: "success",
-    message: `Test  nifegjh `,
-  })
+  const payload = {
+    "first_name":"Aveiro",
+    "last_name":"Dos",
+  }
+  const response = await  updateKYC(payload)
+  const { data, error } = response 
+ 
+  if (error) return  $toast('show', { type: "error", message: error.message  })
+  
+  // 
+  $toast('show', { type: "success", message: data.message}) 
+
+  await updateUserProfile()
 }
 
 const deleteFinancierAccount = async () => {  
+  console.log("deleete")
   const response = await  deleteFinancier()
   const { data, error } = response  
  

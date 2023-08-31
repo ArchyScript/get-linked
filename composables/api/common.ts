@@ -27,8 +27,21 @@ export const useCommonApi = () => {
     }
   };
 
+  // liveness check
+  const getConstantData = async () => {
+    try {
+      const response = await commonAxiosInstance
+        .get(`constants`)
+        .then(async (response: AxiosResponse) => response);
+      return HandleAxiosResponse(response);
+    } catch (error: any) {
+      return HandleAxiosError(error);
+    }
+  };
+
   return {
     uploadFile,
     livenessCheck,
+    getConstantData,
   };
 };
