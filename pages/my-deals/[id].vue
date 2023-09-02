@@ -10,8 +10,12 @@
           <CardContainer size="md"  class="space-y-4 ">
             <div class="flex  items-center  space-x-4 pb-4  w-full border-b">
               <div class="flex-1  flex space-x-4 items-center "> 
-                <span class=" h-16 w-16 rounded">
-                  <img src="~/public/images/img-1.png" class="w-full h-full" /> 
+                <span class=" h-16 w-16 rounded"> 
+                  <Avatar  
+                    name="img-1" 
+                    customClass="!w-full !h-full"
+                    :alt="'test'"
+                  />
                 </span>
 
                 <div class="flex-1 truncate space-y-1.5">
@@ -201,7 +205,7 @@
 const recentTrades = ref([
   { 
     id: "1",
-    imageUrl: "public/images/img-1.png",
+    imageUrl: "~/public/images/img-1.png",
     isVerified: true,
     title: "BLCO",
     amount: 1000074300,
@@ -209,7 +213,7 @@ const recentTrades = ref([
   },
   {
     id: "2",
-    imageUrl: "~/assets/images/profile-picture.svg",
+    imageUrl: "~/public/images/img-1.png",
     isVerified: true,
     title: "BLCO",
     amount: 1000074300,

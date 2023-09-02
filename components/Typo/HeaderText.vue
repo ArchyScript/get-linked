@@ -14,20 +14,17 @@
   >
     <slot />
   </h3>
-</template>
+</template> 
 
-<script lang="ts">
-export default {
-  props: {
-    size: {
-      type: String,
-      default: "base",
-    }, 
-    customClass: {
-      type: String,
-      default: "",
-    },
+<script setup lang="ts"> 
+const props = defineProps({
+  size: {
+    type: String,
+    default: "sm",
+  }, 
+  customClass: {
+    type: String,
+    default: "",
   },
-  name: "HeaderText",
-};
+})
 </script>

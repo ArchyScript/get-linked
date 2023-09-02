@@ -12,7 +12,7 @@ export const getAuthHeaders = (): AxiosRequestHeaders & any => {
     authToken = window.localStorage.getItem('authToken');
   }
 
-  // authToken = !authToken || authToken === undefined ? authToken : authToken;
+  authToken = !authToken || authToken === undefined ? authToken : authToken;
   console.log('autbToken::::', authToken);
 
   const headers = {

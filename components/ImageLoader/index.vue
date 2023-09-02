@@ -11,6 +11,7 @@
     <slot />
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent, ref, onMounted, watch } from "vue";
 

@@ -41,7 +41,7 @@ const searchText = ref("")
 const marketplaces = ref([
   { 
     id: "1",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 1000074300,
@@ -50,7 +50,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "2",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 908,
@@ -59,7 +59,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "3",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 1000074300,
@@ -68,7 +68,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "4",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 1000074300,
@@ -77,7 +77,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "5",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 34452,
@@ -86,7 +86,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "15",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 1000074300,
@@ -95,7 +95,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "12",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 1000074300,
@@ -104,7 +104,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "11",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 334342,
@@ -113,7 +113,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "18",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 1000074300,
@@ -122,7 +122,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "164",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 1000074300,
@@ -131,7 +131,7 @@ const marketplaces = ref([
   }, 
   { 
     id: "132",
-    imageUrl: "public/images/img-1.png", 
+    imageUrl: "~/public/images/img-1.png", 
     title: "BLCO",
     seller: "Daniel Script",
     requestAmount: 1000074300,

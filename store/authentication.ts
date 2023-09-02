@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-// const { $toast } = useNuxtApp();
+// const { useKYCApi } = '../composables';
 
 const serializer = {
   serialize: JSON.stringify,
@@ -9,14 +9,20 @@ const serializer = {
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
 
-  const unVerifiedUserEmail = ref<String>('');
+  // logged in user
   const token = ref<String>('');
-  const user = ref<any>({});
-  const kycData = ref<Object>({});
+  const userProfile = ref<any>({});
+  const userKYC = ref<any>({});
+  const authenticatedUser = ref<any>({});
   const previousRoute = ref<string | null>(null);
+
+  // unauthenticated data like kyc data in local storage
+  const unVerifiedUserEmail = ref<String>('');
+  const kycData = ref<Object>({});
 
   // getters
   const getKYCData = computed(() => kycData.value);
+  // const getAuthenticatedUser = computed(() => authenticatedUser.value);
 
   // actions
   const setUnVerifiedUserEmail = (email: string) => {
@@ -28,8 +34,11 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.setItem('authToken', authToken);
   };
 
-  const setAuthUser = (userProfile: object) => {
-    user.value = userProfile;
+  const setAuthUser = (userDetails: any) => {
+    // if (userProfile) userProfile.value = userProfile;
+    // if (userProfile) userProfile.value = userProfile;
+    console.log(userDetails);
+    authenticatedUser.value = userDetails;
   };
 
   const updateUserProfile = async () => {
@@ -38,8 +47,24 @@ export const useAuthStore = defineStore('auth', () => {
     // const { data, error } = response;
     // if (error) return $toast('show', { type: 'error', message: error.message });
     // $toast('show', { type: 'success', message: data.message || 'Profile update Successful' });
-    // user.value = data;
+    // userProfile.value = data;
     console.log(98);
+  };
+
+  const getAuthenticatedUser = async () => {
+    const { getUserProfile } = useKYCApi();
+
+    const response = await getUserProfile();
+    const { data, error } = response;
+
+    // $toast('show', { type: 'error', message: error.message });
+    if (error) return;
+    const { kyc } = data;
+
+    // success message for login
+    setAuthUser(data);
+
+    if (Object.keys(kyc).length < 1) return router.push('/auth/kyc');
   };
 
   const setKYCData = (data: any) => {
@@ -63,7 +88,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const clearAuthStore = () => {
     token.value = '';
-    user.value = {};
+    userProfile.value = {};
     kycData.value = '';
     unVerifiedUserEmail.value = '';
   };
@@ -84,9 +109,12 @@ export const useAuthStore = defineStore('auth', () => {
     setAuthUser,
     logout,
     token,
-    user,
+    userProfile,
+    userKYC,
+    getAuthenticatedUser,
     kycData,
     previousRoute,
+    authenticatedUser,
     getKYCData,
     unVerifiedUserEmail,
     setUnVerifiedUserEmail,

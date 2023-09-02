@@ -3,8 +3,11 @@
     <div class=" flex space-x-4 justify-between items-center p-2  hover:bg-input-bg cursor-pointer" > 
       <div class="flex-1 flex  items-center  space-x-2">
         <div class="h-12 w-12 rounded">
-          <img src="~/public/images/img-1.png" class="w-full h-full" :alt="trade.title" />
-          <ImageLoader photoUrl="/public/images/img-1.png" />
+          <Avatar 
+            name="img-1" 
+            customClass="!w-full !h-full"
+            :alt="trade.title"
+          />
         </div>
 
         <div class="flex-1 truncate space-y-1.5">
@@ -47,7 +50,7 @@ const props = defineProps({
     type: Object,
     default: {
       id: "1",
-      imageUrl: "public/images/img-1.png",
+      imageUrl: "~/public/images/img-1.png",
       isVerified: false,
       title: "",
       amount: 0,

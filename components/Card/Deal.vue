@@ -4,7 +4,12 @@
       <div class=" flex space-x-4"> 
         <div class="flex-1  flex space-x-2 items-center "> 
           <span class=" h-12 w-12 rounded">
-            <img src="~/public/images/img-1.png" class="w-full h-full" :alt="data.title" /> 
+            <!-- <img src="~/public/images/img-1.png" class="w-full h-full" :alt="data.title" />  -->
+            <Avatar 
+              name="img-1" 
+              customClass="!w-full !h-full"
+              :alt="data.title"
+            />
           </span>
 
           <div class="flex-1 truncate space-y-1.5">

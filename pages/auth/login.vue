@@ -138,16 +138,16 @@ const loginFinacier = async () => {
   // success message for login
   $toast('show', { type: "success", message: `Login Successful`})
 
-  const { profile, authToken, kyc } = data
+  const { authToken, kyc } = data
   
   setAuthToken(authToken) 
-  setAuthUser(profile) 
+  setAuthUser(data)  
 
   if (Object.keys(kyc).length < 1)  return router.push('/auth/kyc')
      
   // if the user have not completed their kyc
   // if (!profile.isKYC) return router.push('/auth/kyc')
- 
+  
   console.log("data:::", data)
   
   // check if session expired before login or it is a fresh login

@@ -1,9 +1,14 @@
 <template> 
   <div class=" flex space-x-3  items-center px-[9px]  rounded hover:bg-input-bg hover:bg-opacity-50 cursor-pointer" >  
     <div class="h-9 w-9 rounded-full ring-1 ring-secondary-500">
-      <img src="~/public/images/img-1.png" class="w-full h-full rounded-full"/> 
+      <!-- <img src="~/public/images/img-1.png" class="w-full h-full rounded-full"/>  -->
+      <Avatar 
+        name="img-1" 
+        customClass="!w-full !h-full rounded-full"
+        :alt="chat.username"
+      />
     </div>
-
+ 
     <div class="flex-1 flex-col space-y-2 truncate border-b-[0.8px] border-ui-bg py-3.5 space-y-[5px]">
       <div class="space-x-5 flex items-center truncate">
         <TypoHeaderText size="base" customClass="flex-1 !text-grey-500 truncate  "> {{chat.username}}  </TypoHeaderText>

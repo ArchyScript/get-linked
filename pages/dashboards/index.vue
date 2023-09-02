@@ -116,7 +116,7 @@ const cards = ref([
 const recentTrades = ref([
   { 
     id: "1",
-    imageUrl: "public/images/img-1.png",
+    imageUrl: "~/public/images/img-1.png",
     isVerified: true,
     title: "BLCO",
     amount: 1000074300,
@@ -124,7 +124,7 @@ const recentTrades = ref([
   },
   {
     id: "2",
-    imageUrl: "~/assets/images/profile-picture.svg",
+    imageUrl: "~/public/images/img-1.png",
     isVerified: true,
     title: "BLCO",
     amount: 1000074300,

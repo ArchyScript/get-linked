@@ -116,7 +116,11 @@
 
               <div class="relative bg-input-bg w-full pl-8 rounded">
                 <span class="icon icon-left text-grey-300">
-                  <IconLocation />
+                  <Avatar 
+                    :name="`${customerNationalityISO2}_16`"
+                    :isSubFolder="true"
+                    subfolderPath="flags" 
+                  />
                 </span>
 
                 <el-select 
@@ -127,6 +131,7 @@
                   remote
                   filterable
                   remote-show-suffix
+                  default-first-option
                   :loading="loading"
                   :remote-method="handleCountrySearch"
                   loading-text="Loading Countries"
@@ -140,10 +145,10 @@
                     :label="country.name" 
                     :value="country.name" 
                     :name="country.value" 
-                    @click="getCountryCode(country)"
+                    @click="getCountryCode(country, 'customer')"
                   />
                 </el-select> 
-              </div>
+              </div> 
             </div>
 
             <div class="flex-1">
@@ -158,20 +163,24 @@
                 class="input-with-select  bg-input-bg  h-[3rem]"
               >
                 <template #prepend>
+                  <div class=" flex space-x-1 items-center">
+                    <Avatar 
+                      :name="`${customerNationalityISO2}_16`"
+                      :isSubFolder="true"
+                      subfolderPath="flags"
+                    />
+
+                    <TypoNormalText> {{customerCountryCode}} </TypoNormalText>
+                  </div>
                   <!-- <el-select v-model="kycPayload.nationality?.phone_code" :placeholder="kycPayload.nationality?.phone_code " class="w-[5rem]">   -->
-                  <el-select 
+                  <!-- <el-select 
                     filterable
                     remote
                     reserve-keyword 
-                    :placeholder="countryCode " 
+                    :placeholder="customerCountryCode" 
                     class="w-[5rem]" 
                     disabled
-                  >  
-                    <!-- :loading="loading"
-                    :no-match-text="no-match-text"
-                    :no-data-text="no-data-text"
-                    :loading-text="loading-text"
-                    :remote-method="handleCountrySearch" -->
+                  >   
                     <el-option
                       v-for="item in 7"
                       :key="item"
@@ -182,7 +191,7 @@
                       <span style="float: left"> <IconUpload/> </span>
                       <span> {{ 'item' }} </span>
                     </el-option>
-                  </el-select>
+                  </el-select> -->
                 </template> 
               </el-input>
             </div> 
@@ -408,8 +417,12 @@
               </label>
 
               <div class="relative bg-input-bg w-full pl-8 rounded">
-                <span class="icon icon-left text-grey-300">
-                  <IconLocation />
+                <span class="icon icon-left text-grey-300"> 
+                  <Avatar 
+                    :name="`${companyCountryISO2}_16`"
+                    :isSubFolder="true"
+                    subfolderPath="flags"
+                  />
                 </span>
 
                 <el-select 
@@ -432,6 +445,7 @@
                     :label="country.name" 
                     :value="country.name" 
                     :name="country.value"  
+                    @click="getCountryCode(country, 'company')"
                   />
                 </el-select> 
               </div>
@@ -559,18 +573,18 @@
 <script setup lang="ts">  
 definePageMeta({ layout: "auth" });  
 
+import { useConstantsStore } from '~/store/constants'  
 import { required, email, minLength, maxLength, helpers } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core'; 
 import { useAuthStore } from '~/store/authentication'  
 import { useLayoutStore } from '~/store/layout'  
-import { useConstantsStore } from '~/store/constants'  
 
 const { $toast } = useNuxtApp()
 const router = useRouter()
 const { verifyKYC } =  useKYCApi() 
 const { uploadFile, getConstantData } =  useCommonApi() 
 const { updateAuthCardSize } = useLayoutStore() 
-const { user, kycData, loadKYCDataFromLocalStorage, setKYCData } = useAuthStore()
+const { authenticatedUser, kycData, setKYCData } = useAuthStore()
 
 
 const international_passport = ref(null)
@@ -590,7 +604,9 @@ const isVerifying: Ref<boolean> = ref(false);
 const fileType: Ref<string> = ref('all');
 const documentType: Ref<any> = ref(null);
 const countries = ref([]) 
-const countryCode = ref('')  
+const customerCountryCode = ref('')  
+const customerNationalityISO2 = ref('')  
+const companyCountryISO2 = ref('')  
 const kycPayload: Ref<any> = ref({
   first_name: "",
   last_name: "",
@@ -618,9 +634,10 @@ const kycPayload: Ref<any> = ref({
   passport_number: "",
   recaptchaToken:  "true"
 }) 
+ 
 
 // computed
-const loggedInUser = computed(() => user)
+const authUser = computed(() => authenticatedUser?.profile)
 const allCountries = computed(() => useConstantsStore().countries)
  
 
@@ -665,8 +682,11 @@ const finInst$ = useVuelidate(finiancialInstistutionRules, kycPayload.value);
 
 // functions
 // 
-const getCountryCode = (selectedCountry: any) => {
-  countryCode.value = selectedCountry.phone_code
+const getCountryCode = (selectedCountry: any, user: string) => { 
+  customerCountryCode.value = selectedCountry.phone_code
+
+  if (user == 'customer') customerNationalityISO2.value = selectedCountry.iso2.toLowerCase()
+  if (user == 'company') companyCountryISO2.value = selectedCountry.iso2.toLowerCase()
 }
 // 
 const handleUpload = async (event: Event | any) => { 
@@ -749,23 +769,29 @@ const nextStep = async () => {
 const retoreSession = async  () => {    
   const kycInStorage = localStorage.getItem('kycData');  
   
-  if (!kycInStorage) return kycPayload.value.email = loggedInUser.value?.email
+  if (!kycInStorage) return kycPayload.value.email = authUser.value?.email
 
   const deserializedData = JSON.parse(kycInStorage);
 
-  if (Object.keys(deserializedData).length > 0) {   
+  if (Object.keys(deserializedData).length > 0) {
     kycPayload.value = deserializedData; 
-    if (loggedInUser.value?.email) kycPayload.value.email = loggedInUser.value.email 
+    if (authUser.value?.email) kycPayload.value.email = authUser.value.email 
     // get country code
     allCountries.value.forEach((country: any) => {
+      // for customer
       if (country.name == kycPayload.value.nationality) {
-        countryCode.value = country.phone_code
+        customerCountryCode.value = country.phone_code
+        customerNationalityISO2.value = country.iso2.toLowerCase()
+      } 
+      // for company
+      if (country.name == kycPayload.value.company_country) { 
+        companyCountryISO2.value = country.iso2.toLowerCase()
       }
     })
-    if (!countryCode.value) countryCode.value = "+234"
+    if (!customerCountryCode.value) customerCountryCode.value = "+234"
   } else {   
     setKYCData(kycPayload.value)   
-    if (loggedInUser.value?.email) kycPayload.value.email = loggedInUser.value?.email
+    if (authUser.value?.email) kycPayload.value.email = authUser.value?.email
   }  
 }
 // 
@@ -788,19 +814,20 @@ const handleCountrySearch = (query: string) => {
       countries.value = allCountries.value.filter((country: any) => {
         return country.name.toLowerCase().includes(query.toLowerCase())
       })
-    }, 200)
-  } else {
-    countries.value = []
+    }, 50)
+  }  else {
+    countries.value = allCountries.value
   }
 }
 // lifecycle
 onBeforeMount(async () => { 
   updateAuthCardSize('md')  
+  countries.value = allCountries.value
   retoreSession() 
 })  
 </script>
 
-<style scoped>
+<style scoped> 
 .input-field {
   @apply w-full flex-1 bg-transparent rounded leading-5 block text-sm py-3.5 outline-0 border-0 ring-0  focus:border-0 focus:ring-0 focus:outline-0;
 }
