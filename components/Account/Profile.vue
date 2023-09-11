@@ -374,8 +374,8 @@
           <TypoHeaderText size="sm" customClass="!text-grey-300 py-3 border-b-[1.5px] border-ui-bg"> KYC status </TypoHeaderText> 
   
           <div 
-            class=" flex bg-success-50 items-center px-6 py-3 rounded-md space-x-2"
-            :class="authUser?.profile?.isKYC ? 'text-success-500' : 'text-error-500'"
+            class=" flex items-center px-6 py-3 rounded-md space-x-2"
+            :class="authUser?.profile?.isKYC ? 'text-success-500 bg-success-50' : 'text-error-500 bg-error-50'"
           > 
             <IconCheckbox type="square" />
             
@@ -425,12 +425,12 @@
 import { useAuthStore } from '~/store/authentication'  
 import { useConstantsStore } from '~/store/constants'   
 
-const {$toast} = useNuxtApp()
+const { $toast } = useNuxtApp()
+const router = useRouter()
+const { getConstantData } =  useCommonApi() 
 const { authenticatedUser, getAuthenticatedUser, logout } = useAuthStore()  
 const { deleteFinancier } =  useAuthApi() 
 const { updateKYC, getUserProfile } =  useKYCApi() 
-const { getConstantData } =  useCommonApi() 
-const router = useRouter()
 
 // 
 const countries = ref([]) 
@@ -596,33 +596,5 @@ onBeforeMount(() => {
 }
 .icon.icon-right {
   @apply rounded-tr rounded-br right-0 cursor-pointer;
-}
-
-.el-input--large.el-input--suffix {
-  background: transparent;
-}
-
-.el-input--large.el-input--suffix.is-focus>.el-input__wrapper.is-focus,
-.el-input--large.el-input--suffix>.el-input__wrapper {
-  padding: 1px 15px;
-  background: transparent;
-  border: 0;
-  outline: none;
-  box-shadow: none !important;
-}  
-.el-input-group--prepend .el-input-group__prepend .el-select .el-input .el-input__wrapper { 
-    height: 3rem;
-}
-.el-radio__input.is-checked+.el-radio__label {
-    @apply text-primary-500 font-light;
-}
-/* .el-radio__input .el-radio__inner {
-    @apply border border-primary-500 bg-primary-500; 
-} */
-.el-radio__input.is-checked .el-radio__inner {
-    @apply border border-primary-500 bg-primary-500; 
-}
-::file-selector-button {
-  display: none;
-}  
+} 
 </style>

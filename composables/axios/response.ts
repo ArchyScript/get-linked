@@ -33,7 +33,7 @@ export const HandleAxiosError = (error: AxiosError | any) => {
     return setResponseReturn(null, status, error_message?.data);
   }
 
-  return setResponseReturn(null, status, error_response);
+  return setResponseReturn(null, status, error);
 };
 
 export const HandleAxiosResponse = async (response: AxiosResponse) => {

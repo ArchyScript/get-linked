@@ -1,5 +1,5 @@
  <template>
-  <div>
+  <div class="w-[36.5rem] mx-auto">  
     <div class="text-sm p-1">
       <div class="flex flex-col justify-center items-center">
         <IconEmptyImg class="mb-8" />
@@ -37,25 +37,22 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { useLayoutStore } from '~/store/layout'  
-const { updateAuthCardSize } = useLayoutStore()
-
+<script setup lang="ts"> 
 import { useAuthStore } from '~/store/authentication'  
-definePageMeta({ layout: "auth" });
 
-const loading: Ref<boolean> = ref(false);
-
+const router = useRouter()
 const { resendtVerification } =  useAuthApi() 
 const {  unVerifiedUserEmail } = useAuthStore()
-const router = useRouter()
 
+definePageMeta({ layout: "auth" }); 
+
+// Reactive
+const loading: Ref<boolean> = ref(false);
 
 // 
 const handleVerified = async () => { 
   router.push("/auth/login")
 };
-
 const resendUserVerification = async () =>  { 
   loading.value = true
   const payload = { email: unVerifiedUserEmail }
@@ -69,7 +66,7 @@ const resendUserVerification = async () =>  {
 }
 
 onBeforeMount(async () => {
-  updateAuthCardSize('sm') 
+  if (!unVerifiedUserEmail) return router.push("/auth/login")
 })
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded box-shadow p-8">
+  <div class="bg-white rounded box-shadow p-8 w-[36.5rem] mx-auto">  
     <div class="text-sm p-1">
       <h3
         class="text-center leading-7 mb-2 text-[1.75rem] font-semibold text-grey-600"
@@ -132,9 +132,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { useLayoutStore } from '~/store/layout'  
-const { updateAuthCardSize } = useLayoutStore()
+<script setup lang="ts"> 
 import { RegisterPayloadType } from '~/types/auth';
 
 import { useAuthStore } from '~/store/authentication'  
@@ -187,11 +185,7 @@ const registerFinacier = async () => {
  console.log("data:::", data)
 
  router.push('/auth/verify-account')  
-};
-
-onBeforeMount(async () => {
-  updateAuthCardSize('sm') 
-})
+}; 
 </script>
 
 <style>

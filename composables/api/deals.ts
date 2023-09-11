@@ -1,14 +1,11 @@
 import { defaultAxiosInstance } from '~/composables/axios/config';
-import { AxiosResponse } from 'axios';
 import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response';
 
 export const useDealsApi = () => {
   // deals
   const allDeals = async () => {
     try {
-      const response = await defaultAxiosInstance
-        .get(`deals`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.get(`deals`);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -18,9 +15,7 @@ export const useDealsApi = () => {
   // getSingleDeal
   const getSingleDeal = async (params: { id: any }) => {
     try {
-      const response = await defaultAxiosInstance
-        .get(`deals/${params.id}`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.get(`deals/${params.id}`);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -30,9 +25,7 @@ export const useDealsApi = () => {
   // createDeal
   const createDeal = async (params: { id: any }) => {
     try {
-      const response = await defaultAxiosInstance
-        .post(`deals`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`deals`);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);

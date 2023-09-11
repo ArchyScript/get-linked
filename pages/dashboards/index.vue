@@ -14,9 +14,9 @@
 
     <!-- card -->
     <section class="grid w-full  grid-cols-4 gap-5 ">
-        <div v-for="card in cards" :key="card.title">
-          <CardLeaderboard :data="card" />
-        </div>
+      <div v-for="card in cards" :key="card.title">
+        <CardLeaderboard :data="card" />
+      </div>
     </section>  
      
     <!-- chart and trades section -->
@@ -84,6 +84,26 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '~/store/authentication'  
+
+const { dashbaordStats } =  useRequestsApi() 
+const { authenticatedUser, getAuthenticatedUser, logout } = useAuthStore()  
+
+const authUser: any = computed(() => authenticatedUser) 
+
+const fetchDashboardData  = async  () => { 
+  const userId = authUser.value?.profile?.userId
+
+  const response = await  dashbaordStats(userId)
+  const { data, error } = response  
+
+  console.log("response:::", response) 
+}
+
+onBeforeMount(() => {
+  fetchDashboardData()
+})
+
 const hasChart = ref (false)
 const cards = ref([
   {

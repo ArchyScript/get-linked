@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded box-shadow p-8">  
+  <div class="bg-white rounded box-shadow p-8 w-[36.5rem] mx-auto">  
     <div class="text-sm p-1">
       <h3
         class="text-center leading-7 mb-2 text-[1.75rem] font-semibold text-grey-600"
@@ -95,35 +95,39 @@
 </template>
 
 <script setup lang="ts"> 
-const {$toast} = useNuxtApp()
-import { useLayoutStore } from '~/store/layout'  
-const { updateAuthCardSize } = useLayoutStore() 
-import { useAuthStore } from '~/store/authentication'  
+import { LoginPayloadType } from '~/types/auth';
+
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, maxLength, minValue, maxValue, helpers } from '@vuelidate/validators';
+import { useAuthStore } from '~/store/authentication'  
 
-definePageMeta({ layout: "auth" }); 
+definePageMeta({ layout: "auth" });
 
+const router = useRouter()
+const { $toast } = useNuxtApp() 
 const { login } =  useAuthApi() 
 const { setAuthUser, setAuthToken, logout, previousRoute } = useAuthStore()
-const router = useRouter()
 
+// Reactive
 const showPassword: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
-const payload = ref({ email: "", password: "" });  
+const payload = ref({ email: "", password: "" });   
 
-// 
+// computed
+const computedPreviousRoute = computed(()=> previousRoute)
+
+// rules 
 const rules = computed(() => { 
   return {
     email: { required, email }, 
     password: { required }, 
   };
 });
-const computedPreviousRoute = computed(()=> previousRoute)
 
-// 
+// Validation
 const v$ = useVuelidate(rules, payload.value);
  
+// functions
 const loginFinacier = async () => { 
   v$.value.$touch() 
   loading.value = true  
@@ -143,22 +147,22 @@ const loginFinacier = async () => {
   setAuthToken(authToken) 
   setAuthUser(data)  
 
-  if (Object.keys(kyc).length < 1)  return router.push('/auth/kyc')
-     
   // if the user have not completed their kyc
-  // if (!profile.isKYC) return router.push('/auth/kyc')
+  if (Object.keys(kyc).length < 1)  return router.push('/auth/kyc')
+  // if admin have not verified user kyc
+  // if (!profile.isKYC) return router.push('/auth/kyc') 
+     
+  // check if there is no previous route to redirect user to dashboard page 
+  if (!computedPreviousRoute.value || computedPreviousRoute.value == undefined)  return router.push('/dashboards') 
   
-  console.log("data:::", data)
-  
-  // check if session expired before login or it is a fresh login
-  if (computedPreviousRoute.value) return router.push(computedPreviousRoute.value)
-  
-  else router.push('/dashboards') 
-}; 
 
-onBeforeMount(async () => {
-  updateAuthCardSize('sm') 
-})
+  // check if session expired before login
+  // Do something when the route includes "/auth/" to exclude access to any /auth/*** page */
+  if (computedPreviousRoute.value.includes('/auth/')) return router.push('/dashboards') 
+ 
+  //  if previous route does not include auth  
+  return  router.push(computedPreviousRoute.value)
+};  
 </script>
 
 <style scoped>

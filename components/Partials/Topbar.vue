@@ -1,8 +1,8 @@
 <template>
   <div class="flex items-center justify-between bg-white sticky top-0 h-16 px-8 z-50">
-    <h4 class=" text-[1.125rem] text-grey-500">
-      Dashboard Reviews
-    </h4>
+    <TypoHeaderText size="lg" cuctomClass="!text-grey-500"> 
+      {{ topbarTitle }}   
+    </TypoHeaderText>
 
     <div  class="flex items-center space-x-8"> 
       <span class="relative flex items-center cursor-pointer space-x-4 text-gray-500">
@@ -12,13 +12,18 @@
 
       <span class="flex items-center space-x-0.5"> 
         <nuxt-link class="h-auto w-auto border rounded-full !mr-0" to="/account">
-          <img src="~/assets/images/profile-picture.svg" class="h-8 w-8" />
+          <span class="inline-block !h-12 !w-12">
+            <Avatar 
+              name="default-user-image"  
+              customClass="!w-full !h-full !rounded-full flex !justify-center !items-center"
+              fileType="svg"
+            />
+          </span>
         </nuxt-link>
 
         <el-dropdown trigger="click">
           <span class="el-dropdown-link p-2">
-            <IconArrow type="caret-down" :width="9" :height="6" /> 
-
+            <IconArrow type="caret-down" :width="9" :height="6" />  
           </span>
 
           <template #dropdown>
@@ -38,3 +43,26 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const router = useRouter()
+const route = useRoute()
+ 
+const topbarTitle = computed(() => { 
+  const routeFullPath =  route.fullPath  
+  if (routeFullPath == '/') return "Loading..."
+  
+  const firstSegment =  routeFullPath?.split('/').filter(segment => segment)[0]
+
+  if (firstSegment == "dashboards") return "Dashboard Reviews" 
+  const words = firstSegment.split('-');
+
+  // Capitalize the first letter of each word and join them with a space
+  const result = words.map(word => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }).join(' ');
+
+  // return firstSegment.charAt(0).toUpperCase() + firstSegment.slice(1)
+  return result
+}) 
+</script>

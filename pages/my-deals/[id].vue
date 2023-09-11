@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6"> 
     <!--  -->
-   <GoBack/> 
+   <Back/> 
      
     <!-- chart and trades section -->
     <section class="grid w-full  grid-cols-5 gap-4 ">  
@@ -202,6 +202,10 @@
 </template>
 
 <script setup lang="ts"> 
+const baseData =  ref([
+  {id: "", title: "" }
+])
+
 const recentTrades = ref([
   { 
     id: "1",

@@ -81,12 +81,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["close", "next"]); 
-const close = () => {
-  emit("close");
-};
-const next = () => {
-  emit("next");
-}; 
+const close = () => emit("close");
+const next = () => emit("next"); 
 </script>
 
 <style lang="scss" scoped>

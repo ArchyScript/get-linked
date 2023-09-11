@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="fixed inset-0 flex items-center justify-center bg-white z-50">
+  <div v-if="loading" class="fixed inset-0 flex items-center justify-center bg-secondary-500 z-50 opacity-30">
     <!-- Add your loading content here (e.g., a spinner or animation) -->
     <!-- <IconLoader class="animate-spin" /> -->
     <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-20 w-20">

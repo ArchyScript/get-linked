@@ -17,7 +17,7 @@
         </div>
         
         <!-- Reset password -->
-        <form class="space-y-4" v-if="activeTabId == 'reset-password'">
+        <form class="space-y-4" @submit.prevent="changeFinancierPassword" v-if="activeTabId == 'reset-password'">
           <TypoHeaderText size="sm" customClass="!text-grey-300 py-3 border-b-[1.5px] border-ui-bg"> Choose a new password, something easy to remember. </TypoHeaderText> 
  
           <div class="flex-col space-y-2"> 
@@ -28,7 +28,7 @@
             <div class="relative bg-input-bg rounded"> 
               <input
                 id="password"
-                v-model="resetPassword.old_password"
+                v-model="changePasswordPayload.old_password"
                 :type="showPassword ? 'text' : 'password'"
                 class="input-field !pr-12 !pl-4"
                 placeholder="password"
@@ -50,7 +50,7 @@
               <input
                 id="new_password"
                 v-paste-restrict  
-                v-model="resetPassword.new_password"
+                v-model="changePasswordPayload.new_password"
                 :type="showPassword ? 'text' : 'password'"
                 class="input-field !pr-12 !pl-4"
                 placeholder="password"
@@ -72,7 +72,7 @@
               <input
                 id="confirm_password"
                 v-paste-restrict  
-                v-model="resetPassword.confirm_password"
+                v-model="changePasswordPayload.confirm_password"
                 :type="showPassword ? 'text' : 'password'"
                 class="input-field !pr-12 !pl-4"
                 placeholder="password"
@@ -88,7 +88,7 @@
           <div class="flex w-full justify-end pt-6"> 
             <div class="flex items-center  space-x-1"> 
               <Button text="Cancel"  customClass="!text-primary-500 !py-4 !px-11 !bg-white !leading-[160%]"/> 
-              <Button text="Save"   customClass="!py-4 !px-11 !bg-primary-500   !leading-[160%]"/> 
+              <Button text="Save" type="submit" :loading="loading"  customClass="!py-4 !px-11 !bg-primary-500   !leading-[160%]"/> 
             </div>
           </div>
         </form>
@@ -149,34 +149,44 @@
 <script setup lang="ts">
 import { pasteHandler, dropHandler } from "~/utils"
 
+const {$toast} = useNuxtApp()
+const { changePassowrd } =  useAuthApi() 
+const router = useRouter()
+
+const loading =  ref(false)
 const toggleValue =  ref(false)
 const showPassword: Ref<boolean> = ref(false);
-const resetPassword = ref({
+const changePasswordPayload = ref({
   old_password: "",  
   new_password: "",  
   confirm_password: "",  
 });
-const activeTabId = ref("reset-password")
+const activeTabId = ref("reset-password") 
 
 const tabs = ref([
   {title: "Reset password", id: "reset-password"},
   {title: "2-Factor Authentication",  id: "2fa"}, 
 ])
 
+
 const twoFAs = ref([
   {
+    id: "google-auth",
     title: 'Google Authenticator',
     description: 'Use the Google Authenticator app to generate one time security codes',
   }, 
   {
+    id: "email",
     title: 'Email',
     description: 'Use the Google Authenticator app to generate one time security codes',
   }, 
   {
-    title: 'Text message (SMS) ',
+    id: "text-message",
+    title: 'Text message (SMS) ', 
     description: 'Use the Google Authenticator app to generate one time security codes',
   }, 
   {
+    id: "security-key",
     title: 'Security key',
     description: 'Use the Google Authenticator app to generate one time security codes',
   },  
@@ -187,19 +197,32 @@ const twoFAs = ref([
 const toggleActiveTab = (tabId: string) => {
   activeTabId.value = tabId 
 }
+const changeFinancierPassword = async () => { 
+  loading.value = true
+  const payload = {
+    old_password: changePasswordPayload.value.old_password,
+    password: changePasswordPayload.value.new_password,
+  }
+  const response = await changePassowrd(payload)
+  const { data, error } = response  
+
+  loading.value = false
+  if (error) return  $toast('show', { type: "error", message: error.message  })
+  console.log("data:", data)
+}
  
 
-onMounted(() => {
-  const confirmPasswordfield = document.getElementById('confirm_password');
-  const newPasswordfield = document.getElementById('new_password');
-  if (confirmPasswordfield) {
-    confirmPasswordfield.addEventListener('paste', pasteHandler);
-    confirmPasswordfield.addEventListener('drop', dropHandler);
-  }
-  if (newPasswordfield) {
-    newPasswordfield.addEventListener('paste', pasteHandler);
-    newPasswordfield.addEventListener('drop', dropHandler);
-  }
-});
+// onMounted(() => {
+//   const confirmPasswordfield = document.getElementById('confirm_password');
+//   const newPasswordfield = document.getElementById('new_password');
+//   if (confirmPasswordfield) {
+//     confirmPasswordfield.addEventListener('paste', pasteHandler);
+//     confirmPasswordfield.addEventListener('drop', dropHandler);
+//   }
+//   if (newPasswordfield) {
+//     newPasswordfield.addEventListener('paste', pasteHandler);
+//     newPasswordfield.addEventListener('drop', dropHandler);
+//   }
+// });
 </script>
  

@@ -1,36 +1,34 @@
 <template>
-  <div> 
-    <ModalsProcessing v-if="loading" />
+  <div>  
+    <ModalsProcessing 
+      v-if="isVerifyingOrUploading"
+      :message="verifyingOrUploadingMessage"
+    />
 
     <div v-else> 
       <KycCamera
-        v-if="showCamera"
-        ref="cameraRef"
-        @taken="verifyPicture"
-        @error="getVerificationFailure"
-        @loading="getLoading"
-      />  
+        v-if="showCamera" 
+        @validate="verifyPicture"
+        @close="closeModal"
+      />   
 
-      <template v-else> 
+      <!--  -->  
+      <template v-else>    
         <ModalsResponses 
-          v-if="verificationFailedMessage"
+          v-if="failedVerificationMessage"
           type="error"
-          titleText="Verification Error"
-          title="Your identity verification failed"
-          :message="verificationFailedMessage"
-          :hasTitle="true"
+          :titleText="failedVerificationTitle" 
+          :message="failedVerificationMessage"
           btnContinueText="Try again" 
-          @next="showCamera = true"
-          @close="closeModal"
+          @next="restartVerificationProcess"
+          @close="showCamera = true"
         />   
 
         <ModalsResponses
           v-else
-          type="success"
           message="Your identity has been verified"
           :hasTitle="false" 
-          @close="showLivenessCheck = false"
-          @next="closeModal"
+          @next="onUploaded" 
         />
       </template>
     </div>  
@@ -38,7 +36,8 @@
 </template>
 
 <script  setup lang="ts">  
-const { livenessCheck } =  useCommonApi() 
+const { uploadFile, livenessCheck } =  useCommonApi()  
+import { dataImageURLtoFile } from "~/utils/upload"
 
 const props = defineProps({
   showLiveness: {
@@ -48,62 +47,73 @@ const props = defineProps({
 }) 
 
 // 
-const loading: Ref<boolean>  = ref(false);
+const isVerifyingOrUploading: Ref<boolean>  = ref(false);
+const failedVerificationTitle: Ref<string>  = ref('');
+const failedVerificationMessage: Ref<any>  = ref(null);  
+const verifyingOrUploadingMessage: Ref<string>  = ref('');
 const imageUrl: Ref<string>  = ref('');
+const dataImageUrl: Ref<string>  = ref('');
 const showCamera: Ref<boolean>  = ref(true);
-const verificationFailedMessage: Ref<any>  = ref(null); 
-const cameraRef: Ref<any | null> = ref (null);
-
-// 
-const emit = defineEmits(["close", "done"]);
-
-// 
-const getLoading = (value: boolean) => {
-  loading.value = value
-}
-const getVerificationFailure = (message: string | null) => {
-  verificationFailedMessage.value = message;
-  showCamera.value = false;
-}
-const closeModal = async () =>  {  
-  if (cameraRef.value) await cameraRef.value.stop();
-  emit("close");
-}
-const proceed = () => { 
-  emit("done", imageUrl.value);
-  closeModal(); 
-}
-const  verifyPicture = async (file_url: any) => {
-  loading.value = true;
  
-  const response = await  livenessCheck({file_url})
-  const { data, error } = response 
 
-  console.log("response:::", response) 
+// Emit
+const emit = defineEmits(["close", "done"]);
+const closeModal = async () => emit("close")
+const onUploaded = () => emit("done", imageUrl.value)  
+
+//   Funtions
+const verifyPicture = async (data_image_url: string) => {  
+  dataImageUrl.value = data_image_url
+  handleVerifyingOrUploading("Verifying Picture liveness...") 
+ 
+  // const response = await  livenessCheck({file_url: "data_image_url"}) 
+  // const { data, error } = response 
+    
+  // if (error) return handleError("Verification Error", error.message) 
+
+  // handleVerifyingOrUploading("Pictrue verified. Please wait...")  
+
+  const imageFile = dataImageURLtoFile(data_image_url); 
+  if (!imageFile) return handleError("", "something went wrong... please try again")
   
-  //  handle error
-  if (error) {
-    let errorMessage = '';
-    if (!error) {
-      errorMessage = 'Your internet connection is bad';
-    } else {
-      errorMessage = error?.data?.message;
+  uploadSelfie(imageFile)  
+}  
+const uploadSelfie = async (file: any) => {   
+  handleVerifyingOrUploading("Uploading picture...")  
+  const formData = new FormData();
+  formData.append('doc', file);  
+ 
+  const response = await  uploadFile(formData)
+  const { data, error } = response  
 
-      if (errorMessage && errorMessage.includes('detect face in image')) {
-        errorMessage = `Face is not clear. Ensure that you are in a bright environment so there is enough light on your face and also make sure that you are close enough to the camera`;      
-      }
-    }
+  if (error) return handleError("Upload Error", error.message) 
+  imageUrl.value = data.file_url 
 
-    loading.value = false;
-    return getVerificationFailure(errorMessage);
-  }
-
-  if (!data) return getVerificationFailure("Sorry, something happened");
-
-  // data is not null
-  imageUrl.value = file_url;
-  getVerificationFailure(null); 
+  handleSuccess()
+}  
+const handleSuccess = () => {
+  isVerifyingOrUploading.value = false
+  showCamera.value = false
+  failedVerificationMessage.value = ""
+  failedVerificationTitle.value = ""
+  verifyingOrUploadingMessage.value = ""
+}
+const handleVerifyingOrUploading = (message: string) => {
+  isVerifyingOrUploading.value = true
+  verifyingOrUploadingMessage.value = message
+  failedVerificationMessage.value = ""
+}  
+const handleError = (title: string, message: string) => {
+  isVerifyingOrUploading.value = false
+  showCamera.value = false
+  failedVerificationTitle.value = title || "Verification Error"
+  failedVerificationMessage.value = message 
+  verifyingOrUploadingMessage.value = ""
 } 
+const restartVerificationProcess = () => {
+  verifyPicture(dataImageUrl.value)  
+} 
+ 
 </script>
 
 <style scoped>

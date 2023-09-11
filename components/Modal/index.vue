@@ -1,18 +1,14 @@
 <template> 
   <div
-    class="fixed top-0 left-0 !w-screen !h-screen overflow-auto flex flex-col bg-grey-500 bg-opacity-30 !z-50 overflow-hidden py-16 items-center"
+    class="fixed top-0 left-0 !w-screen !h-screen overflow-auto flex flex-col bg-grey-500 bg-opacity-30 !z-50 overflow-auto pt-16 pb-24 items-center"
     @click="closeModal"
-  >
+  > 
     <CardContainer
       size="lg"
       class="relative top-0 modal h-auto w-full !z-50 bg-white box-shadow"
       :style="`width: ${modalSizes} !important;`"
     >
-      <div class="flex mb -4" :class="centered && 'justify-center'">
-        <!-- <TypoHeaderText v-show="hasHeader" size="2xl">
-          {{ title }}
-        </TypoHeaderText> -->
-     
+      <div class="flex mb -4" :class="centered && 'justify-center'"> 
         <span 
           class="absolute bg-primary-50 p-4 rounded-tr-md cursor-pointer top-0 right-0" 
           @click="close"
@@ -24,7 +20,7 @@
       <div class="overflow-auto font-light text-sm">
         <slot/>
       </div>
-    </CardContainer> 
+    </CardContainer>  
   </div>  
 </template>
 
@@ -68,24 +64,13 @@ const modalSizes = computed(() => {
   else props.size;
 });
 
-window.addEventListener("keyup", (e) => {
-  if (e.key == "Escape") return close();
-});
-
-const closeModal = () => {
-  window.addEventListener(
-    "click",
-    (event: any) => {
-      if (!event.target.closest(".modal")) {
-        close();
-      }
-    },
-    false
-  );
-};
 const close = () => {
+  console.log(65789)
   emit("close", props.id);
 };
+window.addEventListener("keyup", (e) => {
+  if (e.key == "Escape") return close();
+}); 
 </script>
 
 <style lang="scss" scoped>

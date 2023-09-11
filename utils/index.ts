@@ -4,7 +4,6 @@ export const formatDate = (data: String, result_type: String) => {
   console.log('result_type:::', result_type);
 };
 
-//
 export const pasteHandler = (event: Event) => {
   event.preventDefault(); // Prevent the default paste behavior
   const clipboardData = (event as ClipboardEvent).clipboardData || window?.clipboardData;
@@ -13,7 +12,6 @@ export const pasteHandler = (event: Event) => {
   // Do whatever validation or processing you need to do with the pasted text
 };
 
-//
 export const dropHandler = (event: Event) => {
   event.preventDefault(); // Prevent the default drop behavior
 };
@@ -58,18 +56,3 @@ const generateTypesFromObject = <T extends ObjectType>(
 
   return `type ${typeName} = {\n  ${typeProperties.join('\n  ')}\n};`;
 };
-
-// const sampleObject = {
-//   name: 'John',
-//   age: 30,
-//   isStudent: false,
-//   hobbies: ['reading', 'gaming'],
-//   address: {
-//     city: 'New York',
-//     country: 'USA',
-//   },
-// };
-
-// const generatedType = generateTypesFromObject(sampleObject, 'GeneratedType');
-
-// console.log(generatedType);

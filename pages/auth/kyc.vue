@@ -2,35 +2,69 @@
   <div> 
     <div>  
       <!-- Full screen loader -->
-      <LoaderFullscreen :loading="isUploading" />
- 
+      <Modal  
+        v-if="isUploading"
+        :loading="isUploading" 
+        size="sm"
+        id="file-upload"
+        @close="closeModal" 
+      >   
+        <ModalsProcessing :loading="isUploading"  message="Uploading file to server..." />
+      </Modal>
+      
       <!-- Modals here -->
+      <Modal 
+        v-if="activeModal == 'kyc-verification'"
+        size="sm"
+        id="kyc-registeration"
+        @close="closeModal" 
+      >   
+        <ModalsProcessing 
+          v-if="isVerifyingKYC" 
+          message="Verifying KYC..."
+        />
+   
+        <template v-else>    
+          <ModalsResponses 
+            v-if="failedVerificationMessage"
+            type="error" 
+            titleText="KYC Verification Failed" 
+            :message="failedVerificationMessage"
+            btnContinueText="Try again" 
+            @next="startKycVerification"
+            @close="closeModal"
+          />   
+
+          <ModalsResponses
+            v-else 
+            :message="successVerificationMessage"
+            :hasTitle="false" 
+            @next="gotoDashboard" 
+          />
+        </template>
+      </Modal>
+
       <Modal
+        v-if="activeModal == 'liveness-verification'"
         id="liveness-verification"
-        v-if="showLivenessCheck"
         size="md"
-      >  
-        <!-- @close="toggleLivenessCheck" -->  
-        <KycLivenessCheck  
-          :key="compKey + 'livenessCheck'"
-          :showLiveness="showLivenessCheck"
-          @done="getSelfie"
-          @close="toggleLivenessCheck"
-        /> 
+        @close="closeModal"
+      >
+        <KycLivenessCheck @done="getSelfie" @close="closeModal" />  
       </Modal>
     </div> 
 
-    <div class="bg-white rounded box-shadow p-8"> 
+    <div class="bg-white rounded box-shadow p-8 w-[49.375rem] mx-auto">
       <div class="text-sm p-1">
         <div class="flex-col space-y-8">
           <p class="text-center text-grey-400 leading-6">
             Hi, {{kycPayload.email}}! Take some minutes to setup your account,
             kindly complete KYC information below to enable you Fund offers on our
-            marketplace.
+            marketplace. 
           </p>
-
+ 
           <div class=" w-2/3 mx-auto"> 
-            <el-steps  :active="activeStep" finish-status="pending" class="w-full">
+            <el-steps :active="activeStep" finish-status="pending" class="w-full">
               <el-step /> 
               <el-step />    
             </el-steps>
@@ -111,7 +145,7 @@
           <div class="mb-4 flex items-center space-x-4">
             <div class="flex-1">
               <label for="nationality" class="block mb-2  leading-6 text-grey-500">
-                Nationality
+                Nationality {{customerNationalityISO2}}
               </label>
 
               <div class="relative bg-input-bg w-full pl-8 rounded">
@@ -132,7 +166,7 @@
                   filterable
                   remote-show-suffix
                   default-first-option
-                  :loading="loading"
+                  :loading="isFilteringCountry"
                   :remote-method="handleCountrySearch"
                   loading-text="Loading Countries"
                   no-match-text="No country match... check spelling"
@@ -171,27 +205,7 @@
                     />
 
                     <TypoNormalText> {{customerCountryCode}} </TypoNormalText>
-                  </div>
-                  <!-- <el-select v-model="kycPayload.nationality?.phone_code" :placeholder="kycPayload.nationality?.phone_code " class="w-[5rem]">   -->
-                  <!-- <el-select 
-                    filterable
-                    remote
-                    reserve-keyword 
-                    :placeholder="customerCountryCode" 
-                    class="w-[5rem]" 
-                    disabled
-                  >   
-                    <el-option
-                      v-for="item in 7"
-                      :key="item"
-                      :label="item"
-                      :value="item"
-                      class="flex items-center space-x-3"
-                    >
-                      <span style="float: left"> <IconUpload/> </span>
-                      <span> {{ 'item' }} </span>
-                    </el-option>
-                  </el-select> -->
+                  </div> 
                 </template> 
               </el-input>
             </div> 
@@ -267,7 +281,7 @@
 
           <div class="mb-4 flex items-center space-x-4">
             <div class="w-1/2">
-              <label for="email" class="block mb-2 leading-6 text-grey-500">
+              <label class="block mb-2 leading-6 text-grey-500">
                 Email Address
               </label>
 
@@ -327,7 +341,7 @@
           </div>
   
           <div class="mb-4">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
+            <label class="block mb-2 leading-6 text-grey-500">
               Does the authorized representative hold a power of attorney?
             </label>
 
@@ -340,7 +354,7 @@
           </div>
   
           <div class="mb-4">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
+            <label class="block mb-2 leading-6 text-grey-500">
               Is the authorized representative/signatory considered a politically exposed person(PEP)?   
             </label>
 
@@ -353,40 +367,48 @@
           </div>
 
           <div class="mb-4">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
+            <h4 class="block mb-2 leading-6 text-grey-500">
               Upload International passport of authorized representative
-            </label>
+            </h4>
 
             <div class="w-3/5 flex items-center space-x-4">
-              <div class="relative !w-1/2 bg-input-bg w-full rounded">
-                <span class="icon icon-left text-grey-300">
-                  <IconUpload />
-                </span>
- 
-                <input 
-                  id="file"
-                  type="file" 
-                  class="input-field !pl-12 pr-4" 
-                  placeholder="Click to upload files here" 
-                />   
+              <label 
+                for="international_passport" 
+                class="flex rounded border-[1.5px] py-[13px] select-none px-4 space-x-4 cursor-pointer items-center"
+                :class="kycPayload.international_passport ? 'border-secondary-500 text-secondary-500 border-2' : 'border-grey-200 text-grey-200 border-[1.5px]'"
+              > 
+                <IconUpload :height="22" :width="22" /> 
 
-                  <!-- @change="handleUpload" -->
-                <!-- <div v-if="kycPayload.international_passport" class="flex-1 text-success-500">attached successfully</div> -->
-              </div>
+                <span> 
+                  {{ kycPayload.international_passport ? 'Change attachment' : 'Click to upload files here' }}
+                </span>
+              </label>
+
+              <input 
+                id="international_passport"
+                type="file"  
+                class="hidden" 
+                @change="(event) => handleUpload(event, 'international_passport')"
+              />
+                
+              <div v-if="kycPayload.international_passport" class="flex-1 text-success-500 capitalize">attached successfully</div>
             </div>
           </div>
     
           <div class="mb-4">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
+            <label class="block mb-2 leading-6 text-grey-500">
               Click on the button below to verify liveness
-            </label> 
+            </label>   
 
-            <Button text="Verify liveness" @click="showLivenessCheck = true" :hasIcon="true" iconName="camera"  class="!w-auto !px-8 !bg-primary-500 !text-white"/> 
-            <!-- <Button text="Verify liveness" :hasIcon="true" iconName="camera"  class="!w-auto !px-8 !bg-primary-500 !text-white" :disabled="!areFieldsValidated" :loading="loading" />  -->
-          </div>
-        </form>
+            <div class="flex items-center space-x-4"> 
+              <Button text="Verify liveness" @click="openModal('liveness-verification')"  :hasIcon="true" iconName="camera"  class="!w-auto !px-8 !bg-primary-500 !text-white"/>  
+              
+              <div v-if="kycPayload.selfie" class="flex-1 text-success-500 capitalize">Verified</div>
+            </div>
+          </div> 
+        </form> 
 
-        <!-- Step 2 -->
+        <!-- Step 2 --> 
         <form class="mt-8"  v-show="activeStep == 1">
           <div class="mb-4 flex items-center space-x-4">
             <div class="flex-1">
@@ -433,7 +455,7 @@
                   remote
                   filterable
                   remote-show-suffix
-                  :loading="loading"
+                  :loading="isFilteringCountry"
                   :remote-method="handleCountrySearch"
                   loading-text="Loading Countries"
                   no-match-text="No country match... check spelling"
@@ -473,7 +495,7 @@
           </div>
 
           <div class="mb-4">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
+            <label class="block mb-2 leading-6 text-grey-500">
               Is the company considered a financial intermediary?
             </label>
 
@@ -486,7 +508,7 @@
           </div>
 
           <div class="mb-4">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
+            <label class="block mb-2 leading-6 text-grey-500">
               IIs the company subject to appropriate regulation with respect to combating money laundering?
             </label>
 
@@ -499,7 +521,7 @@
           </div>
 
           <div class="mb-4">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
+            <label class="block mb-2 leading-6 text-grey-500">
               Is the company subject to appropriate prudential supervision?
             </label>
 
@@ -512,7 +534,7 @@
           </div>
 
           <div class="mb-4">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
+            <label class="block mb-2 leading-6 text-grey-500">
               Has the company been under investigation regarding money laundering/terrorist financing    irrespective of whether a report was filed to local authorities or not?
             </label>
 
@@ -525,23 +547,31 @@
           </div>
           
           <div class="mb-4">
-            <label for="email" class="block mb-2 leading-6 text-grey-500">
-              Upload Director`s passport 
+            <label class="block mb-2 leading-6 text-grey-500"> 
+              Upload Director`s passport  
             </label>
 
-            <div class="w-3/5 flex items-center space-x-4">
-              <div class="relative w-1/2 bg-input-bg  rounded"> 
-                <el-input
-                  v-model="director_passport"
-                  class="!w-full flex-1 !h-[3rem] bg-transparent"
-                  size="large"
-                  placeholder="Click to upload files here " 
-                  type="file"
-                  :prefix-icon="IconUpload"
-                /> 
-              </div>
+            <div class="w-3/5 flex items-center space-x-4"> 
+              <label 
+                for="director_passport" 
+                class="flex rounded py-[13px] px-4 space-x-4 select-none cursor-pointer !items-center"
+                :class="kycPayload.director_passport ? 'border-secondary-500 text-secondary-500 border-2' : 'border-grey-200 text-grey-200 border-[1.5px]'"
+              > 
+                <IconUpload :height="22" :width="22" /> 
+
+                <span> 
+                  {{ kycPayload.director_passport ? 'Change attachment' : 'Click to upload files here' }}
+                </span>
+              </label>
+
+              <input 
+                id="director_passport"
+                type="file"  
+                class="hidden" 
+                @change="(event) => handleUpload(event, 'director_passport')"
+              />   
             
-              <div v-if="kycPayload.director_passport" class="flex-1 text-success-500">attached successfully</div>
+              <div v-if="kycPayload.director_passport" class="flex-1 text-success-500 capitalize">attached successfully</div>
             </div>
           </div>  
        </form> 
@@ -561,9 +591,8 @@
           <Button 
             :text="activeStep == 0 ? 'Continue' : 'Verify KYC'" 
             class="!w-auto !px-8 flex-end !text-white" 
-            @click="nextStep"
-            :loading="isVerifying"
-          /> 
+            @click="nextStep" 
+          />
         </div>
       </div> 
     </div>
@@ -573,37 +602,28 @@
 <script setup lang="ts">  
 definePageMeta({ layout: "auth" });  
 
-import { useConstantsStore } from '~/store/constants'  
 import { required, email, minLength, maxLength, helpers } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core'; 
-import { useAuthStore } from '~/store/authentication'  
-import { useLayoutStore } from '~/store/layout'  
+import { useConstantsStore } from '~/store/constants'  
+import { useAuthStore } from '~/store/authentication'   
+import { beforeFileUpload } from '~/utils/upload'   
 
 const { $toast } = useNuxtApp()
 const router = useRouter()
 const { verifyKYC } =  useKYCApi() 
-const { uploadFile, getConstantData } =  useCommonApi() 
-const { updateAuthCardSize } = useLayoutStore() 
-const { authenticatedUser, kycData, setKYCData } = useAuthStore()
-
-
-const international_passport = ref(null)
-const selfie = ref(null)
-const director_passport = ref(null)
-  
-//  
+const { uploadFile, getConstantData } =  useCommonApi()  
+const { authenticatedUser, setKYCData } = useAuthStore() 
+   
+const activeModal: Ref<string> = ref('');   
+const failedVerificationMessage: Ref<any>  = ref(null);  
+const successVerificationMessage: Ref<any>  = ref(null);  
+const isVerifyingKYC: Ref<boolean> = ref(false);
 const showLivenessCheck: Ref<boolean>  = ref(false);
-const compKey: Ref<number> = ref(345466); // can be any random number
-const profile: Ref<object | any> = ref({});
-const errors: Ref<object> = ref({});
-const showPassword: Ref<boolean> = ref(false);
-const activeStep: Ref<number> = ref(0);
-const loading: Ref<boolean> = ref(false);  
-const isUploading: Ref<boolean> = ref(false);
-const isVerifying: Ref<boolean> = ref(false);
-const fileType: Ref<string> = ref('all');
-const documentType: Ref<any> = ref(null);
+const activeStep: Ref<number> = ref(0);  
+const isFilteringCountry: Ref<boolean> = ref(false);  
+const isUploading: Ref<boolean> = ref(false); 
 const countries = ref([]) 
+const fileToBeUploaded = ref('')    
 const customerCountryCode = ref('')  
 const customerNationalityISO2 = ref('')  
 const companyCountryISO2 = ref('')  
@@ -618,8 +638,8 @@ const kycPayload: Ref<any> = ref({
   max_amount: "",
   power_of_attorney: '', 
   pep: '',
-  international_passport: "https://res.cloudinary.com/vesseltrust/image/upload/v1684709155/kecmic",
-  selfie: "https://res.cloudinary.com/vesseltrust/image/upload/v1684709155/kecmic", 
+  international_passport: "",
+  selfie: "", 
   payback_days: "",
   interest_rate: 0,
   company_name: "",
@@ -630,23 +650,20 @@ const kycPayload: Ref<any> = ref({
   aml_appropriate_regulation: "",
   appropriate_prudential_supervision: "",
   investigated_for_money_laundering: "",
-  director_passport: "https://res.cloudinary.com/vesseltrust/image/upload/v1684709155/kecmic",
+  director_passport: "", 
   passport_number: "",
   recaptchaToken:  "true"
 }) 
- 
 
 // computed
 const authUser = computed(() => authenticatedUser?.profile)
 const allCountries = computed(() => useConstantsStore().countries)
  
-
 //  watch  
 // Watch for changes in the kycPayload object
 watch(kycPayload, (newValue) => {  
   setKYCData(newValue) 
 }, { deep: true }); // Use the deep option to watch nested properties
-
 
 // rules  
 const authourizedRepRules = {
@@ -674,105 +691,111 @@ const finiancialInstistutionRules = computed(() => {
   };
 }) 
 
-
 //  validation
 const vRep$ = useVuelidate(authourizedRepRules, kycPayload.value);
 const finInst$ = useVuelidate(finiancialInstistutionRules, kycPayload.value);
-
-
-// functions
-// 
+ 
+// functions 
+const closeModal = () => activeModal.value = ""   
+const toggleLivenessCheck = () => showLivenessCheck.value = !showLivenessCheck.value
 const getCountryCode = (selectedCountry: any, user: string) => { 
   customerCountryCode.value = selectedCountry.phone_code
 
   if (user == 'customer') customerNationalityISO2.value = selectedCountry.iso2.toLowerCase()
   if (user == 'company') companyCountryISO2.value = selectedCountry.iso2.toLowerCase()
-}
-// 
-const handleUpload = async (event: Event | any) => { 
+}  
+const setUploadedFileUrl = (image_url: string ) => {
+  if (fileToBeUploaded.value == 'international_passport')
+    return kycPayload.value.international_passport = image_url
+
+  if (fileToBeUploaded.value == 'director_passport')
+    return kycPayload.value.director_passport = image_url 
+} 
+const handleUpload = async (event: Event | any, activeFile: any) => {  
+  fileToBeUploaded.value = activeFile 
   const file = event.target.files[0]; 
-
-  // if (!file) return 
-
-  // const errorMessage = beforeUpload(file); 
-  // if (errorMessage) return 
-
+  
+  if (!file) return $toast('show', { type: "warning", message: "No file selected"  })
+  
+  const errorMessage = beforeFileUpload(file, "image");    
+  if (errorMessage) return $toast('show', { type: "error", message: errorMessage  })
+ 
   await upload(file);  
-}
-// 
-const beforeUpload = ({ type, size }: any) => { 
-  const imageTypes = ['image/jpeg', 'image/jpg'];
-  const documentTypes = ['application/pdf'];
-
-  let types =
-    fileType.value == 'all'
-      ? [...imageTypes, ...documentTypes]
-      : fileType.value === 'image'
-      ? imageTypes
-      : documentTypes;
-
-  let PNGincluded = false;
-
-  // if (this.$route.path.includes('messages')) {
-  //   types.push('image/png');
-  //   PNGincluded = true;
-  // }
-
-  const validType = types.includes(type);
-  if (!validType) return (`Upload only PDF, ${PNGincluded && 'PNG'} 'JPG or JPEG files!'`);
-  const fileSize = size / 1024 / 1000; 
-  if (fileSize > 2) return 'This file exceeds the maximum size of 2MB'
-
-  documentType.value = type;
-
-  return null;
-}
-// 
+}  
 const upload = async (file: any) => { 
+  isUploading.value = true
   let formData = new FormData();
   formData.append('doc', file);
  
   const response = await  uploadFile(formData)
-  const { data, error } = response  
+  const { data, error } = response   
 
-  console.log("error:::", error) 
-  console.log("data:::", data) 
-  console.log("response:::", response) 
-
-   
-//   {
-//     "status": true,
-//     "data": {
-//         "file_url": "https://res.cloudinary.com/vesseltrust/image/upload/v1692274839/pjdnkiqtqph9zlmy3jtw.png"
-//     },
-//     "code": "VT200"
-// }
+  isUploading.value = false
+  if (error) return $toast('show', { type: "error", message: error.message  })
+  
+  setUploadedFileUrl(data.file_url)
 }  
-// 
+const openModal = (active_modal: string) => {  
+  activeModal.value = active_modal
+  if (active_modal == 'kyc-verification') { 
+    isVerifyingKYC.value = true
+  }
+}  
 const nextStep = async () => { 
   // console.log("validity", vRep$.value) 
-  // vRep$.value.$touch()   
+  // vRep$.value.$touch()
   // if (vRep$.value.$error ) return console.log("vRep$.value.$errors:::", vRep$.value.$errors)
-  if (activeStep.value < 1) return  activeStep.value = 1 
-  isVerifying.value = true
- 
-  const response = await  verifyKYC(kycPayload.value)
-  const { data, error } = response
+  if (activeStep.value < 1) return  activeStep.value = 1   
 
-  isVerifying.value = false 
-  if (error) return  $toast('show', { type: "error", message: error.message  })
- 
-  $toast('show', { type: "success", message: data.message || `Login Successful`}) 
+  startKycVerification()
+}   
+const startKycVerification = async () => {
+  openModal('kyc-verification') 
+
+  const response = await  verifyKYC(kycPayload.value)
+  const { data, error } = response 
+
+  if (error) return handleError(error.message)  
+  return handleSuccessfulVerification(data?.message || `Your KYC information is being reviewed by some of our experts, we will notify you about its progress shortly.`)  
+} 
+const getSelfie = (image_url: any) => {  
+  if (!image_url) return $toast('show', { type: "error", message: `Something happened... Try again.`}) 
+
+  kycPayload.value.selfie = image_url
+  closeModal()
+} 
+const handleError = (message: string) => { 
+  isVerifyingKYC.value = false
+  failedVerificationMessage.value = message  
+} 
+const handleSuccessfulVerification = (message: string) => { 
+  isVerifyingKYC.value = false
+  failedVerificationMessage.value = null
+  successVerificationMessage.value = message  
+} 
+const gotoDashboard = () => { 
+  localStorage.removeItem("kycData")
   router.push("/dashboards")
 } 
-// 
+const handleCountrySearch = (query: string) => {
+  if (query) {
+    isFilteringCountry.value = true
+    setTimeout(() => {
+      isFilteringCountry.value = false
+      countries.value = allCountries.value.filter((country: any) => {
+        return country.name.toLowerCase().includes(query.toLowerCase())
+      })
+    }, 50)
+  }  else {
+    countries.value = allCountries.value
+  }
+}
 const retoreSession = async  () => {    
-  const kycInStorage = localStorage.getItem('kycData');  
-  
+  const kycInStorage = localStorage.getItem('kycData');   
   if (!kycInStorage) return kycPayload.value.email = authUser.value?.email
 
   const deserializedData = JSON.parse(kycInStorage);
-
+   
   if (Object.keys(deserializedData).length > 0) {
     kycPayload.value = deserializedData; 
     if (authUser.value?.email) kycPayload.value.email = authUser.value.email 
@@ -788,43 +811,23 @@ const retoreSession = async  () => {
         companyCountryISO2.value = country.iso2.toLowerCase()
       }
     })
-    if (!customerCountryCode.value) customerCountryCode.value = "+234"
+
+    // if (!customerCountryCode.value) customerCountryCode.value = "+234"
   } else {   
     setKYCData(kycPayload.value)   
     if (authUser.value?.email) kycPayload.value.email = authUser.value?.email
   }  
-}
-// 
-const toggleLivenessCheck = () => { 
-  if (showLivenessCheck.value) profile.value.selfie = null; 
- 
-  compKey.value++;
-  showLivenessCheck.value = !showLivenessCheck.value;
-}
-//  
-const getSelfie = (selfie: any) => {  
-  profile.value.selfie = selfie; 
 } 
-// 
-const handleCountrySearch = (query: string) => {
-  if (query) {
-    loading.value = true
-    setTimeout(() => {
-      loading.value = false
-      countries.value = allCountries.value.filter((country: any) => {
-        return country.name.toLowerCase().includes(query.toLowerCase())
-      })
-    }, 50)
-  }  else {
-    countries.value = allCountries.value
-  }
-}
+ 
 // lifecycle
-onBeforeMount(async () => { 
-  updateAuthCardSize('md')  
+onBeforeMount(async () => {  
   countries.value = allCountries.value
   retoreSession() 
 })  
+onMounted(() => {
+  retoreSession() 
+  
+})
 </script>
 
 <style scoped> 
@@ -836,8 +839,7 @@ onBeforeMount(async () => {
 }
 .input-field.success {
   @apply  border border-success-500 bg-success-50;
-}
-
+} 
 
 .icon {
   @apply absolute top-0 h-full rounded-tl rounded-bl bg-transparent flex justify-center items-center px-[1.125rem];
@@ -849,25 +851,5 @@ onBeforeMount(async () => {
 
 .icon.icon-right {
   @apply rounded-tr rounded-br right-0 cursor-pointer;
-}
-
-
-.el-input--large.el-input--suffix {
-  background: transparent;
-}
-
-.el-input--large.el-input--suffix.is-focus>.el-input__wrapper.is-focus,
-.el-input--large.el-input--suffix>.el-input__wrapper {
-  padding: 1px 15px;
-  background: transparent;
-  border: 0;
-  outline: none;
-  box-shadow: none !important;
-}  
-.el-input-group--prepend .el-input-group__prepend .el-select .el-input .el-input__wrapper { 
-    height: 3rem;
-}
-::file-selector-button {
-  display: none;
-}  
+} 
 </style>

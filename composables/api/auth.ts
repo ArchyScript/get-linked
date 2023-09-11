@@ -1,10 +1,5 @@
 import { defaultAxiosInstance, commonAxiosInstance } from '~/composables/axios/config';
-import { AxiosResponse } from 'axios';
-import {
-  HandleAxiosResponse,
-  HandleAxiosError,
-  setResponseReturn,
-} from '~/composables/axios/response';
+import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response';
 import { LoginPayloadType, RegisterPayloadType } from '~/types/auth';
 
 export const useAuthApi = () => {
@@ -16,18 +11,13 @@ export const useAuthApi = () => {
     } catch (error: any) {
       return HandleAxiosError(error);
     }
-    // finally {
-    //   return setResponseReturn(null, null, { message: 'Something happened' });
-    // }
   };
 
   // register
   const register = async (payload: RegisterPayloadType) => {
     try {
       // const register = async (payload: any) => {
-      const response = await defaultAxiosInstance
-        .post(`register`, payload)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`register`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -37,9 +27,7 @@ export const useAuthApi = () => {
   // resend verification
   const resendtVerification = async (payload: any) => {
     try {
-      const response = await defaultAxiosInstance
-        .post(`resend-verification-mail`, payload)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`resend-verification-mail`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -49,9 +37,7 @@ export const useAuthApi = () => {
   // changePassowrd
   const changePassowrd = async (payload: any) => {
     try {
-      const response = await commonAxiosInstance
-        .post(`auth/change-password`, payload)
-        .then(async (response: AxiosResponse) => response);
+      const response = await commonAxiosInstance.post(`auth/change-password`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -61,9 +47,7 @@ export const useAuthApi = () => {
   // resetPassword
   const resetPassword = async (payload: any) => {
     try {
-      const response = await defaultAxiosInstance
-        .post(`reset-password`, payload)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`reset-password`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -73,9 +57,7 @@ export const useAuthApi = () => {
   // verify2FA
   const verify2FA = async (payload: any) => {
     try {
-      const response = await defaultAxiosInstance
-        .post(`verify`, payload)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`verify`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -85,9 +67,7 @@ export const useAuthApi = () => {
   // initiate2FA
   const initiate2FA = async (payload: any) => {
     try {
-      const response = await defaultAxiosInstance
-        .post(`authentication`, payload)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`authentication`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -97,9 +77,7 @@ export const useAuthApi = () => {
   // requestUserPassword
   const requestUserPassword = async (payload: any) => {
     try {
-      const response = await defaultAxiosInstance
-        .post(`request-password`, payload)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`request-password`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -109,9 +87,7 @@ export const useAuthApi = () => {
   // verifyUser
   const verifyUser = async (token: string | string[]) => {
     try {
-      const response = await defaultAxiosInstance
-        .get(`verify/${token}`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.get(`verify/${token}`);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -121,9 +97,7 @@ export const useAuthApi = () => {
   // delete financier
   const deleteFinancier = async () => {
     try {
-      const response = await defaultAxiosInstance
-        .post(`delete-account`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`delete-account`);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -133,9 +107,7 @@ export const useAuthApi = () => {
   // logout
   const logout = async (payload: any) => {
     try {
-      const response = await defaultAxiosInstance
-        .post(`logout`, payload)
-        .then(async (response: AxiosResponse) => response);
+      const response = await defaultAxiosInstance.post(`logout`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);

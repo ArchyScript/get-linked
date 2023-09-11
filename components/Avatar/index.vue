@@ -1,23 +1,20 @@
 <template>
-  <span>
+  <span :class="`${customClass}`">
     <!-- if avatar have an image url -->
     <img 
       v-show="hasFullImageUrl"
       :src="fullImageUrl" 
       :alt="alt"
-      :class="`${customClass}`"
+      class="w-full h-full"
     />
     
     <!-- if avatar does not have an image url -->
     <img 
       v-show="!hasFullImageUrl"
-      :src="
-        isSubFolder 
-        ? `/images/${subfolderPath}/${name}.${fileType}` 
-        : `/images/${name}.${fileType}`" 
+      :src="imageUrl" 
       :alt="alt"
-      :class="`${customClass}`"
-    />
+      class="w-full h-full"
+    />  
   </span>
 </template>
 
@@ -54,4 +51,11 @@ const props = defineProps({
     type: String,
   }
 })
+
+const imageUrl = computed(() => {
+  return props.isSubFolder 
+    ? `/images/${props.subfolderPath}/${props.name}.${props.fileType}` 
+    : `/images/${props.name}.${props.fileType}`
+})
+ 
 </script>

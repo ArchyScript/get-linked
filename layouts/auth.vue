@@ -1,16 +1,9 @@
 <template>
   <div class="bg-[#FAFAFA] min-h-screen overflow-x-hidden w-screen">
     <div
-      class="container block mx-auto py-32"
-      :class="
-        authCardSize == 'sm'
-          ? 'w-[36.5rem] '
-          : authCardSize == 'md'
-          ? 'w-[49.375rem]'
-          : 'w-[36.5rem]'
-      "
-    >
-      <div class="">
+      class="container block mx-auto py-32 w-full"
+    > 
+      <div class="w-[36rem] mx-auto">   
         <img
           src="~/assets/images/logo-full.svg"
           class="m-auto h-[3.875rem]"
@@ -30,11 +23,7 @@
   <Toast/> 
 </template>
 
-<script setup lang="ts"> 
-import { useLayoutStore } from '~/store/layout'
-import { Brandname } from '../.nuxt/components';
-const authCardSize = computed(() => useLayoutStore().authCardSize) 
-</script>
+<script setup lang="ts"> </script>
 
 <style>
 .box-shadow {

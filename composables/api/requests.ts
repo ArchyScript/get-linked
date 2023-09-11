@@ -2,13 +2,15 @@ import { defaultAxiosInstance, commonAxiosInstance } from '~/composables/axios/c
 import { AxiosResponse } from 'axios';
 import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response';
 
-export const useRequestApi = () => {
+export const useRequestsApi = () => {
   // dashbaordStats
-  const dashbaordStats = async (userid: string) => {
+  const dashbaordStats = async (id: string) => {
+    const payload: any  = { userId: id };
     try {
       const response = await commonAxiosInstance
-        .get(`dashboard/get-stats?userid=${userid}`)
+        .get(`dashboard/get-stats`, payload)
         .then(async (response: AxiosResponse) => response);
+      console.log('responsefrerere:::', response);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);

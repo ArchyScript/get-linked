@@ -93,6 +93,7 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 /*  */
+/* Element UI input */
 .el-step.is-horizontal .el-step__line {
   height: 0px !important;
   top: 1rem !important;
@@ -111,4 +112,49 @@ input[type='number'] {
 }
 .el-step__head.is-pending .el-step__icon.is-text {
   background: var(--secondary-500);
+}
+
+.el-input--large.el-input--suffix {
+  background: transparent;
+}
+
+.el-input--large.el-input--suffix.is-focus > .el-input__wrapper.is-focus,
+.el-input--large.el-input--suffix > .el-input__wrapper {
+  padding: 1px 15px;
+  background: transparent;
+  border: 0;
+  outline: none;
+  box-shadow: none !important;
+}
+.el-input-group--prepend .el-input-group__prepend .el-select .el-input .el-input__wrapper {
+  height: 3rem;
+}
+.el-input__wrapper,
+.el-input__wrapper.is-focus {
+  background-color: transparent !important;
+}
+.el-select {
+  --el-select-input-focus-border-color: transparent !important;
+  --el-select-border-color-hover: transparent !important;
+}
+.el-input {
+  --el-input-text-color: var(--grey-500);
+  --el-input-border-color: transparent !important;
+  --el-input-bg-color: transparent !important;
+  --el-input-focus-border-color: var(--grey-50) !important;
+  --el-input-hover-border-color: var(--grey-50) !important;
+  --el-input-placeholder-color: var(--grey-100) !important;
+}
+
+/* tooltips */
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,
+.expand-fade-leave-active {
+  margin-left: 20px;
+  opacity: 0;
 }

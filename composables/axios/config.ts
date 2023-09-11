@@ -1,6 +1,8 @@
 import axios, { AxiosRequestHeaders } from 'axios';
-const API_BASE_URL = 'https://api.vesseltrust.com/api/v1';
-// const API_BASE_URL = 'https://3af4-154-120-94-121.ngrok-free.app/api/v1';
+// const API_BASE_URL = 'https://api.vesseltrustks.com/api/v1';
+//cd0b-154-120-110-64.ngrok-free.app
+// const API_BASE_URL = 'https://c675-154-120-108-11.ngrok-free.app/api/v1';
+const API_BASE_URL = 'http://localhost:4000/api/v1';
 // causing error, find a way to get api url from .env file
 // const API_BASE_URL = useRuntimeConfig().public?.API_BASE_URL;
 

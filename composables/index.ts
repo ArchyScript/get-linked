@@ -2,8 +2,9 @@ import { useAuthApi } from './api/auth';
 import { useDealsApi } from './api/deals';
 import { useKYCApi } from './api/kyc';
 import { useCommonApi } from './api/common';
+import { useRequestsApi } from './api/requests';
 
-export { useAuthApi, useDealsApi, useKYCApi, useCommonApi };
+export { useAuthApi, useDealsApi, useKYCApi, useCommonApi, useRequestsApi };
 
 /*
 {
