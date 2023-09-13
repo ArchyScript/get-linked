@@ -114,22 +114,22 @@
     </svg>
   </span>
 </template>
-  
+
 <script setup lang="ts">
-const props = defineProps({
-  width: {
-    type: Number,
-    default: 18,
-  },
-  height: {
-    type: Number,
-    default: 18,
-  },
-  title: {
-    type: String,
-    required: true
-  }
-},) 
+  const props = defineProps({
+    width: {
+      type: Number,
+      default: 18,
+    },
+    height: {
+      type: Number,
+      default: 18,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+  });
 </script>
 
 <style lang="scss" scoped></style>

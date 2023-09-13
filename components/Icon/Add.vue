@@ -13,18 +13,18 @@
     </svg>
   </span>
 </template>
-  
+
 <script setup lang="ts">
-const props = defineProps({
-  width: {
-    type: Number,
-    default: 15,
-  },
-  height: {
-    type: Number,
-    default: 15,
-  },
-},) 
+  const props = defineProps({
+    width: {
+      type: Number,
+      default: 15,
+    },
+    height: {
+      type: Number,
+      default: 15,
+    },
+  });
 </script>
 
 <style lang="scss" scoped></style>

@@ -14,17 +14,17 @@
   >
     <slot />
   </h3>
-</template> 
+</template>
 
-<script setup lang="ts"> 
-const props = defineProps({
-  size: {
-    type: String,
-    default: "sm",
-  }, 
-  customClass: {
-    type: String,
-    default: "",
-  },
-})
+<script setup lang="ts">
+  const props = defineProps({
+    size: {
+      type: String,
+      default: 'sm',
+    },
+    customClass: {
+      type: String,
+      default: '',
+    },
+  });
 </script>

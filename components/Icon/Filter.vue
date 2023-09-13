@@ -16,16 +16,16 @@
 </template>
 
 <script lang="js">
-export default {
-  props: {
-    height: {
-      type: Number,
-      default: 16
+  export default {
+    props: {
+      height: {
+        type: Number,
+        default: 16
+      },
+      width: {
+        type: Number,
+        default: 16
+      },
     },
-    width: {
-      type: Number,
-      default: 16
-    },
-  },
-};
+  };
 </script>

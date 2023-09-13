@@ -1,16 +1,11 @@
 import { defaultAxiosInstance, commonAxiosInstance } from '~/composables/axios/config';
-import { AxiosResponse } from 'axios';
 import { HandleAxiosResponse, HandleAxiosError } from '~/composables/axios/response';
 
 export const useRequestsApi = () => {
   // dashbaordStats
   const dashbaordStats = async (id: string) => {
-    const payload: any  = { userId: id };
     try {
-      const response = await commonAxiosInstance
-        .get(`dashboard/get-stats`, payload)
-        .then(async (response: AxiosResponse) => response);
-      console.log('responsefrerere:::', response);
+      const response = await commonAxiosInstance.get(`dashboard/get-stats/${id}`);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -20,9 +15,9 @@ export const useRequestsApi = () => {
   // getInspections
   const getInspections = async (params: { id: any }) => {
     try {
-      const response = await commonAxiosInstance
-        .get(`request/get-inspections/?inspector=64da4c17b783d17a99b16201`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await commonAxiosInstance.get(
+        `request/get-inspections/?inspector=64da4c17b783d17a99b16201`,
+      );
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -32,11 +27,9 @@ export const useRequestsApi = () => {
   // singleInspection
   const singleInspection = async (params: { id: any }) => {
     try {
-      const response = await commonAxiosInstance
-        .post(
-          `request/single-inspection?inspectionId=64dd4e4447345fbe150d1b9d&inspector=64da4c17b783d17a99b16201`,
-        )
-        .then(async (response: AxiosResponse) => response);
+      const response = await commonAxiosInstance.post(
+        `request/single-inspection?inspectionId=64dd4e4447345fbe150d1b9d&inspector=64da4c17b783d17a99b16201`,
+      );
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -46,11 +39,9 @@ export const useRequestsApi = () => {
   // requestInspector
   const requestInspector = async (userid: string) => {
     try {
-      const response = await commonAxiosInstance
-        .get(
-          `request/request-inspector?requestid=64dc924f1ca69963f76f1266&inspector=64da4c17b783d17a99b16201`,
-        )
-        .then(async (response: AxiosResponse) => response);
+      const response = await commonAxiosInstance.get(
+        `request/request-inspector?requestid=64dc924f1ca69963f76f1266&inspector=64da4c17b783d17a99b16201`,
+      );
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -60,9 +51,9 @@ export const useRequestsApi = () => {
   // updateInspector
   const updateInspector = async (params: { id: any }) => {
     try {
-      const response = await commonAxiosInstance
-        .get(`request/inspector/update-inspection/64dd4e4447345fbe150d1b9d`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await commonAxiosInstance.get(
+        `request/inspector/update-inspection/64dd4e4447345fbe150d1b9d`,
+      );
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -72,9 +63,7 @@ export const useRequestsApi = () => {
   // updateFundRequestApprove
   const updateFundRequestApprove = async (params: { id: any }) => {
     try {
-      const response = await commonAxiosInstance
-        .post(`request/update/64dc924f1ca69963f76f1266`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await commonAxiosInstance.post(`request/update/64dc924f1ca69963f76f1266`);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -83,9 +72,7 @@ export const useRequestsApi = () => {
   // updateFundRequestReject
   const updateFundRequestReject = async (params: { id: any }) => {
     try {
-      const response = await commonAxiosInstance
-        .post(`request/reject/64dc924f1ca69963f76f1266`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await commonAxiosInstance.post(`request/reject/64dc924f1ca69963f76f1266`);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);
@@ -94,9 +81,7 @@ export const useRequestsApi = () => {
   // updateFundRequestUpdate
   const updateFundRequestUpdate = async (params: { id: any }) => {
     try {
-      const response = await commonAxiosInstance
-        .post(`request/update/64dc924f1ca69963f76f1266`)
-        .then(async (response: AxiosResponse) => response);
+      const response = await commonAxiosInstance.post(`request/update/64dc924f1ca69963f76f1266`);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);

@@ -1,105 +1,107 @@
 <template>
-  <button 
+  <button
     :type="type"
-    :class="`${hasBorder && 'hasBorder'} ${isGray && 'isGray'} ${loading && 'loading'} ${disabled && 'disabled'} ${customClass}`" 
+    :class="`${hasBorder && 'hasBorder'} ${isGray && 'isGray'} ${loading && 'loading'} ${
+      disabled && 'disabled'
+    } ${customClass}`"
     :disabled="disabled"
     @click="clickBtn"
   >
     <!-- :class="{ hasBorder: hasBorder, isGray: isGray }"  -->
     <IconSpinner type="dotted" v-if="loading" class="animate-spin" />
 
-    <span v-else class=" flex justify-center items-center space-x-2">
+    <span v-else class="flex justify-center items-center space-x-2">
       <span v-if="hasIcon">
-        <IconTrash v-if="iconName == 'trash'"/>
-        <IconCamera v-if="iconName == 'camera'"/>
-        <IconScan v-if="iconName == 'scan'"/>
-        <IconEmail v-if="iconName == 'email'"/>
+        <IconTrash v-if="iconName == 'trash'" />
+        <IconCamera v-if="iconName == 'camera'" />
+        <IconScan v-if="iconName == 'scan'" />
+        <IconEmail v-if="iconName == 'email'" />
       </span>
 
-      <span :class="`text-${textSize} `"> 
+      <span :class="`text-${textSize} `">
         {{ text }}
-      </span> 
+      </span>
     </span>
   </button>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  text: {
-    type: String,
-    default: "",
-  },
-  type: {
-    type: String,
-    default: "button",
-  },
-  routeLink: {
-    type: String,
-  },
-  hasBorder: {
-    type: Boolean,
-    default: false,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  isGray: {
-    type: Boolean,
-    default: false,
-  },
-  loading: {
-    type: Boolean,
-    default: false,
-  },
-  hasIcon: {
-    type: Boolean,
-    default: false
-  },
-  iconName: {
-   type: String,
-   default: ""
-  },  
-  textSize: {
-    type: String,
-    default: ""
-  },
-  customClass: {
-    type: String,
-    default: ""
-  },  
-});
+  const props = defineProps({
+    text: {
+      type: String,
+      default: '',
+    },
+    type: {
+      type: String,
+      default: 'button',
+    },
+    routeLink: {
+      type: String,
+    },
+    hasBorder: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    isGray: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    hasIcon: {
+      type: Boolean,
+      default: false,
+    },
+    iconName: {
+      type: String,
+      default: '',
+    },
+    textSize: {
+      type: String,
+      default: '',
+    },
+    customClass: {
+      type: String,
+      default: '',
+    },
+  });
 
-// 
-const router = useRouter()
+  //
+  const router = useRouter();
 
-// emits
-const emit = defineEmits(["click"]);
-const clickBtn = () => {
-  if (props.disabled || props.loading) return
-  if (props.routeLink) return router.push(props.routeLink)
+  // emits
+  const emit = defineEmits(['click']);
+  const clickBtn = () => {
+    if (props.disabled || props.loading) return;
+    if (props.routeLink) return router.push(props.routeLink);
 
-  emit("click");
-};
+    emit('click');
+  };
 </script>
 
 <style lang="scss" scoped>
-button {
-  @apply flex items-center justify-center text-center max-h-[3.125rem] w-full bg-secondary-500 cursor-pointer text-white px-3 py-4 rounded leading-6 text-sm font-medium font-Poppins;
+  button {
+    @apply flex items-center justify-center text-center max-h-[3.125rem] w-full bg-secondary-500 cursor-pointer text-white px-3 py-4 rounded leading-6 text-sm font-medium font-Poppins;
 
-  &.hasBorder {
-    @apply ring-1 bg-transparent text-secondary-500 ring-secondary-500;
-  }
+    &.hasBorder {
+      @apply ring-1 bg-transparent text-secondary-500 ring-secondary-500;
+    }
 
-  &.disabled {
-    @apply bg-grey-50 text-grey-200 cursor-not-allowed;
-  }
+    &.disabled {
+      @apply bg-grey-50 text-grey-200 cursor-not-allowed;
+    }
 
-  &.loading {
-    @apply cursor-not-allowed;
-  }
+    &.loading {
+      @apply cursor-not-allowed;
+    }
 
-  /*
+    /*
   &.isGray {
     @apply border border-solid border-[#7c8db5] text-[#7c8db5];
   }
@@ -112,5 +114,5 @@ button {
     @apply block text-sm ;
   } 
   */
-}
+  }
 </style>

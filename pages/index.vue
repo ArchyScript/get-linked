@@ -1,13 +1,13 @@
 <template>
   <!-- <div class="h-screen m-20">    -->
-    <LoadingFullscreen :loading="true" /> 
+  <LoadingFullscreen :loading="true" />
   <!-- </div> -->
 </template>
 
-<script setup lang="ts">   
-const router = useRouter()
- 
-onBeforeMount(() => {
-  router.push("/dashboards")  
-})  
+<script setup lang="ts">
+  const router = useRouter();
+
+  onBeforeMount(() => {
+    router.push('/dashboards');
+  });
 </script>

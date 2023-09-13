@@ -13,69 +13,69 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from "vue";
+  import { defineComponent, ref, onMounted, watch } from 'vue';
 
-export default defineComponent({
-  name: "ImageLoader",
-  props: {
-    photoUrl: {
-      type: String,
-      required: true,
+  export default defineComponent({
+    name: 'ImageLoader',
+    props: {
+      photoUrl: {
+        type: String,
+        required: true,
+      },
+      customClass: {
+        type: String,
+        default: '',
+      },
+      customStyle: {
+        type: String,
+        default: '',
+      },
+      loadedDirectly: {
+        type: Boolean,
+        default: false,
+      },
     },
-    customClass: {
-      type: String,
-      default: "",
-    },
-    customStyle: {
-      type: String,
-      default: "",
-    },
-    loadedDirectly: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const image = ref("");
-    const imageUrl = ref("");
+    setup(props) {
+      const image = ref('');
+      const imageUrl = ref('');
 
-    const setImage = () => {
-      if (props.loadedDirectly) {
-        imageUrl.value = props.photoUrl;
-        return;
-      }
-      imageUrl.value = props.photoUrl || "";
+      const setImage = () => {
+        if (props.loadedDirectly) {
+          imageUrl.value = props.photoUrl;
+          return;
+        }
+        imageUrl.value = props.photoUrl || '';
 
-      const highResImage = new Image();
+        const highResImage = new Image();
 
-      highResImage.onload = function () {
-        image.value = imageUrl.value;
+        highResImage.onload = function () {
+          image.value = imageUrl.value;
+        };
+
+        highResImage.src = imageUrl.value;
       };
 
-      highResImage.src = imageUrl.value;
-    };
+      watch(props, () => {
+        setImage();
+      });
 
-    watch(props, () => {
-      setImage();
-    });
+      onMounted(() => {
+        setImage();
+      });
 
-    onMounted(() => {
-      setImage();
-    });
-
-    return {
-      image,
-      imageUrl,
-    };
-  },
-});
+      return {
+        image,
+        imageUrl,
+      };
+    },
+  });
 </script>
 
 <style scoped>
-.blend-in {
-  animation: fadein 0.15s;
-  -moz-animation: fadein 0.15s; /* Firefox */
-  -webkit-animation: fadein 0.15s; /* Safari and Chrome */
-  -o-animation: fadein 0.15s; /* Opera */
-}
-</style> 
+  .blend-in {
+    animation: fadein 0.15s;
+    -moz-animation: fadein 0.15s; /* Firefox */
+    -webkit-animation: fadein 0.15s; /* Safari and Chrome */
+    -o-animation: fadein 0.15s; /* Opera */
+  }
+</style>

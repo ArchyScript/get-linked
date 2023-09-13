@@ -33,20 +33,18 @@
   </span>
 </template>
 
-
-    
-<script   setup  lang="ts">
-const props = defineProps({
-  title: {
-    type: String,
-  },
-  width: {
-    type: Number,
-    default: 19,
-  },
-  height: {
-    type: Number,
-    default: 19,
-  },
-})
+<script setup lang="ts">
+  const props = defineProps({
+    title: {
+      type: String,
+    },
+    width: {
+      type: Number,
+      default: 19,
+    },
+    height: {
+      type: Number,
+      default: 19,
+    },
+  });
 </script>

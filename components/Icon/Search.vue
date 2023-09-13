@@ -16,25 +16,25 @@
 </template>
 
 <script>
-export default {
-  props: {
-    height: {
-      type: Number,
-      default: 20,
+  export default {
+    props: {
+      height: {
+        type: Number,
+        default: 20,
+      },
+      width: {
+        type: Number,
+        default: 20,
+      },
     },
-    width: {
-      type: Number,
-      default: 20,
+    setup() {
+      return {};
     },
-  },
-  setup() {
-    return {};
-  },
-};
+  };
 </script>
 
 <style scoped>
-._icon {
-  fill: currentColor;
-}
+  ._icon {
+    fill: currentColor;
+  }
 </style>
