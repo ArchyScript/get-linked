@@ -21,8 +21,8 @@
         <ModalsDealsFundRequest @done="closeModal" />
       </Modal> -->
 
-      <Modal v-if="isAddBankAccountModal" size="sm" @close="closeModal">
-        <ModalsDealsFundRequest @done="closeModal" />
+      <Modal v-if="isAddBankAccountModal" size="mdlg" @close="closeModal">
+        <ModalsDealsFundOffer @done="closeModal" />
       </Modal>
     </div>
 

@@ -365,40 +365,12 @@
               Upload International passport of authorized representative
             </h4>
 
-            <div class="w-3/5 flex items-center space-x-4">
-              <label
-                for="international_passport"
-                class="flex rounded border-[1.5px] py-[13px] select-none px-4 space-x-4 cursor-pointer items-center"
-                :class="
-                  kycPayload.international_passport
-                    ? 'border-secondary-500 text-secondary-500 border-2'
-                    : 'border-grey-200 text-grey-200 border-[1.5px]'
-                "
-              >
-                <IconUpload :height="22" :width="22" />
-
-                <span>
-                  {{
-                    kycPayload.international_passport
-                      ? 'Change attachment'
-                      : 'Click to upload files here'
-                  }}
-                </span>
-              </label>
-
-              <input
-                id="international_passport"
-                type="file"
-                class="hidden"
-                @change="(event) => handleUpload(event, 'international_passport')"
+            <div class="w-3/5">
+              <Upload
+                uploadId="international_passport"
+                :modelValue="kycPayload.international_passport"
+                @uploaded="onUploaded"
               />
-
-              <div
-                v-if="kycPayload.international_passport"
-                class="flex-1 text-success-500 capitalize"
-              >
-                attached successfully
-              </div>
             </div>
           </div>
 
@@ -424,8 +396,8 @@
         </form>
 
         <!-- Step 2 -->
-        <form class="mt-8" v-show="activeStep == 1">
-          <div class="mb-4 flex items-center space-x-4">
+        <form class="mt-8 space-y-4" v-show="activeStep == 1">
+          <div class="flex items-center space-x-4">
             <div class="flex-1">
               <label for="company_name" class="block mb-2 leading-6 text-grey-500">
                 Company name on the commercial register
@@ -459,7 +431,7 @@
             </div>
           </div>
 
-          <div class="mb-4 flex items-center space-x-4">
+          <div class="flex items-center space-x-4">
             <div class="w-1/2">
               <label for="company_country" class="block mb-2 leading-6 text-grey-500">
                 Company Country
@@ -501,7 +473,7 @@
             </div>
           </div>
 
-          <div class="mb-4">
+          <div>
             <label for="address" class="block mb-2 leading-6 text-grey-500">
               Domicile address of the company on the commercial register
             </label>
@@ -521,7 +493,7 @@
             </div>
           </div>
 
-          <div class="mb-4">
+          <div>
             <label class="block mb-2 leading-6 text-grey-500">
               Is the company considered a financial intermediary?
             </label>
@@ -534,7 +506,7 @@
             </div>
           </div>
 
-          <div class="mb-4">
+          <div>
             <label class="block mb-2 leading-6 text-grey-500">
               IIs the company subject to appropriate regulation with respect to combating money
               laundering?
@@ -548,7 +520,7 @@
             </div>
           </div>
 
-          <div class="mb-4">
+          <div>
             <label class="block mb-2 leading-6 text-grey-500">
               Is the company subject to appropriate prudential supervision?
             </label>
@@ -564,7 +536,7 @@
             </div>
           </div>
 
-          <div class="mb-4">
+          <div>
             <label class="block mb-2 leading-6 text-grey-500">
               Has the company been under investigation regarding money laundering/terrorist
               financing irrespective of whether a report was filed to local authorities or not?
@@ -581,40 +553,15 @@
             </div>
           </div>
 
-          <div class="mb-4">
+          <div>
             <label class="block mb-2 leading-6 text-grey-500">Upload Director`s passport</label>
 
-            <div class="w-3/5 flex items-center space-x-4">
-              <label
-                for="director_passport"
-                class="flex rounded py-[13px] px-4 space-x-4 select-none cursor-pointer !items-center"
-                :class="
-                  kycPayload.director_passport
-                    ? 'border-secondary-500 text-secondary-500 border-2'
-                    : 'border-grey-200 text-grey-200 border-[1.5px]'
-                "
-              >
-                <IconUpload :height="22" :width="22" />
-
-                <span>
-                  {{
-                    kycPayload.director_passport
-                      ? 'Change attachment'
-                      : 'Click to upload files here'
-                  }}
-                </span>
-              </label>
-
-              <input
-                id="director_passport"
-                type="file"
-                class="hidden"
-                @change="(event) => handleUpload(event, 'director_passport')"
+            <div class="w-3/5">
+              <Upload
+                uploadId="director_passport"
+                :modelValue="kycPayload.director_passport"
+                @uploaded="onUploaded"
               />
-
-              <div v-if="kycPayload.director_passport" class="flex-1 text-success-500 capitalize">
-                attached successfully
-              </div>
             </div>
           </div>
         </form>
@@ -649,12 +596,12 @@
   import { useVuelidate } from '@vuelidate/core';
   import { useConstantsStore } from '~/store/constants';
   import { useAuthStore } from '~/store/authentication';
-  import { beforeFileUpload } from '~/utils/upload';
+  // import { beforeFileUpload } from '~/utils/upload';
 
   const { $toast } = useNuxtApp();
   const router = useRouter();
   const { verifyKYC } = useKYCApi();
-  const { uploadFile, getConstantData } = useCommonApi();
+  // const { uploadFile, getConstantData } = useCommonApi();
   const { authenticatedUser, setKYCData } = useAuthStore();
 
   const activeModal: Ref<string> = ref('');
@@ -751,37 +698,36 @@
     if (user == 'customer') customerNationalityISO2.value = selectedCountry.iso2.toLowerCase();
     if (user == 'company') companyCountryISO2.value = selectedCountry.iso2.toLowerCase();
   };
-  const setUploadedFileUrl = (image_url: string) => {
-    if (fileToBeUploaded.value == 'international_passport')
+  const onUploaded = ({ image_url, uploadId }: any) => {
+    if (uploadId == 'international_passport')
       return (kycPayload.value.international_passport = image_url);
-
-    if (fileToBeUploaded.value == 'director_passport')
-      return (kycPayload.value.director_passport = image_url);
+    if (uploadId == 'director_passport') return (kycPayload.value.director_passport = image_url);
   };
-  const handleUpload = async (event: Event | any, activeFile: any) => {
-    fileToBeUploaded.value = activeFile;
-    const file = event.target.files[0];
 
-    if (!file) return $toast('show', { type: 'warning', message: 'No file selected' });
+  // const handleUpload = async (event: Event | any, activeFile: any) => {
+  //   fileToBeUploaded.value = activeFile;
+  //   const file = event.target.files[0];
 
-    const errorMessage = beforeFileUpload(file, 'image');
-    if (errorMessage) return $toast('show', { type: 'error', message: errorMessage });
+  //   if (!file) return $toast('show', { type: 'warning', message: 'No file selected' });
 
-    await upload(file);
-  };
-  const upload = async (file: any) => {
-    isUploading.value = true;
-    let formData = new FormData();
-    formData.append('doc', file);
+  //   const errorMessage = beforeFileUpload(file, 'image');
+  //   if (errorMessage) return $toast('show', { type: 'error', message: errorMessage });
 
-    const response = await uploadFile(formData);
-    const { data, error } = response;
+  //   await upload(file);
+  // };
+  // const upload = async (file: any) => {
+  //   isUploading.value = true;
+  //   let formData = new FormData();
+  //   formData.append('doc', file);
 
-    isUploading.value = false;
-    if (error) return $toast('show', { type: 'error', message: error.message });
+  //   const response = await uploadFile(formData);
+  //   const { data, error } = response;
 
-    setUploadedFileUrl(data.file_url);
-  };
+  //   isUploading.value = false;
+  //   if (error) return $toast('show', { type: 'error', message: error.message });
+
+  //   onUploaded(data.file_url);
+  // };
   const openModal = (active_modal: string) => {
     activeModal.value = active_modal;
     if (active_modal == 'kyc-verification') {

@@ -12,6 +12,25 @@ export const pasteHandler = (event: Event) => {
   // Do whatever validation or processing you need to do with the pasted text
 };
 
+export const copyToClipboard = (text: string) => {
+  // Create a text area element to hold the text you want to copy
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  document.body.appendChild(textarea);
+
+  // Select the text within the text area
+  textarea.select();
+
+  try {
+    // Attempt to copy the selected text to the clipboard
+    document.execCommand('copy');
+  } catch (err) {
+    console.error('Unable to copy text to clipboard:', err);
+  } finally {
+    // Remove the temporary text area element
+    document.body.removeChild(textarea);
+  }
+};
 export const dropHandler = (event: Event) => {
   event.preventDefault(); // Prevent the default drop behavior
 };

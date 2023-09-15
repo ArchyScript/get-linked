@@ -2,7 +2,7 @@
   <div>
     <div>
       <Modal id="delete-account" size="md" v-if="showDeleteModal" @close="showDeleteModal = false">
-        <ModalsDeleteAccount
+        <ModalsAccountDelete
           :warnings="deleteWarnings"
           @close="showDeleteModal = false"
           @deleteAcount="deleteFinancierAccount"
@@ -647,7 +647,7 @@
   };
   //
   onBeforeMount(() => {
-    fetchDataFromStore();
+    // fetchDataFromStore();
   });
 </script>
 

@@ -8,7 +8,7 @@
     @click="clickBtn"
   >
     <!-- :class="{ hasBorder: hasBorder, isGray: isGray }"  -->
-    <IconSpinner type="dotted" v-if="loading" class="animate-spin" />
+    <IconSpinner type="solid" v-if="loading" class="animate-spin" />
 
     <span v-else class="flex justify-center items-center space-x-2">
       <span v-if="hasIcon">

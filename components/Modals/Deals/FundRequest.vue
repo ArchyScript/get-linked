@@ -51,33 +51,16 @@
             <IconInfo class="text-grey-40" />
           </div>
 
-          <div class="flex items-center space-x-3.5">
-            <label
-              for="proof_of_funding"
-              class="flex rounded border-[1.5px] py-[11px] select-none px-4 text-sm space-x-4 cursor-pointer items-center"
-              :class="
-                payload.proof_of_funding
-                  ? 'border-secondary-500 text-secondary-500 border-2'
-                  : 'border-grey-200 text-grey-200 border-[1.5px]'
-              "
-            >
-              <IconUpload :height="22" :width="22" />
-
-              <span>
-                {{ payload.proof_of_funding ? 'Change attachment' : 'Click to upload files here' }}
-              </span>
-            </label>
-
-            <input id="proof_of_funding" type="file" class="hidden" @change="handleUpload" />
-
-            <div v-if="payload.proof_of_funding" class="flex-1 text-success-500 text-sm capitalize">
-              attached successfully
-            </div>
-          </div>
+          <Upload
+            uploadId="proof_of_funding"
+            size="sm"
+            :modelValue="payload.proof_of_funding"
+            @uploaded="(event) => (payload.proof_of_funding = event.image_url)"
+          />
         </div>
       </div>
 
-      <div class="py-3">
+      <div>
         <Button
           type="submit"
           text="Save"
@@ -93,7 +76,6 @@
   const { $toast } = useNuxtApp();
   const { uploadFile } = useCommonApi();
 
-  const isUploading: Ref<boolean> = ref(false);
   const loading = ref(false);
   const payload = ref({
     funding_method: '',
@@ -111,32 +93,6 @@
       loading.value = false;
       emit('done');
     }, 3000);
-  };
-
-  const handleUpload = async (event: Event | any) => {
-    const file = event.target.files[0];
-
-    if (!file) return $toast('show', { type: 'warning', message: 'No file selected' });
-
-    const errorMessage = beforeFileUpload(file, 'image');
-    if (errorMessage) return $toast('show', { type: 'error', message: errorMessage });
-
-    await upload(file);
-  };
-
-  const upload = async (file: any) => {
-    isUploading.value = true;
-    let formData = new FormData();
-    formData.append('doc', file);
-
-    const response = await uploadFile(formData);
-    const { data, error } = response;
-
-    isUploading.value = false;
-    if (error) return $toast('show', { type: 'error', message: error.message });
-
-    console.log('data', data);
-    // setUploadedFileUrl(data.file_url);
   };
 </script>
 

@@ -61,6 +61,7 @@
     if (props.size == 'xs') return '18.75rem';
     if (props.size == 'sm') return '29.25rem';
     if (props.size == 'md') return '31.25rem';
+    if (props.size == 'mdlg') return '36.5rem';
     if (props.size == 'lg') return '44rem';
     if (props.size == 'xl') return '71.25rem';
     else props.size;

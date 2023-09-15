@@ -20,7 +20,7 @@
       </TypoHeaderText>
     </section>
 
-    <!-- card -->
+    <!--  -->
     <section>
       <div v-if="activeTabId == 'profile'"><AccountProfile /></div>
       <div v-if="activeTabId == 'security'"><AccountSecurity /></div>
