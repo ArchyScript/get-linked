@@ -109,9 +109,9 @@
   );
 
   const fetchDashboardData = async () => {
-    const userId = authUser.value?.profile?.userId;
+    // const userId = authUser.value?.profile?.userId;
 
-    const response = await dashbaordStats(userId);
+    const response = await dashbaordStats();
     const { data, error } = response;
 
     console.log('response:::', response);

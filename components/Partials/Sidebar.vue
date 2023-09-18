@@ -62,26 +62,6 @@
       route: '/dashboards',
       icon: 'dashboards',
     },
-    {
-      title: 'My Deals',
-      route: '/my-deals',
-      icon: 'my-deals',
-    },
-    // {
-    //   title: "Marketplace",
-    //   route: "/marketplace",
-    //   icon: "marketplace"
-    // },
-    {
-      title: 'Messages',
-      route: '/messages',
-      icon: 'messages',
-    },
-    {
-      title: 'Activity logs',
-      route: '/activity-logs',
-      icon: 'activity-logs',
-    },
   ]);
 
   const preferences = ref([

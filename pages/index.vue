@@ -8,6 +8,6 @@
   const router = useRouter();
 
   onBeforeMount(() => {
-    router.push('/dashboards');
+    router.push('/auth/login');
   });
 </script>

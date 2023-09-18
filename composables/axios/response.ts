@@ -1,5 +1,4 @@
 import { AxiosError, AxiosResponse } from 'axios';
-// import { useStore } from '@pinia/nuxt';
 import { useAuthStore } from '~/store/authentication';
 
 export const setResponseReturn = (data: any, status: any, error: any) => {
