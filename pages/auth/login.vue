@@ -77,19 +77,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-  import { LoginPayloadType } from '~/types/auth';
-
-  import { useVuelidate } from '@vuelidate/core';
-  import {
-    required,
-    email,
-    minLength,
-    maxLength,
-    minValue,
-    maxValue,
-    helpers,
-  } from '@vuelidate/validators';
+<script setup lang="ts"> 
   import { useAuthStore } from '~/store/authentication';
 
   definePageMeta({ layout: 'auth' });
@@ -108,51 +96,53 @@
   const computedPreviousRoute = computed(() => previousRoute);
 
   // rules
-  const rules = computed(() => {
-    return {
-      email: { required, email },
-      password: { required },
-    };
-  });
+  // const rules = computed(() => {
+  //   return {
+  //     email: { required, email },
+  //     password: { required },
+  //   };
+  // });
 
   // Validation
-  const v$ = useVuelidate(rules, payload.value);
+  // const v$ = useVuelidate(rules, payload.value);
 
   // functions
   const loginFinacier = async () => {
-    v$.value.$touch();
-    loading.value = true;
+    // v$.value.$touch();
+    // loading.value = true;
 
-    const response = await login(payload.value);
-    const { data, error } = response;
+    // const response = await login(payload.value);
+    // const { data, error } = response;
 
-    loading.value = false;
-    if (error) return $toast('show', { type: 'error', message: error.message });
-    console.log('data:', data);
+    // loading.value = false;
 
-    // success message for login
-    $toast('show', { type: 'success', message: `Login Successful` });
+    console.log(payload.value)
+    // if (error) return $toast('show', { type: 'error', message: error.message });
+    // console.log('data:', data);
 
-    const { authToken, kyc } = data;
+    // // success message for login
+    // $toast('show', { type: 'success', message: `Login Successful` });
 
-    setAuthToken(authToken);
-    setAuthUser(data);
+    // const { authToken, kyc } = data;
 
-    // if the user have not completed their kyc
-    if (Object.keys(kyc).length < 1) return router.push('/auth/kyc');
-    // if admin have not verified user kyc
-    // if (!profile.isKYC) return router.push('/auth/kyc')
+    // setAuthToken(authToken);
+    // setAuthUser(data);
 
-    // check if there is no previous route to redirect user to dashboard page
-    if (!computedPreviousRoute.value || computedPreviousRoute.value == undefined)
-      return router.push('/dashboards');
+    // // if the user have not completed their kyc
+    // if (Object.keys(kyc).length < 1) return router.push('/auth/kyc');
+    // // if admin have not verified user kyc
+    // // if (!profile.isKYC) return router.push('/auth/kyc')
 
-    // check if session expired before login
-    // Do something when the route includes "/auth/" to exclude access to any /auth/*** page */
-    if (computedPreviousRoute.value.includes('/auth/')) return router.push('/dashboards');
+    // // check if there is no previous route to redirect user to dashboard page
+    // if (!computedPreviousRoute.value || computedPreviousRoute.value == undefined)
+    //   return router.push('/dashboards');
 
-    //  if previous route does not include auth
-    return router.push(computedPreviousRoute.value);
+    // // check if session expired before login
+    // // Do something when the route includes "/auth/" to exclude access to any /auth/*** page */
+    // if (computedPreviousRoute.value.includes('/auth/')) return router.push('/dashboards');
+
+    // //  if previous route does not include auth
+    // return router.push(computedPreviousRoute.value);
   };
 </script>
 
