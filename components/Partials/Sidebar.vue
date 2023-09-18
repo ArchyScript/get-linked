@@ -86,4 +86,8 @@
 
     return false;
   };
+
+  onBeforeMount(() => {
+    console.log('mounted');
+  });
 </script>
