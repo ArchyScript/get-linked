@@ -1,20 +1,20 @@
 <template>
   <div class="flex flex-col justify-center items-center space-y-8 py-6 px-4">
-    <TypoNormalText size="lg" customClass="text-grey-500 font-normal text-center">
+    <span size="lg" class="text-grey-500 font-normal text-center">
       {{ confirmationMessage }}
-    </TypoNormalText>
+    </span>
 
     <div class="flex items-center justify-center space-x-1 flex-1 w-[80%]">
       <Button
         @click="close"
         text="cancel"
-        customClass="!text-secondary-500 !py-4 !px-10 !bg-white !font-medium !leading-[160%]"
+        class="!text-secondary-500 !py-4 !px-10 !bg-white !font-medium !leading-[160%]"
       />
 
       <Button
         @click="accept"
         text="Accecpt"
-        customClass="!py-4 !px-10 !text-white !font-medium !leading-[160%] !max-w-fit"
+        class="!py-4 !px-10 !text-white !font-medium !leading-[160%] !max-w-fit"
         class="btn-shadow"
       />
     </div>

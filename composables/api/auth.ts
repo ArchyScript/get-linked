@@ -6,7 +6,7 @@ export const useAuthApi = () => {
   // login
   const login = async (payload: LoginPayloadType) => {
     try {
-      const response = await defaultAxiosInstance.post(`login`, payload);
+      const response = await defaultAxiosInstance.post(`user/auth/login`, payload);
       return HandleAxiosResponse(response);
     } catch (error: any) {
       return HandleAxiosError(error);

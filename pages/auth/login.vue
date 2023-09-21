@@ -18,8 +18,6 @@
             <input
               id="email"
               v-model="payload.email"
-              @blur="v$.email.$touch()"
-              :class="v$.email.$invalid && 'error'"
               class="input-field !pl-12 pr-4"
               type="email"
               placeholder="example@gmail.com"
@@ -38,8 +36,6 @@
             <input
               id="password"
               v-model="payload.password"
-              @blur="v$.password.$touch()"
-              :class="v$.password.$invalid && 'error'"
               :type="showPassword ? 'text' : 'password'"
               class="input-field !px-12"
               placeholder="password"
@@ -53,9 +49,9 @@
         </div>
 
         <p class="flex justify-end mt-3.5">
-          <nuxt-link to="/auth/forgot-password" class="text-secondary-500 font-medium leading-6">
-            Forgot password
-          </nuxt-link>
+          <!-- <nuxt-link to="/auth/forgot-password" class="text-secondary-500 font-medium leading-6">
+          </nuxt-link> -->
+          Forgot password
         </p>
 
         <div class="block w-full mt-6">
@@ -77,7 +73,7 @@
   </div>
 </template>
 
-<script setup lang="ts"> 
+<script setup lang="ts">
   import { useAuthStore } from '~/store/authentication';
 
   definePageMeta({ layout: 'auth' });
@@ -85,7 +81,7 @@
   const router = useRouter();
   const { $toast } = useNuxtApp();
   const { login } = useAuthApi();
-  const { setAuthUser, setAuthToken, logout, previousRoute } = useAuthStore();
+  const { setAuthUser, setAuthToken, previousRoute } = useAuthStore();
 
   // Reactive
   const showPassword: Ref<boolean> = ref(false);
@@ -116,7 +112,7 @@
 
     // loading.value = false;
 
-    console.log(payload.value)
+    console.log(payload.value);
     // if (error) return $toast('show', { type: 'error', message: error.message });
     // console.log('data:', data);
 
@@ -147,7 +143,7 @@
 </script>
 
 <style scoped>
-  .input-field {
+  /* .input-field {
     @apply bg-transparent focus:bg-transparent focus:ring-secondary-400 focus:ring-1 w-full flex-1 rounded leading-5 block text-sm py-3.5 outline-0 border-0;
   }
   .icon {
@@ -158,5 +154,5 @@
   }
   .icon.icon-right {
     @apply rounded-tr rounded-br right-0 cursor-pointer;
-  }
+  } */
 </style>

@@ -1,23 +1,13 @@
 <template>
   <button
     :type="type"
-    :class="`${hasBorder && 'hasBorder'} ${isGray && 'isGray'} ${loading && 'loading'} ${
-      disabled && 'disabled'
-    } ${customClass}`"
+    :class="`${hasBorder && 'hasBorder'}  ${loading && 'loading'} ${disabled && 'disabled'} `"
     :disabled="disabled"
     @click="clickBtn"
   >
-    <!-- :class="{ hasBorder: hasBorder, isGray: isGray }"  -->
     <IconSpinner type="solid" v-if="loading" class="animate-spin" />
 
     <span v-else class="flex justify-center items-center space-x-2">
-      <span v-if="hasIcon">
-        <IconTrash v-if="iconName == 'trash'" />
-        <IconCamera v-if="iconName == 'camera'" />
-        <IconScan v-if="iconName == 'scan'" />
-        <IconEmail v-if="iconName == 'email'" />
-      </span>
-
       <span :class="`text-${textSize} `">
         {{ text }}
       </span>
@@ -35,9 +25,6 @@
       type: String,
       default: 'button',
     },
-    routeLink: {
-      type: String,
-    },
     hasBorder: {
       type: Boolean,
       default: false,
@@ -46,27 +33,11 @@
       type: Boolean,
       default: false,
     },
-    isGray: {
-      type: Boolean,
-      default: false,
-    },
     loading: {
       type: Boolean,
       default: false,
     },
-    hasIcon: {
-      type: Boolean,
-      default: false,
-    },
-    iconName: {
-      type: String,
-      default: '',
-    },
     textSize: {
-      type: String,
-      default: '',
-    },
-    customClass: {
       type: String,
       default: '',
     },
@@ -79,7 +50,6 @@
   const emit = defineEmits(['click']);
   const clickBtn = () => {
     if (props.disabled || props.loading) return;
-    if (props.routeLink) return router.push(props.routeLink);
 
     emit('click');
   };
@@ -87,32 +57,6 @@
 
 <style lang="scss" scoped>
   button {
-    @apply flex items-center justify-center text-center max-h-[3.125rem] w-full bg-secondary-500 cursor-pointer text-white px-3 py-4 rounded leading-6 text-sm font-medium font-Poppins;
-
-    &.hasBorder {
-      @apply ring-1 bg-transparent text-secondary-500 ring-secondary-500;
-    }
-
-    &.disabled {
-      @apply bg-grey-50 text-grey-200 cursor-not-allowed;
-    }
-
-    &.loading {
-      @apply cursor-not-allowed;
-    }
-
-    /*
-  &.isGray {
-    @apply border border-solid border-[#7c8db5] text-[#7c8db5];
-  }
-
-  &.isGray.hasBorder {
-    @apply border border-solid border-[#7c8db5] text-[#7c8db5];
-  }
-
-  span {
-    @apply block text-sm ;
-  } 
-  */
+    background: linear-gradient(270deg, #903aff 0%, #d434fe 56.42%, #ff26b9 99.99%, #fe34b9 100%);
   }
 </style>

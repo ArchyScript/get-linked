@@ -1,40 +1,28 @@
-<template> 
-  <div class="min-h-screen flex flex-col flex-auto flex-shrink-0  no-scrollbar antialiased bg-ui-bg">
-    
-    <!-- Sidebar -->
-    <div class=" fixed flex flex-col left-0 w-[17.5rem] p-4 bg-grey-700 h-full transition-all duration-300 border-none z-10">
-      <PartialsSidebar/>
-    </div> 
-  
-    <!--  -->
-    <div class=" ml-[17.5rem] flex flex-col !no-scrollbar min-h-screen"> 
-      <PartialsTopbar/> 
+<template>
+  <div class="min-h-screen bg-primary-1 bg-opacity-10">
+    <div class="container mx-auto !no-scrollbar min-h-screenbg-primary-7">
+      <PartialsNavbar />
 
-      <div class="container flex-1 h-full mx-auto w-full p-8 !no-scrollbar mb-20">
-        <slot/>
+      <div>
+        <slot />
       </div>
 
-      <PartialsAppFooter layout="default"/>
-    </div> 
-
-    <!-- all general components here e.g toast -->
-        <Toast/> 
-  </div> 
-</template>   
+      <PartialsFooter layout="default" />
+    </div>
+  </div>
+</template>
 
 <script setup lang="ts"></script>
- 
- 
 
-<style> 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+<style>
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-} 
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 </style>

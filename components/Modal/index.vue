@@ -17,9 +17,9 @@
       </span>
 
       <div v-else class="flex items-center justify-between mb-5">
-        <TypoHeaderText size="base" customClass="!text-grey-400 capitalize select-none">
+        <h4 size="base" class="!text-grey-400 capitalize select-none">
           {{ title }}
-        </TypoHeaderText>
+        </h4>
 
         <span class="px-0.5 cursor-pointer" @click="close">
           <IconClose :height="12" :width="12" />

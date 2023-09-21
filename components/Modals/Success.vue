@@ -1,8 +1,8 @@
 <template>
   <div>
-    <TypoHeaderText size="xl">ererererer</TypoHeaderText>
+    <h4 size="xl">ererererer</h4>
 
-    <TypoNormalText>Your identity verification failed</TypoNormalText>
+    <span>Your identity verification failed</span>
   </div>
 </template>
 

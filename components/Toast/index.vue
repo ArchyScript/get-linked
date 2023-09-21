@@ -4,9 +4,9 @@
     :class="`z-50 fixed top-2 right-2 w-80 p-4 rounded-sm bg-${updatedTypeWithColorMatch}-50`"
   >
     <!-- message -->
-    <TypoNormalText size="base" :customClass="`!text-${updatedTypeWithColorMatch}-500 mt-2`">
+    <span size="base" :class="`!text-${updatedTypeWithColorMatch}-500 mt-2`">
       {{ message }}
-    </TypoNormalText>
+    </span>
 
     <!-- progress bar -->
     <div

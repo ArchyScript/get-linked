@@ -1,10 +1,10 @@
 <template>
-  <div class="flex items-center space-x-2 px-0.5 w-fit cursor-pointer" @click="goBAck">
+  <div class="flex items-center space-x-2 px-0.5 w-fit cursor-pointer" @click="goBack">
     <IconArrow :width="8" :height="12" type="caret-left" />
 
-    <TypoNormalText>
+    <span>
       {{ text }}
-    </TypoNormalText>
+    </span>
   </div>
 </template>
 

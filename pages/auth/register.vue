@@ -121,4 +121,17 @@
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+  /* .input-field {
+    @apply bg-transparent focus:bg-transparent focus:ring-secondary-400 focus:ring-1 w-full flex-1 rounded leading-5 block text-sm py-3.5 outline-0 border-0;
+  }
+  .icon {
+    @apply absolute top-0 h-full rounded-tl rounded-bl bg-transparent flex justify-center items-center px-[1.125rem];
+  }
+  .icon.icon-left {
+    @apply rounded-tl rounded-bl left-0;
+  }
+  .icon.icon-right {
+    @apply rounded-tr rounded-br right-0 cursor-pointer;
+  } */
+</style>
