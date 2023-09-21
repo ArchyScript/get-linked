@@ -28,9 +28,11 @@
     // }
   };
 
-  onMounted(() => {
-    handleScroll();
-  });
+  // window.addEventListener('scroll', () => handleScroll());
+
+  // onMounted(() => {
+  //   handleScroll();
+  // });
 </script>
 
 <style scoped>
