@@ -30,13 +30,13 @@
 
   // window.addEventListener('scroll', () => handleScroll());
 
-  onMounted(() => {
-    handleScroll();
-  });
+  // onMounted(() => {
+  //   handleScroll();
+  // });
 </script>
 
 <style scoped>
   nav.scrolled {
-    @apply sticky z-20 h-12 sm:h-14 md:h-16 pt-0 pb-0 bg-red-500 shadow-md; 
+    @apply sticky z-20 h-12 sm:h-14 md:h-16 pt-0 pb-0 bg-red-500 shadow-md;
   }
 </style>

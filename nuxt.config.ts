@@ -5,12 +5,6 @@ export default defineNuxtConfig({
 
   modules: ['@pinia/nuxt', '@element-plus/nuxt'],
 
-  runtimeConfig: {
-    public: {
-      API_BASE_URL: process.env.API_BASE_URL,
-    },
-  },
-
   pinia: {
     autoImports: [
       // automatically imports `defineStore`
